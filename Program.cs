@@ -12,7 +12,7 @@ using Lexer_Analizer;
 
 string prueba = "4+2-3*2+10^2%2;";
 
-Code Codigo = Import.GetDocuments(@"C:\RUBEN\HULK\WALL-E\Codigos\Prueba.txt");
+Code Codigo = Import.GetDocuments(@"C:\RUBEN\HULK\WALL-E\Codigos\Prueba.txt");//Hay que arreglar que aqui la ruta se encuentre sola
 Tokenizer Syntax = new Tokenizer(Codigo.Text);
 Syntax.Start();
 Syntax_Analizer.Syntax Syntaxis = new Syntax_Analizer.Syntax(Syntax.TokenSet);

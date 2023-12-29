@@ -33,7 +33,6 @@ public enum TokenType
     Boolean,// true, false
     Comma, //,
     Semicolon, //;
-    BreakLine,// \n
     Quotes_Text, // "mm"
     Blank_Space,// " "
     nul,
@@ -46,14 +45,16 @@ public class Token
 {
     public TokenType Type { get; set; }
     public object Value { get; set; }
+    public int actualLine{get; set;}
 
-    public Token(TokenType type, object value)
+    public Token(TokenType type, object value, int ActualLine)
     {
         Type = type;
         Value = value;
+        actualLine = ActualLine;
     }
     public void Show()
     {
-        System.Console.WriteLine("(" + Type + "," + Value + ")");
+        System.Console.WriteLine("(" + Type + "," + Value + ")"+" line "+actualLine);
     }
 }

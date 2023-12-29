@@ -1,42 +1,4 @@
 
-// public class Function
-// {
-//     public List<string> Variables { get; private set; }
-//     public List<Token> Tokens_Body { get; private set; }
-//     public TokenType ReturnType { get; private set; }
-//     public Function(List<string> variables, List<Token> tokens_body, TokenType returnType)
-//     {
-//         Variables = variables;
-//         Tokens_Body = tokens_body;
-//         ReturnType = returnType;
-//     }
-
-//     public void CHangeBody(List<Token> tokens_Body)
-//     {
-//         Tokens_Body = tokens_Body;
-//     }
-
-//     public void Show_Variables()
-//     {
-
-//         System.Console.WriteLine("Variables");
-//         System.Console.WriteLine(" ");
-//         foreach (var item in this.Variables)
-//         {
-//             System.Console.WriteLine(item);
-//         }
-//     }
-
-//     public void Show_Body()
-//     {
-//         System.Console.WriteLine("Body");
-//         System.Console.WriteLine(" " + this.Tokens_Body.Count);
-//         foreach (var item in this.Tokens_Body)
-//         {
-//             item.Show();
-//         }
-//     }
-// }
 
 // namespace Syntax_Analizer
 // {

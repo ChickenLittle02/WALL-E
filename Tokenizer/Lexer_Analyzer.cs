@@ -8,6 +8,7 @@ namespace Lexer_Analizer
         public List<Token> TokenSet { get; set; }
         public int position { get; set; }
         public char actual_char { get; set; }
+        public int ActualLine{get; set;}
         public string Text { get; set; }
         public int text_size;
         public TokenType actual_Tokentype { get; set; }
@@ -22,6 +23,7 @@ namespace Lexer_Analizer
         {
             text_size = text.Length;
             position = 0;
+            ActualLine = 1;
             if (text_size != position)
             {
 
@@ -49,7 +51,7 @@ namespace Lexer_Analizer
 
         public void Add_To_TokenSet(TokenType Type, object Value)
         {//Agrega al conjunto de tokens un nuevo token
-            Token Element = new Token(Type, Value);
+            Token Element = new Token(Type, Value,ActualLine);
             TokenSet.Add(Element);
 
         }

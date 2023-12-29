@@ -4,7 +4,7 @@ public abstract class TernaryOperator : Node
     Node LeftNode;
     Node RightNode;
 
-    public TernaryOperator(Node principal, Node leftNode, Node rightNode)
+    public TernaryOperator(Node principal, Node leftNode, Node rightNode, int actualLine):base(rightNode.Kind,actualLine)
     {
         Principal=principal;
         LeftNode = leftNode;

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\RUBEN\\HULK\\WALL-E\\WALL-E\\WALL-E.csproj",
+      "projectUniqueName": "C:\\RUBEN\\HULK\\WALL-E\\WALL-E.csproj",
       "projectName": "WALL-E",
-      "projectPath": "C:\\RUBEN\\HULK\\WALL-E\\WALL-E\\WALL-E.csproj",
+      "projectPath": "C:\\RUBEN\\HULK\\WALL-E\\WALL-E.csproj",
       "packagesPath": "C:\\Users\\ruben\\.nuget\\packages\\",
-      "outputPath": "C:\\RUBEN\\HULK\\WALL-E\\WALL-E\\obj\\",
+      "outputPath": "C:\\RUBEN\\HULK\\WALL-E\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ruben\\AppData\\Roaming\\NuGet\\NuGet.Config"

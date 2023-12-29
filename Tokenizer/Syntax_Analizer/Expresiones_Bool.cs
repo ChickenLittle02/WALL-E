@@ -3,39 +3,39 @@ namespace Syntax_Analizer
     partial class Syntax
     {
 
-        private Node AndOr()
-        {//Para que procese en caso de ser las expresiones booleanas unidas con & y |
-            Node result = Bool_Op();
-            bool Es_Bool = false;
-            if (result.Kind == NodeKind.Boolean)
-            {//El nul es para el caso que sea una variable y todavia no se ha definido su tipo, entonces se asume que es el tipo correcto
-                Es_Bool = true;
-            }
-            while (actual_token.Type == TokenType.And_Operator || actual_token.Type == TokenType.Or_Operator)
-            {
-                if (Es_Bool)
-                {
-                    if (actual_token.Type == TokenType.And_Operator)
-                    {
-                        Eat(TokenType.And_Operator,"");
-                        Node result1 = Bool_Op();
-                        if (result1.Kind != NodeKind.Boolean) Error("El operador & tiene que tener a continuacion un tipo bool");
+        // private Node AndOr(Scope actualScope)
+        // {//Para que procese en caso de ser las expresiones booleanas unidas con & y |
+        //     Node result = Bool_Op(actualScope);
+        //     bool Es_Bool = false;
+        //     if (result.Kind == NodeKind.Boolean)
+        //     {//El nul es para el caso que sea una variable y todavia no se ha definido su tipo, entonces se asume que es el tipo correcto
+        //         Es_Bool = true;
+        //     }
+        //     while (actual_token.Type == TokenType.And_Operator || actual_token.Type == TokenType.Or_Operator)
+        //     {
+        //         if (Es_Bool)
+        //         {
+        //             if (actual_token.Type == TokenType.And_Operator)
+        //             {
+        //                 Eat(TokenType.And_Operator,"");
+        //                 Node result1 = Bool_Op(actualScope);
+        //                 if (result1.Kind != NodeKind.Boolean) Error("El operador & tiene que tener a continuacion un tipo bool");
 
-                    }
-                    else if (actual_token.Type == TokenType.Or_Operator)
-                    {
-                        Eat(TokenType.Or_Operator,"");
-                        Node result1 = Bool_Op();
-                        if (result1.Kind != NodeKind.Boolean) Error("El operador | tiene que tener a continuacion un tipo bool");
-                    }
-                }
-                else
-                {
-                    Error("El operador " + actual_token.Value + " tiene que estar precedido por un tipo bool");
-                }
-            }
-            return result;
-        }
+        //             }
+        //             else if (actual_token.Type == TokenType.Or_Operator)
+        //             {
+        //                 Eat(TokenType.Or_Operator,"");
+        //                 Node result1 = Bool_Op(actualScope);
+        //                 if (result1.Kind != NodeKind.Boolean) Error("El operador | tiene que tener a continuacion un tipo bool");
+        //             }
+        //         }
+        //         else
+        //         {
+        //             Error("El operador " + actual_token.Value + " tiene que estar precedido por un tipo bool");
+        //         }
+        //     }
+        //     return result;
+        // }
 
         TokenType[] Bool_Oper =
         {
@@ -47,9 +47,9 @@ namespace Syntax_Analizer
     TokenType.Min_Equal_Than// <=
     };
 
-        private Node Bool_Op()
+        private Node Bool_Op(Scope actualScope)
         {
-            Node result = SumaResta();
+            Node result = SumaResta(actualScope);
             int Operador = ItsBoolOp(actual_token.Type);
             //ItsBoolOp comprueba que tipo de operador es en el que estoy parado, para saber si es uno bool o no
             //Comprueba que sea alguno de los operadores booleanos
@@ -65,61 +65,66 @@ namespace Syntax_Analizer
             {
                 if (Operador == 0)
                 {//operador ==
-
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.Equal_Operator,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result.Kind != result2.Kind) Error("El operador == tiene que tener el mismo tipo en ambos miembros");
-                    result = new Igual(result,result2);
+                    result = new Igual(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
 
                 }
 
                 else if (Operador == 1)
                 {//operador !=
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.Distinct,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result.Kind != result2.Kind) Error("El operador != tiene que tener el mismo tipo en ambos miembros");
 
-                    result = new Distinto(result,result2);
+                    result = new Distinto(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
 
                 }
                 else if (Operador == 2)
                 {//operador >
                     if (result.Kind != NodeKind.Number) Error("El operador > tiene que estar precedido por un tipo number");
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.More_Than,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result2.Kind != NodeKind.Number) Error("El operador > tiene que tener despues un tipo number");
-                    result = new Mayor(result,result2);
+                    result = new Mayor(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
                 }
                 else if (Operador == 3)
                 {//Operador >=
                     if (result.Kind != NodeKind.Number) Error("El operador >= tiene que estar precedido por un tipo number");
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.More_Equal_Than,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result2.Kind != NodeKind.Number) Error("El operador >= tiene que tener despues un tipo number");
-                    result = new MayorIgual(result,result2);
+                    result = new MayorIgual(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
 
                 }
                 else if (Operador == 4)
                 {//Operador <
                     if (result.Kind != NodeKind.Number) Error("El operador < tiene que estar precedido por un tipo number");
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.Min_Than,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result2.Kind != NodeKind.Number) Error("El operador < tiene que tener despues un tipo number");
-                    result = new Menor(result,result2);
+                    result = new Menor(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
                 }
                 else
                 // (Operador == 5)
                 {//Operador <=
                     if (result.Kind != NodeKind.Number) Error("El operador <= tiene que estar precedido por un tipo number");
+                    int actualLine = actual_token.actualLine;
                     Eat(TokenType.Min_Equal_Than,"");
-                    Node result2 = SumaResta();
+                    Node result2 = SumaResta(actualScope);
                     if (result2.Kind != NodeKind.Number) Error("El operador <= tiene que tener despues un tipo number");
-                    result = new Menor(result,result2);
+                    result = new Menor(result,result2,actualLine);
                     Operador = ItsBoolOp(actual_token.Type);
                 }
 

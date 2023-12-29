@@ -119,9 +119,9 @@ namespace Lexer_Analizer
                 // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
                     GetNextChar();
                     break;
-                case '\n':
+                case '\n'://Este es el operador de salto de línea
                 // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
-                    Add_To_TokenSet(TokenType.BreakLine, actual_char);
+                    ActualLine++;
                     GetNextChar();
                     break;
 

@@ -13,8 +13,8 @@ namespace Syntax_Analizer
         object actual_token_value { get; set; }
         private int position { get; set; }
         int size { get; set; }
-        int actual_line{get; set;}
         bool HayBreakLine{get; set;}
+
         // bool EstoyAnalizando { get; set; }//Esto es para cuando vaya a analizar sintacticamente el cuerpo de una funcion
         // List<Dictionary<string, TokenType>> Variables_Set { get; set; }
         // Dictionary<string, Function> New_Functions { get; set; }
@@ -28,7 +28,6 @@ namespace Syntax_Analizer
             Token_Set = token_Set;
             position = 0;
             size = Token_Set.Count();
-            actual_line = 0;
             HayBreakLine = false;
             NodesLines = new List<Node>();
             if (position != size)
@@ -49,7 +48,6 @@ namespace Syntax_Analizer
             Token_Set = token_Set;
             position = 0;
             size = Token_Set.Count();
-            actual_line = 0;
             HayBreakLine = false;
             
             NodesLines = new List<Node>();
@@ -85,20 +83,21 @@ namespace Syntax_Analizer
 
         public void Start()
         {
+            Scope scope = new Scope(null);
             while(position<size-1)
             {
-            Node EndExpression = Expression();
-            if(EndExpression.Kind!=NodeKind.BreakLine) 
-            {Eat(TokenType.Semicolon, "La expresión principal debe concluir con un punto y coma");
-            NodesLines.Add(EndExpression);
+            Node EndExpression = Expression(scope);
+            Eat(TokenType.Semicolon, "La expresión principal debe concluir con un punto y coma");
+            if(!(EndExpression is null)) NodesLines.Add(EndExpression);
+            //Si es null es porque fue un caso en el que la accion fue void
 
-            }
+            
             }
             
 
         }
 
-        public Node Expression() => Bool_Op();
+        public Node Expression(Scope actualScope) => Bool_Op(actualScope);
 
 
         private void Eat(TokenType Type, string message)
@@ -119,7 +118,7 @@ namespace Syntax_Analizer
 
             if (position >= size - 1)
             {
-                actual_token = new Token(TokenType.None, " ");
+                actual_token = new Token(TokenType.None, " ",actual_token.actualLine);
                 position++;
             }
             else

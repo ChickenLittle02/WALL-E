@@ -2,76 +2,92 @@ namespace Syntax_Analizer
 {
     partial class Syntax
     {
-        private Node LowExpression()
+        private Node LowExpression(Scope actualScope)
         {//Estas son las expresiones más bajas en la jerarquía
             Node result = null;
-            if (actual_token.Type == TokenType.BreakLine)
+            bool asignation = false;
+            if (actual_token.Type == TokenType.Number)
             {
-                actual_line++;
-                Eat(TokenType.BreakLine, "");
-                HayBreakLine = true;
-                result = LowExpression();
-                HayBreakLine = false;
-
-            }
-            else if (actual_token.Type == TokenType.Number)
-            {
-                result = new BasicExpression(actual_token);
+                result = new BasicExpression(actual_token.Value,NodeKind.Number,actual_token.actualLine);
                 Eat(TokenType.Number, "");
             }
             else if (actual_token.Type == TokenType.SUM_Operator)
             {//SOn las expresiones del tipo +Numero
+            int actualLine = actual_token.actualLine;
                 Eat(TokenType.SUM_Operator, "");
-                result = new Mas(LowExpression());
+                result = new Mas(LowExpression(actualScope),actualLine);
                 if (result.Kind != NodeKind.Number) Error("Despues del operador + se espera un tipo Number");
                 return result;
             }
             else if (actual_token.Type == TokenType.SUBSTRACTION_Operator)
             {//Son las expresiones del tipo -Numero
+            int actualLine = actual_token.actualLine;
                 Eat(TokenType.SUBSTRACTION_Operator, "");
-                result = new Menos(LowExpression());
+                result = new Menos(LowExpression(actualScope),actualLine);
                 if (result.Kind != NodeKind.Number) Error("Despues del operador - se espera un tipo Number");
 
             }
             else if (actual_token.Type == TokenType.Quotes_Text)
             {//SOn las expresiones del tipo "un texto"
-                result = new BasicExpression(actual_token);
+                result = new BasicExpression(actual_token,NodeKind.String, actual_token.actualLine);
                 Eat(TokenType.Quotes_Text, "");
             }
             else if (actual_token.Value.ToString() == "if")
             {//Son las expresiones if-else
              //Que tienen la estructura if(expresion) expresion else expresion
              //Y de la que se guarda la posicion de la expresion después del else y después de analizada toda la expresion if-else  
+             int actualLine = actual_token.actualLine;
                 Eat(TokenType.Keyword, "");//if
 
                 Eat(TokenType.LEFT_PARENTHESIS, "Despues de una expresion if se espera un parentesis izquierdo (");//Expresion condicional
-                Node decision = Expression();
-                if (decision.Kind != NodeKind.Boolean) Error("Debe ir una expresion booleana");
+                Node decision = Expression(actualScope);
+                //if (decision.Kind != NodeKind.Boolean) Error("Debe ir una expresion booleana"); Esto hay que arreglarlo
                 Eat(TokenType.RIGHT_PARENTHESIS, "Se esperaba un parentesis derecho )");
 
                 if (!(actual_token.Value.ToString() == "then")) Error("Se esperaba un then");
                 Eat(TokenType.Keyword, "");//else
-                Node result1 = Expression();//Expresion despues de la condicion
+                Node result1 = Expression(actualScope);//Expresion despues de la condicion
 
                 if (!(actual_token.Value.ToString() == "else")) Error("Se esperaba un else");
                 Eat(TokenType.Keyword, "");//else
 
 
-                Node result2 = Expression();//Expresion despues del else
+                Node result2 = Expression(actualScope);//Expresion despues del else
 
                 //Por defecto siempre se va a pasar el tipo del resultado1
-                result = new IfElse(decision, result1, result2);
+                result = new IfElse(decision, result1, result2, actualLine);
 
             }else if(actual_token.Type==TokenType.LEFT_PARENTHESIS){
                 // if(actual_token.Type!=TokenType.LEFT_PARENTHESIS) Error("No es una expresion válida");
 
                 Eat(TokenType.LEFT_PARENTHESIS,"Se esperaba un (");
-                result = Expression();
+                result = Expression(actualScope);
                 Eat(TokenType.RIGHT_PARENTHESIS,"Se esperaba un )");
+            }
+            else if(actual_token.Type == TokenType.Identifier)
+            {
+                int actualLine = actual_token.actualLine;
+                    Eat(TokenType.Identifier,"");
+                    string name = actual_token_value.ToString();
+                //Hay varios casos, o es una constante, o una declaracion de funcion o es una instancia de funcion
+                //O es una declaracion de constante
+                if(IsNext(TokenType.Asignation_Operator))
+                {//Es una creacion de una nueva variable
+                    Eat(TokenType.Asignation_Operator,"");
+                    asignation = true;
+                    Node ExpresionAsociated = Expression(actualScope);
+
+
+                    //IMPORTANTE ARREGLAR LO DE AGREGAR LA LINEA DE ESTA ASIGNACION
+                    actualScope.AddCOnstant(name,ExpresionAsociated);//Aqui tambien habria que decir en que linea se agrego la constante
+                }else{
+                    result = new Constants(name,actualScope,actualLine);
+                }
+
             }
             else if (result == null)
             {
-                if (!HayBreakLine) Error("Unexpected token");
+                if (!asignation) Error("Unexpected token");
             }
 
             return result;

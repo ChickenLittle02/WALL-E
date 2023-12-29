@@ -1,0 +1,13 @@
+using System.Linq.Expressions;
+
+public class Not : UnaryOperator
+{
+    public Not(Node expression, int actualLine) : base(expression, actualLine){}
+
+    public override void Evaluate()
+    {
+        Expression.Evaluate();
+
+        SetValue(!(bool)Expression.Value);
+    }//Revisar aplicacion de operadores booleanos
+}
