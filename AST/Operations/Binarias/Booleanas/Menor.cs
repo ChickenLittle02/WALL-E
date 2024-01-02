@@ -6,7 +6,7 @@ public class Menor : NumericasBinary
         LeftNode.Evaluate();
         RightNode.Evaluate();
         bool result = Double.Parse(LeftNode.Value.ToString())<Double.Parse(RightNode.Value.ToString());
-        SetValue(ForBoolean.BooleanValue(result));
+        SetValue(ForBoolean.ToDoubleBooleanValue(result));
     }
 }
 
@@ -18,6 +18,6 @@ public class MenorIgual : NumericasBinary
         LeftNode.Evaluate();
         RightNode.Evaluate();
         bool result = Double.Parse(LeftNode.Value.ToString())<=Double.Parse(RightNode.Value.ToString());
-        SetValue(ForBoolean.BooleanValue(result));
+        SetValue(ForBoolean.ToDoubleBooleanValue(result));
     }
 }

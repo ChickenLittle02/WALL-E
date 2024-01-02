@@ -86,7 +86,7 @@ namespace Syntax_Analizer
             Scope scope = new Scope(null);
             while(position<size-1)
             {
-            Node EndExpression = Expression(scope);
+            Node EndExpression = BuildExpression(scope);
             Eat(TokenType.Semicolon, "La expresión principal debe concluir con un punto y coma");
             if(!(EndExpression is null)) NodesLines.Add(EndExpression);
             //Si es null es porque fue un caso en el que la accion fue void
@@ -97,7 +97,7 @@ namespace Syntax_Analizer
 
         }
 
-        public Node Expression(Scope actualScope) => Bool_Op(actualScope);
+        public Node BuildExpression(Scope actualScope) => AndOr(actualScope);
 
 
         private void Eat(TokenType Type, string message)

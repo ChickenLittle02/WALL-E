@@ -41,20 +41,16 @@ namespace Syntax_Analizer
 
                 if (actual_token.Type == TokenType.MULT_Operator)
                 {
-                    if (!(result.Kind is NodeKind.Number)) Error("Antes de un simbolo de * se espera un tipo number");
                     int actualLine = actual_token.actualLine;
                     Eat(TokenType.MULT_Operator,"");
                     Node result2 = Pow(actualScope);
-                    if (!(result2.Kind is NodeKind.Number)) Error("Despues de un simbolo de * se espera un tipo number");
                     result = new Multiplicacion(result,result2,actualLine);
                 }
                 if (actual_token.Type == TokenType.DIV_Operator)
                 {
-                    if (!(result.Kind is NodeKind.Number)) Error("Antes de un simbolo de / se espera un tipo number");
                     int actualLine = actual_token.actualLine;
                     Eat(TokenType.DIV_Operator,"");
                     Node result2 = Pow(actualScope);
-                    if (!(result2.Kind is NodeKind.Number)) Error("Despues de un simbolo de / se espera un tipo number");
                     result = new Division(result,result2,actualLine);
                 }
             }
@@ -65,12 +61,10 @@ namespace Syntax_Analizer
             Node result = Rest(actualScope);
             if (actual_token.Type == TokenType.POW_Operator)
             {
-                if (!(result.Kind is NodeKind.Number)) Error("Antes de un simbolo de ^ se espera un tipo number");
                 int actualLine = actual_token.actualLine;
                 Eat(TokenType.POW_Operator,"");
 
                 Node result2 = Pow(actualScope);
-                if (!(result2.Kind is NodeKind.Number)) Error("Despues de un simbolo de ^ se espera un tipo number");
                 result = new Potencia(result,result2,actualLine);
             }
             //SI entra al if y sale sin problemas es porque el tipo de result es Numb, y si no, el tipo es cualquier otro
@@ -81,12 +75,10 @@ namespace Syntax_Analizer
             Node result = LowExpression(actualScope);
             if (actual_token.Type == TokenType.REST_Operator)
             {
-                if (!(result.Kind is NodeKind.Number)) Error("Antes de un simbolo de % se espera un tipo number");
                 int actualLine = actual_token.actualLine;
                 Eat(TokenType.REST_Operator,"");
 
                 Node result2 = LowExpression(actualScope);
-                if (!(result2.Kind is NodeKind.Number)) Error("Despues de un simbolo de % se espera un tipo number");
                 result = new Resto(result,result2,actualLine);
             }
             //SI entra al if y sale sin problemas es porque el tipo de result es Numb, y si no, el tipo es cualquier otro

@@ -6,6 +6,5 @@ public abstract class BinaryOperations:Node{
     }
     public Node LeftNode;
     public Node RightNode;
-
     
 }

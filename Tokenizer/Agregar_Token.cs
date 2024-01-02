@@ -16,6 +16,17 @@ namespace Lexer_Analizer
                     GetNextChar();
 
                     break;
+                case '.':
+                    string TresPuntos = ".";
+                    GetNextChar();
+                    for (int i = 0; i < 2; i++)
+                    {
+                        TresPuntos += actual_char;
+                        if (!(actual_char is '.')) Error("Invalid Token");
+                        GetNextChar();
+                    }
+                    Add_To_TokenSet(TokenType.TresPuntos, TresPuntos);
+                    break;
 
                 case ',':
 
@@ -82,14 +93,14 @@ namespace Lexer_Analizer
                 case '{':
 
                     //  System.Console.WriteLine("Entro a que es un punto y coma");
-                    Add_To_TokenSet(TokenType.RIGHT_CURLYBRACES, '{');
+                    Add_To_TokenSet(TokenType.LEFT_CURLYBRACES, '{');
                     GetNextChar();
                     break;
 
                 case '}':
 
                     //  System.Console.WriteLine("Entro a que es un punto y coma");
-                    Add_To_TokenSet(TokenType.LEFT_CURLYBRACES, '}');
+                    Add_To_TokenSet(TokenType.RIGHT_CURLYBRACES, '}');
                     GetNextChar();
                     break;
 
@@ -112,15 +123,15 @@ namespace Lexer_Analizer
                     Add_To_TokenSet(TokenType.And_Operator, actual_char);
                     GetNextChar();
                     break;
-                    case '\t'://Este operador se usa en windows para TAB
+                case '\t'://Este operador se usa en windows para TAB
                     GetNextChar();
                     break;
                 case '\r'://Este operador se usa en windows antes de los saltos de linea
-                // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
+                          // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
                     GetNextChar();
                     break;
                 case '\n'://Este es el operador de salto de línea
-                // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
+                          // System.Console.WriteLine("Entro a que es el operador de concatenar texto");
                     ActualLine++;
                     GetNextChar();
                     break;

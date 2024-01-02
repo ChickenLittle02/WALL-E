@@ -1,6 +1,7 @@
 public enum TokenType
 {
     Number, //todos los valores numericos
+    TresPuntos,//...
     SUM_Operator,//+
     SUBSTRACTION_Operator,//-
     REST_Operator,//%

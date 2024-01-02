@@ -19,7 +19,10 @@ Syntax_Analizer.Syntax Syntaxis = new Syntax_Analizer.Syntax(Syntax.TokenSet);
 Syntaxis.Start();
 foreach(var item in Syntaxis.NodesLines)
 {
+    item.CheckSemantic();
+}
+foreach(var item in Syntaxis.NodesLines)
+{
     item.Evaluate();
-    object result = item.Value;
-    System.Console.WriteLine(result);
+    System.Console.WriteLine(item);
 }

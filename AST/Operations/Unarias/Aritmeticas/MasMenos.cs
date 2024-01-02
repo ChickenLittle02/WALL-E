@@ -1,11 +1,18 @@
 public class Mas : UnaryOperator
 {
-    public Mas(Node expression, int actualLine) : base(expression, actualLine){}
+    public Mas(Node expression, int actualLine) : base(expression, actualLine){
+        CheckSemantic();
+    }
 
     public override void Evaluate()
     {
         Expression.Evaluate();
         SetValue(Double.Parse(Expression.Value.ToString()));
+    }
+    public override void CheckSemantic()
+    {
+        Expression.CheckSemantic();
+        if(!(Expression.Kind is NodeKind.Number)) throw new Exception("Debe ser un tipo numerico");
     }
 }
 
@@ -16,5 +23,10 @@ public class Menos : UnaryOperator
     {
         Expression.Evaluate();
         SetValue(-Double.Parse(Expression.Value.ToString()));
+    }
+    public override void CheckSemantic()
+    {
+        Expression.CheckSemantic();
+        if(!(Expression.Kind is NodeKind.Number)) throw new Exception("Debe ser un tipo numerico");
     }
 }

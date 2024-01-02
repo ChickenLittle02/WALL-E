@@ -1,13 +1,16 @@
+using System.Linq.Expressions;
+
 public class Function
 {
-    public List<string> Variables { get; private set; }
+    public List<Node> Variables { get; private set; }
     public List<Token> TokensBody { get; private set; }
     public TokenType ReturnType { get; private set; }
-    public Function(List<string> variables, List<Token> tokensbody, TokenType returnType)
+    public Function(List<Node> variables, List<Token> tokensbody, TokenType returnType)
     {
         Variables = variables;
         TokensBody = tokensbody;
         ReturnType = returnType;
+        //Aqui hay que chequear la sintaxis
     }
 
     public void CHangeBody(List<Token> tokensBody)

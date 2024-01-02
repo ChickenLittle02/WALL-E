@@ -1,13 +1,19 @@
+using System.Reflection.Metadata;
+
 public class BasicExpression:Node
 {
     public BasicExpression(object value, NodeKind kind, int actualLine):base(kind,actualLine)
-    {
-        SetValue(value);        
+    { 
+        SetValue(value);      
     }
 
     public override void Evaluate()
     {//NO hace nada porque aqui evaluate va a tener que llenar el value,
     //Y en una expresion basica el nodo se llena directamente en el constructor
+    }
+
+    public override void CheckSemantic()
+    {
     }
 }
 public class Constants:Node
@@ -18,32 +24,53 @@ public class Constants:Node
     {//EL scope es para saber si existe y buscar su valor
         name = Name;
         Scope = scope;
+        CheckSemantic();
     }
 
     public override void Evaluate()
-    {
-        Scope Search = Scope;
+    {//Habria que buscar si la constante existe en algun scope
+    Scope Search = Scope;
         bool existe = false;
         while(!(Search.father is null))
         {
-            existe = Searching(Search);
+            existe = Searching(Search,false);
+            if(existe) break;
         }
-        if(!existe) existe = Searching(Search);
+        if(!existe) existe = Searching(Search,false);
+    }
+
+
+    public override void CheckSemantic()
+    {//Habria que buscar si la constante existe en algun scope
+    Scope Search = Scope;
+        bool existe = false;
+        while(!(Search.father is null))
+        {
+            existe = Searching(Search,true);
+            if(existe) break;
+        }
+        if(!existe) existe = Searching(Search,true);
         //Porque él solo va a entrar al while si el padre es nulo, es decir si el scope no es el global
         //Pero si el scope es el global tambien habria que comprobar en él si la variable existe,
         // en caso de que no se haya encontrado ya
 
         if(!existe) throw new Exception("La variable "+name+ " no existe");
     }
-
-    private bool Searching(Scope Search)
+    private bool Searching(Scope Search,bool IsSemantic)
     {
         if(Search.constants.ContainsKey(name))
             {
-                Node Copy = Search.constants[name];
-                Copy.Evaluate();
-                SetValue(Copy.Value);
+                if(IsSemantic){
+                Search.constants[name].CheckSemantic();
+                SetKind(Search.constants[name].Kind);
+                return true;}
+                else
+                {
+                Search.constants[name].Evaluate();
+                SetValue(Search.constants[name].Value);
                 return true;
+
+                }
             }
             return false;
     }
@@ -66,3 +93,21 @@ public class Scope{
         functions.Add(name,NewFunction);
     }
 }
+
+// public class CallFunction:Node{
+//     string Name;
+//     List<Node> VariableExpression;
+//     Scope FunctionScope;
+//     Node BodyExpression;
+//     public CallFunction(string name,List<Node> variableExpression, Scope ForSerachFunction, int actualLine):base(NodeKind.Temp,actualLine)
+//     {
+//         Name = name;
+//         VariableExpression = variableExpression;
+//     }
+
+//     public override void Evaluate()
+//     {
+
+
+//     }
+// }
