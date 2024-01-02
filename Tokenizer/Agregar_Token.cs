@@ -65,9 +65,14 @@ namespace Lexer_Analizer
 
                 case '/':
 
-                    // System.Console.WriteLine("Entro a que es un operador");
+                    // System.Console.WriteLine("Entro a que es un operador")
                     Add_To_TokenSet(TokenType.DIV_Operator, actual_char);
                     GetNextChar();
+                    break;
+                case '#'://Comentarios
+
+                    GetNextChar();
+                    while (actual_char != '#') GetNextChar();
                     break;
 
                 case '*':
@@ -210,13 +215,9 @@ namespace Lexer_Analizer
                 {
 
                     if (actual_TokenValue == "let") Add_To_TokenSet(TokenType.Let_Keyword, actual_TokenValue);
-
                     else if (actual_TokenValue == "in") Add_To_TokenSet(TokenType.In_Keyword, actual_TokenValue);
-
-                    else if (actual_TokenValue == "function")
-                    {
-                        Add_To_TokenSet(TokenType.Function_Keyword, actual_TokenValue);
-                    }
+                    else if (actual_TokenValue == "function") Add_To_TokenSet(TokenType.Function_Keyword, actual_TokenValue);
+                    else if (actual_TokenValue == "undefined") Add_To_TokenSet(TokenType.Undefined, actual_TokenValue);
 
                     else Add_To_TokenSet(TokenType.Keyword, actual_TokenValue);
 

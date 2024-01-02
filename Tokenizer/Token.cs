@@ -30,7 +30,8 @@ public enum TokenType
     In_Keyword,//in
     If_Keyword,//if
     ThenKeyword,//then
-    ElseKeyword,//Else
+    ElseKeyword,//else
+    Undefined,
     Boolean,// true, false
     Comma, //,
     Semicolon, //;

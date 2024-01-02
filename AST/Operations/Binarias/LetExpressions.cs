@@ -6,7 +6,6 @@ public class LetExpression:Node
     {
         AllExpression = allExpression;
         ReturnExpression = returnExpression;
-        CheckSemantic();
     }
 
     public override void Evaluate()

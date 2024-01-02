@@ -2,7 +2,6 @@ public class AndExpression : BinaryOperations
 {
     public AndExpression(Node leftNode, Node rightNode, NodeKind kind, int actualLine) : base(leftNode, rightNode, kind, actualLine)
     {
-        CheckSemantic();
     }
 
     public override void CheckSemantic()
@@ -27,7 +26,6 @@ public class OrExpression : BinaryOperations
 {
     public OrExpression(Node leftNode, Node rightNode, NodeKind kind, int actualLine) : base(leftNode, rightNode, kind, actualLine)
     {
-        CheckSemantic();
     }
 
     public override void CheckSemantic()

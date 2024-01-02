@@ -30,6 +30,10 @@ namespace Syntax_Analizer
                 result = new Menos(LowExpression(actualScope), actualLine);
 
             }
+            else if (actual_token.Type == TokenType.Undefined)
+            {
+                result = new UndefinedSequence(actual_token.actualLine);
+            }
             else if (actual_token.Type == TokenType.Quotes_Text)
             {//SOn las expresiones del tipo "un texto"
                 result = new BasicExpression(actual_token, NodeKind.String, actual_token.actualLine);
@@ -42,11 +46,9 @@ namespace Syntax_Analizer
                 int actualLine = actual_token.actualLine;
                 Eat(TokenType.Keyword, "");//if
 
-                Eat(TokenType.LEFT_PARENTHESIS, "Despues de una expresion if se espera un parentesis izquierdo (");//Expresion condicional
                 Node decision = BuildExpression(actualScope);
                 //if (decision.Kind != NodeKind.Boolean) Error("Debe ir una expresion booleana"); Esto hay que arreglarlo
-                Eat(TokenType.RIGHT_PARENTHESIS, "Se esperaba un parentesis derecho )");
-
+                
                 if (!(actual_token.Value.ToString() == "then")) Error("Se esperaba un then");
                 Eat(TokenType.Keyword, "");//else
                 Node result1 = BuildExpression(actualScope);//Expresion despues de la condicion
@@ -95,27 +97,33 @@ namespace Syntax_Analizer
                 //O es una declaracion de constante
                 if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {//Es un proceso relacionado con funcion
-                    Scope FunctionScope = new Scope(actualScope);
                     Eat(TokenType.LEFT_PARENTHESIS, "");
-
-                    int totalConstants = 0;
-                    int totalReview = 0;
                     List<Node> RecieveExpression = new List<Node>();
 
-                    Node FunctionExpressions = BuildExpression(FunctionScope);//Expresiones recibidas
-                    if (FunctionExpressions is null) totalConstants++;
-                    else RecieveExpression.Add(FunctionExpressions);
-                    totalReview++;
-
-                    while (actual_token.Type is TokenType.Comma)
+                    if (IsNext(TokenType.RIGHT_PARENTHESIS))
                     {
-                        Eat(TokenType.Comma, "");
-                        FunctionExpressions = BuildExpression(FunctionScope);
-                        if (FunctionExpressions is null) totalConstants++;
-                        else RecieveExpression.Add(FunctionExpressions);
-                        totalReview++;
+                        Eat(TokenType.RIGHT_PARENTHESIS, "");
                     }
-                    Eat(TokenType.RIGHT_PARENTHESIS, "");
+                    else
+                    {
+
+                        // int totalConstants = 0;
+                        // int totalReview = 0;
+
+                        Node FunctionExpressions = BuildExpression(actualScope);//Expresiones recibidas
+
+                        if (FunctionExpressions is null) Error("No se pueden hacer declaraciones en los argumentos");
+                        else RecieveExpression.Add(FunctionExpressions);
+
+                        while (actual_token.Type is TokenType.Comma)
+                        {
+                            Eat(TokenType.Comma, "");
+                            FunctionExpressions = BuildExpression(actualScope);
+                            if (FunctionExpressions is null) Error("No se pueden hacer declaraciones en los argumentos");
+                            else RecieveExpression.Add(FunctionExpressions);
+                        }
+                        Eat(TokenType.RIGHT_PARENTHESIS, "");
+                    }
 
                     if (IsNext(TokenType.Asignation_Operator))
                     {//Es una declaracion de funcion
@@ -123,23 +131,33 @@ namespace Syntax_Analizer
                         //Para este punto todo lo recibido deben haber sido nombres de variables
                         //3 en este caso si alguna expresion fue agregada a la lista de expresiones, xq si es 
                         //Una declaracion de funciones no debe recibir expresiones
+                        Eat(TokenType.Asignation_Operator, "");
 
                         int inicio = position;
-                        Node BuilBody = BuildExpression(FunctionScope);
+                        // Scope FunctionScope = BuildFunctionScope(actualScope,RecieveExpression);
+                        
+                        Function function = new Function(name);
+                        actualScope.AddFunction(name,function);
+                        Node BuilBody = BuildExpression(actualScope);
                         int final = position;
                         List<Token> TokensBody = new List<Token>();
 
                         for (int i = inicio; i < final; i++) TokensBody.Add(Token_Set[i]);
-                        Function function = new Function(RecieveExpression, TokensBody, TokenType.nul);
+                        if(!IsNext(TokenType.Semicolon)) throw new Exception("Toda expresion debe terminar con punto y coma");
+                        TokensBody.Add(actual_token);
+
+                        actualScope.RemoveFUnction(name);
+                        function = new Function(name,RecieveExpression, TokensBody, TokenType.nul,actualScope);
+                        actualScope.AddFunction(name,function);
                     }
                     else
                     {
+
                         //Es una instancia de funcion
                         //En ninguno de los parametros recibidos se puede haber modificado el scope actual de la funcion
                         //No se pueden haber agregado ni variables, ni funciones nuevas
                         //SOlo debe haber sido modificada la lista de Expresiones
-                        //result = new CallFunction(name,RecieveExpression,FunctionScope,actualLine);
-
+                        result = new FunctionCall(name,RecieveExpression,actualScope,actualLine);
                     }
 
                 }
@@ -155,21 +173,26 @@ namespace Syntax_Analizer
                 }
                 else if (IsNext(TokenType.Comma))
                 {// Es una expresion del tipo a,b,c = {Secuencia};
-                    List<(string,int)> Constants = new List<(string,int)>();
-                    Constants.Add((name,actualLine));
+                    List<(string, int)> Constants = new List<(string, int)>();
+                    Constants.Add((name, actualLine));
                     while (actual_token.Type == TokenType.Comma)
                     {
                         Eat(TokenType.Comma, "");
                         name = actual_token.Value.ToString();
                         actualLine = actual_token.actualLine;
                         Eat(TokenType.Identifier, "");
-                        Constants.Add((name,actualLine));
+                        Constants.Add((name, actualLine));
                     }
-                    Eat(TokenType.Asignation_Operator,"Se esperaba un operador de asignacion");
+                    Eat(TokenType.RIGHT_PARENTHESIS,"Se esperaba un )");
+                    Eat(TokenType.Asignation_Operator, "Se esperaba un operador de asignacion");
                     Node ConstantsExpression = BuildExpression(actualScope);
-                    for(int i = 0; i<Constants.Count;i++)
-                    {   if(i==Constants.Count-1) actualScope.AddCOnstant(Constants[i].Item1,new AssignationSequences(i,true,ConstantsExpression,Constants[i].Item2));
-                        else actualScope.AddCOnstant(Constants[i].Item1,new AssignationSequences(i,false,ConstantsExpression,Constants[i].Item2));
+                    for (int i = 0; i < Constants.Count; i++)
+                    {
+                        if (Constants[i].Item1.ToString() != "_")
+                        {
+                            if (i == Constants.Count - 1) actualScope.AddCOnstant(Constants[i].Item1, new AssignationSequences(i, true, ConstantsExpression, Constants[i].Item2));
+                            else actualScope.AddCOnstant(Constants[i].Item1, new AssignationSequences(i, false, ConstantsExpression, Constants[i].Item2));
+                        }
                     }
 
                 }
@@ -189,6 +212,13 @@ namespace Syntax_Analizer
             }
 
             return result;
+
+        }
+        private Scope BuildFunctionScope(Scope functionScope, List<Node> Constants)
+        {
+            functionScope = new Scope(functionScope);
+            for(int i = 0; i<Constants.Count;i++)   functionScope.AddCOnstant(((Constants)Constants[i]).name,null);
+            return functionScope;
 
         }
         private Node BuildSequence(Scope actualScope)

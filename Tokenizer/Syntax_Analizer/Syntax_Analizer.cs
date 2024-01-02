@@ -14,6 +14,8 @@ namespace Syntax_Analizer
         private int position { get; set; }
         int size { get; set; }
         bool HayBreakLine{get; set;}
+        private Scope FirstScope{get; set;}
+        
 
         // bool EstoyAnalizando { get; set; }//Esto es para cuando vaya a analizar sintacticamente el cuerpo de una funcion
         // List<Dictionary<string, TokenType>> Variables_Set { get; set; }
@@ -27,6 +29,7 @@ namespace Syntax_Analizer
         {
             Token_Set = token_Set;
             position = 0;
+            FirstScope = null;
             size = Token_Set.Count();
             HayBreakLine = false;
             NodesLines = new List<Node>();
@@ -40,7 +43,7 @@ namespace Syntax_Analizer
             }
         }
 
-        public Syntax(List<Token> token_Set, Dictionary<string, TokenType> Variables)
+        public Syntax(List<Token> token_Set, Scope firstScope)
         {
             //Este constructor solo se utiliza en el casos en que voy a procesar la funcion, 
             //que necesito que reciba las variables,
@@ -51,6 +54,7 @@ namespace Syntax_Analizer
             HayBreakLine = false;
             
             NodesLines = new List<Node>();
+            FirstScope = firstScope;
 
             if (position != size)
             {
@@ -59,15 +63,6 @@ namespace Syntax_Analizer
             else
             {
                 actual_token = null;
-            }
-            bool AreAllNul()
-            {
-                foreach (var item in Variables)
-                {
-                    if (item.Value == TokenType.nul) return true;
-                }
-
-                return false;
             }
         }
 
@@ -83,14 +78,13 @@ namespace Syntax_Analizer
 
         public void Start()
         {
-            Scope scope = new Scope(null);
+            Scope scope = new Scope(FirstScope);
             while(position<size-1)
             {
             Node EndExpression = BuildExpression(scope);
             Eat(TokenType.Semicolon, "La expresión principal debe concluir con un punto y coma");
             if(!(EndExpression is null)) NodesLines.Add(EndExpression);
             //Si es null es porque fue un caso en el que la accion fue void
-
             
             }
             
