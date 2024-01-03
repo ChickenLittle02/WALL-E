@@ -1,5 +1,3 @@
-
-
 public abstract class Node
 {
 
@@ -31,5 +29,7 @@ public enum NodeKind
     Number,
     String,
     Sequence,
+    Punto,
+    Recta,
     Temp,
 }
