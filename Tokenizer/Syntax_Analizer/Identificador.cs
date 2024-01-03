@@ -15,7 +15,7 @@ namespace Syntax_Analizer
                 {//Es un proceso relacionado con funcion
                     Eat(TokenType.LEFT_PARENTHESIS, "");
                     List<Node> RecieveExpression = new List<Node>();
-
+                    HayBracket = true;
                     if (IsNext(TokenType.RIGHT_PARENTHESIS))
                     {
                         Eat(TokenType.RIGHT_PARENTHESIS, "");
@@ -39,6 +39,7 @@ namespace Syntax_Analizer
                             else RecieveExpression.Add(FunctionExpressions);
                         }
                         Eat(TokenType.RIGHT_PARENTHESIS, "");
+                        HayBracket = false;
                     }
 
                     if (IsNext(TokenType.Asignation_Operator))
@@ -87,7 +88,7 @@ namespace Syntax_Analizer
                     //IMPORTANTE ARREGLAR LO DE AGREGAR LA LINEA DE ESTA ASIGNACION
                     actualScope.AddCOnstant(name, ExpresionAsociated);//Aqui tambien habria que decir en que linea se agrego la constante
                 }
-                else if (IsNext(TokenType.Comma))
+                else if (IsNext(TokenType.Comma)&&!HayBracket)
                 {// Es una expresion del tipo a,b,c = {Secuencia};
                     List<(string, int)> Constants = new List<(string, int)>();
                     Constants.Add((name, actualLine));

@@ -120,6 +120,7 @@ namespace Syntax_Analizer
             int actualLine = actual_token.actualLine;
             Eat(TokenType.LEFT_CURLYBRACES, " ");
             List<Node> SequenceExpression = new List<Node>();
+            HayBracket = true;
             Node ActualExpression = BuildExpression(actualScope);
             if (ActualExpression is null) throw new Exception("La secuencia solo recibe como valores expresiones");
             SequenceExpression.Add(ActualExpression);
@@ -139,6 +140,7 @@ namespace Syntax_Analizer
                 {//{1...}
                  //{1,2,3,7,6 ...}
                     Eat(TokenType.RIGHT_CURLYBRACES, "");
+                    HayBracket = false;
                     result = new InfiniteNumericSequence(SequenceExpression, actualLine);
                 }
                 else
@@ -149,12 +151,14 @@ namespace Syntax_Analizer
                     Node LastExpression = BuildExpression(actualScope);
                     SequenceExpression.Add(LastExpression);
                     Eat(TokenType.RIGHT_CURLYBRACES, "Se esperaba un cierre de la secuencia");
+                    HayBracket = false;
                     result = new FiniteSequence(SequenceExpression, true, actualLine);//Como es finita generada lleva true
                 }
             }
             else
             {//{1,2,3,4};
                 Eat(TokenType.RIGHT_CURLYBRACES, " ");
+                HayBracket = false;
                 result = new FiniteSequence(SequenceExpression, false, actualLine);
                 //Como es finita pero no hay que generar nada pues lleva false
 

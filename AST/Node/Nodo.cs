@@ -26,6 +26,8 @@ public abstract class Node
 
 public enum NodeKind
 {
+    Color,
+    Circunferencia,
     Number,
     String,
     Sequence,

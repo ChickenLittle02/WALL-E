@@ -13,7 +13,8 @@ namespace Syntax_Analizer
         object actual_token_value { get; set; }
         private int position { get; set; }
         int size { get; set; }
-        bool HayBreakLine{get; set;}
+        private bool HayBracket{get; set;}
+
         private Scope FirstScope{get; set;}
         
 
@@ -31,8 +32,8 @@ namespace Syntax_Analizer
             position = 0;
             FirstScope = null;
             size = Token_Set.Count();
-            HayBreakLine = false;
             NodesLines = new List<Node>();
+            HayBracket = false;
             if (position != size)
             {
                 actual_token = Token_Set[position];
@@ -51,7 +52,7 @@ namespace Syntax_Analizer
             Token_Set = token_Set;
             position = 0;
             size = Token_Set.Count();
-            HayBreakLine = false;
+            HayBracket = false;
             
             NodesLines = new List<Node>();
             FirstScope = firstScope;

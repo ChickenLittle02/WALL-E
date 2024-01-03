@@ -34,5 +34,6 @@ public class Punto:Figura
 
     public override void Evaluate()
     {
+        SetValue(this);
     }
 }
