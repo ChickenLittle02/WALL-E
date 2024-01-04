@@ -36,4 +36,8 @@ public class Punto:Figura
     {
         SetValue(this);
     }
+    public override string ToString()
+    {
+        return$"{Identifier}/n({X},{Y});";
+    }
 }

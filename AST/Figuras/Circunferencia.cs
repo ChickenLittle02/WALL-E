@@ -19,16 +19,20 @@ public Circunferencia(string Identifier, int actualLine) : base(NodeKind.Circunf
 
     }
 
-    public Circunferencia(double X_Center,double Y_Center, double Radio, int actualLine) : base(NodeKind.Circunferencia, actualLine)
+    public Circunferencia(Node centro, double Radio, int actualLine) : base(NodeKind.Circunferencia, actualLine)
     {
-        Random RandomCoordinates = new Random();
-        Centro = new Punto(X_Center,Y_Center,ActualLine);
+        centro.CheckSemantic();
+        centro.Evaluate();
+        if(centro.Value is not Punto) throw new Exception("La expresion recibida debe ser un punto");
+        Centro = (Punto)centro;
         this.Radio = Radio;
     }
-    public Circunferencia(double X_Center,double Y_Center, double Radio, string Identifier, int actualLine) : base(NodeKind.Circunferencia, actualLine)
+    public Circunferencia(Node centro, double Radio, string Identifier, int actualLine) : base(NodeKind.Circunferencia, actualLine)
     {
-        Random RandomCoordinates = new Random();
-        Centro = new Punto(X_Center,Y_Center,ActualLine);
+        centro.CheckSemantic();
+        centro.Evaluate();
+        if(centro.Value is not Punto) throw new Exception("La expresion recibida debe ser un punto");
+        Centro = (Punto)centro;
         this.Radio = Radio;
         this.Identifier = Identifier;
     }

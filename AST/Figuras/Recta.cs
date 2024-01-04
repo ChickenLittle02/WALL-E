@@ -1,3 +1,5 @@
+using System.Drawing;
+
 public class Line:Figura//Recta
 {
     public Punto Punto1{get; private set;}
@@ -14,25 +16,34 @@ public class Line:Figura//Recta
         Punto2 = new Punto(RandomCoordinates.Next(100),RandomCoordinates.Next(100),actualLine);
         this.Identifier = Identifier;
     }
-    public Line(Punto punto1, Punto punto2, int actualLine) : base(NodeKind.Recta, actualLine)
+    public Line(Node punto1, Node punto2, int actualLine) : base(NodeKind.Recta, actualLine)
     {
-        Punto1 = punto1;
-        Punto2 = punto2;
+        punto1.CheckSemantic();
+        punto1.Evaluate();
+        punto2.CheckSemantic();
+        punto2.Evaluate();
+        if(punto1 is not Punto && punto2 is not Punto) throw new Exception("Ambos argumentos deben ser puntos");
+        Punto1 = (Punto)punto1;
+        Punto2 = (Punto)punto2;
     }
-    public Line(Punto punto1, Punto punto2, string Identifier, int actualLine) : base(NodeKind.Recta, actualLine)
+    public Line(Node punto1, Node punto2, string Identifier, int actualLine) : base(NodeKind.Recta, actualLine)
     {
-        Punto1 = punto1;
-        Punto2 = punto2;
+        punto1.CheckSemantic();
+        punto1.Evaluate();
+        punto2.CheckSemantic();
+        punto2.Evaluate();
+        if(punto1 is not Punto && punto2 is not Punto) throw new Exception("Ambos argumentos deben ser puntos");
+        Punto1 = (Punto)punto1;
+        Punto2 = (Punto)punto2;
         this.Identifier = Identifier;
     }
 
     public override void CheckSemantic()
     {
-        throw new NotImplementedException();
     }
 
     public override void Evaluate()
     {
-        throw new NotImplementedException();
+        SetValue(this);
     }
 }

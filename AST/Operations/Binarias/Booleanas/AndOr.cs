@@ -41,7 +41,7 @@ public class OrExpression : BinaryOperations
         bool left = ForBoolean.ConvertToBool(LeftNode.Value);
         RightNode.Evaluate();
         bool right = ForBoolean.ConvertToBool(RightNode.Value);
-        SetValue(ForBoolean.ToDoubleBooleanValue(left|right));
+        SetValue(ForBoolean.ToDoubleBooleanValue(left||right));
 
     }
 }

@@ -28,7 +28,6 @@ public enum TokenType
     Not_Operator,// /!
     Identifier, // todos los nombres
     Keyword, //Las palabras reservadas, number, string, bool, let, in, 
-    Function_Keyword, //function
     Let_Keyword,//let
     In_Keyword,//in
     If_Keyword,//if
