@@ -1,0 +1,56 @@
+.bg-gray {
+    background-color: rgba(219, 219, 219, 0.671);
+}
+
+.counter {
+    width: 95vw;
+    height: 85vh;
+    display: flex;
+}
+
+#myCanvas {
+    width: 55%;
+    height: 100%;
+    border-radius: 13px;
+    margin-right: 1rem;
+    width: 50%;
+    height: 100%;
+}
+
+.compilator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%;
+    margin-left: 4%;
+}
+
+.title-compilator {
+    display: flex;
+    color: whitesmoke;
+}
+
+.textarea-compilator {
+    width: 100%;
+    height: 65%;
+    margin: 0.5rem 0 0.5rem 0;
+    border: none;
+    border-radius: 13px;
+    outline: none;
+    overflow: hidden;
+    resize: none;
+
+}
+
+.error-compilator {
+    margin: 1rem 0 1rem 0;
+    width: 100%;
+    height: 30%;
+    border-radius: 13px;
+}
+
+.btn-compilator {
+    color: black;
+    border: none;
+    border-radius: 9px;
+}
