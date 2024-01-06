@@ -103,6 +103,9 @@ namespace Syntax_Analizer
             else if (actual_token.Type == TokenType.LEFT_CURLYBRACES)
             {//Es una secuencia lo que tengo que crear
                 result = BuildSequence(actualScope);
+            }else if(actual_token.Type == TokenType.Keyword)
+            {
+                result = WorkWithKeywords(actualScope);
             }
             else if (result == null)
             {

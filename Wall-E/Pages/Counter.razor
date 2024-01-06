@@ -8,12 +8,29 @@
 
     <div class="compilator">
         <h4 class="title-compilator">Escriba su codigo | Error</h4>
-        <textarea type="text" @bind="Codigo" class="textarea-compilator bg-gray" ></textarea>
+        <div class="editor bg-gray">
+            <textarea id="areaNumeracion" cols="1" rows="25" readonly class="enumerador"></textarea>
+            <textarea @bind="Codigo" type="text" class="textarea-compilator" id="txCodigo" onkeyup="numeracion(event);"
+                rows="25" cols="70" style="white-space: nowrap; overflow-y: scroll;"
+                onscroll='{document.getElementById("areaNumeracion").scrollTop = document.getElementById("txCodigo").scrollTop;}'></textarea>
+            <script>
+                function numeracion(e) {
+                    let eArea = document.getElementById('areaNumeracion');
+                    let eArea2 = document.getElementById('txCodigo');
+                    let numeros = eArea2.value.split("\n").length;
+                    let msj = "";
+                    for (let i = 0; i < numeros; i++) {
+                        msj += (i + 1) + "◈\n";
+                    }
+                    eArea.value = msj;
+                }
+            </script>
+        </div>
         <textarea @bind="Consola" @onclick="ClearDefaultText" class="error-compilator bg-gray" readonly></textarea>
         <div>
             <button class="btn-compilator-compilar btn-compilator bg-gray"
                 @onclick="ParsearExpression"><strong>Compilar</strong></button>
-            <button class="btn-compilator-compilar btn-compilator bg-gray"><strong>Restaurar</strong></button>
+            <button class="btn-compilator-compilar btn-compilator bg-gray" @onclick="CrearPunto"><strong>Restaurar</strong></button>
             <button class="btn-compilator-compilar btn-compilator bg-gray"><strong>Importar</strong></button>
         </div>
     </div>
@@ -24,95 +41,355 @@
 {
     @*Nuevos Metodos Agregados*@
 
-private string _codigo = "Escribe tu código aquí";
-public string Codigo
-{
-    get { return _codigo; }
-    set { _codigo = value; }
-}
+    private string _codigo = "Escribe tu código aquí";
+    public string Codigo
+    {
 
-  private void ClearDefaultText()
-  {
-    if (_codigo == "Escribe tu código aquí") {
-      Codigo = ""; // Esto eliminará la frase por defecto
+
+
+        get { return _codigo; }
+
+
+
+        set { _codigo = value; }
+
+
+
     }
-  }
 
-private string _consola = "";
-public string Consola
-{
-    get { return _consola; }
-    set { _consola = value; }
-}
+
+
+
+
+
+
+    private void ClearDefaultText()
+
+
+
+    {
+
+
+
+        if (_codigo == "Escribe tu código aquí")
+
+        {
+
+
+
+            Codigo = ""; // Esto eliminará la frase por defecto
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    private string _consola = "";
+
+
+
+    public string Consola
+
+
+
+    {
+
+
+
+        get { return _consola; }
+
+
+
+        set { _consola = value; }
+
+
+
+    }
+
+
+
     private void ParsearExpression()
-    {   
+    {
+
+
+
         _consola = "";
+
+
+
         BackEnd.Lexer_Analizer.Tokenizer Prueba = new BackEnd.Lexer_Analizer.Tokenizer(_codigo);
+
+
+
         Prueba.Start();
+
+
+
         var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Prueba.TokenSet);
+
+
+
         Syntaxis.Start();
 
-        foreach (var item in Syntaxis.NodesLines)
-        {
-            item.CheckSemantic();
-        }
+
+
+
+
+
 
         foreach (var item in Syntaxis.NodesLines)
+
+
+
         {
-            item.Evaluate();
-            string resultado = item.Value.ToString()+"\n"; 
-            _consola += resultado;
+
+
+
+            item.CheckSemantic();
+
+
+
         }
+
+
+
+
+
+
+
+        foreach (var item in Syntaxis.NodesLines)
+
+
+
+        {
+
+
+
+            item.Evaluate();
+
+
+
+            string resultado = item.Value.ToString() + "\n";
+
+
+
+            _consola += resultado;
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
+
+
+
     {
+
+
+
         if (firstRender)
+
+
+
         {
+
+
+
             await JSRuntime.InvokeVoidAsync("setupPaperJs", "myCanvas");
+
+
+
         }
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     private async Task CrearPunto()
+
+
+
     {
+
+
+
         Random Prueba = new Random();
+
+
+
         await JSRuntime.InvokeVoidAsync("crearPuntoEnCanvas", Prueba.Next(200), Prueba.Next(200));
+
+
+
     }
 
+
+
+
+
+
+
     private async Task CrearPuntoConID()
+
+
+
     {
+
+
+
         Random Prueba = new Random();
+
+
+
         await JSRuntime.InvokeVoidAsync("crearPuntoConIdentificadorEnCanvas", Prueba.Next(200), Prueba.Next(200), "punto1");
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     private async Task DibujarSegmento()
+
+
+
     {
+
+
+
         await JSRuntime.InvokeVoidAsync("dibujarSegmento", 50, 50, 200, 200, "blue", 2);
+
+
+
         // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
+
+
+
     }
+
+
+
     private async Task DibujarArco()
-   {
+
+
+
+    {
+
+
+
         System.Console.WriteLine("Me llamaron a dibujar");
+
+
+
         await JSRuntime.InvokeVoidAsync("drawArcBetweenPointsPaperJS", "myCanvas", 100, 50, 200, 250, 300, 150, "blue", 3);
+
+
+
         // Parámetros: canvasId, puntoCentroX, puntoCentroY, puntoArco1X, puntoArco1Y, puntoArco2X, puntoArco2Y, color, grosor
+
+
+
     }
+
+
+
     private async Task DibujarLinea()
+
+
+
     {
+
+
+
         await JSRuntime.InvokeVoidAsync("dibujarLineaConDosPuntos", "myCanvas", 50, 0, 20, 0, "blue", 3);
+
+
+
     }
+
+
+
     private async Task DibujarCircunferencia()
+
+
+
     {
+
+
+
         await JSRuntime.InvokeVoidAsync("dibujarCircunferencia", "myCanvas", 100, -30, 40);
+
+
+
         // Parámetros: canvasId, centroX, centroY, radio
+
+
+
     }
 
 }

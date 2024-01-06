@@ -1,3 +1,6 @@
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
+
 namespace BackEnd{
 namespace Syntax_Analizer
 {
@@ -11,8 +14,7 @@ namespace Syntax_Analizer
         int size { get; set; }
         private bool HayBracket{get; set;}
 
-        private Scope FirstScope{get; set;}
-        
+        private Scope FirstScope{get; set;}        
 
         // bool EstoyAnalizando { get; set; }//Esto es para cuando vaya a analizar sintacticamente el cuerpo de una funcion
         // List<Dictionary<string, TokenType>> Variables_Set { get; set; }
@@ -45,6 +47,7 @@ namespace Syntax_Analizer
             //Este constructor solo se utiliza en el casos en que voy a procesar la funcion, 
             //que necesito que reciba las variables,
             // las funciones que existen, y 
+            
             Token_Set = token_Set;
             position = 0;
             size = Token_Set.Count();

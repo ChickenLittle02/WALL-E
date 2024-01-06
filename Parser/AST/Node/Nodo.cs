@@ -33,6 +33,9 @@ public enum NodeKind
     String,
     Sequence,
     Punto,
-    Recta,
+    Line,
+    Ray,
+    Segment,
+    Arco,
     Temp,
 }}

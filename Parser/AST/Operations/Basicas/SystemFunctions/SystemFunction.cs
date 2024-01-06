@@ -17,4 +17,6 @@ public class SystemFunction : Node
         Expression.Evaluate();
         SetValue(Expression.Value);
     }
-}}
+}
+
+}
