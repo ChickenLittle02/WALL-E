@@ -48,7 +48,8 @@ namespace BackEnd
             Point2.CheckSemantic();
             Point2.Evaluate();
             
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", Point1.X, Point1.Y, Point2.X, Point2.Y);
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", "myCanvas", Point1.X, Point1.Y, Point2.X, Point2.Y);
+        
 
         }
 

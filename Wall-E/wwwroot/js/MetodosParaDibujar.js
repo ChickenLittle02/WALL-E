@@ -1,9 +1,20 @@
+function clearCanvas(canvasId) {
+    var canvas = document.getElementById(canvasId);
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+function resizeCanvas(canvasId) {
+    var canvas = document.getElementById(canvasId);
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+}
+
 function DibujarPuntoEnCanvas(x, y) {
     var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
 
     // Configuración del punto (usamos las coordenadas x e y)
-    var radio = 1;
+    var radio = 2;
 
     // Dibujo del punto
     ctx.beginPath();
@@ -57,31 +68,81 @@ function DibujarSegmentoEnCanvas(x1, y1, x2, y2) {
     ctx.closePath();
 }
 
-function DibujarRayoEnCanvas(x1, y1, x2, y2) {
+function DibujarRectaEnCanvas(x1, y1, x2, y2) {
     var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
+    
+        ctx.strokeStyle = 'blue'; // Color de la recta (puedes ajustar el color)
+        ctx.lineWidth = 0.5; // Grosor de la línea (puedes ajustar el grosor)
 
-    // Configuración del rayo
+    // Configuración de la recta
     ctx.beginPath();
     ctx.moveTo(x1, y1);
 
-    // Verificar si el rayo es vertical (paralelo al eje Y)
+    // Verificar si la recta es vertical (paralela al eje Y)
     if (x1 === x2) {
-        // Dibujar el rayo hasta la parte inferior o superior del canvas
-        ctx.lineTo(x1, y1 < y2 ? canvas.height : 0);
+        // Dibujar la línea hasta los extremos del canvas
+        ctx.lineTo(x1, 0);
+        ctx.lineTo(x1, canvas.height);
     } else {
-        // Calcular la intersección en el eje Y
-        var intersectionY = CalcularYIntercept(x1, y1, x2, y2, canvas.width);
-        
-        // Dibujar el rayo hasta la intersección
-        ctx.lineTo(canvas.width, intersectionY);
+        // Dibujar la línea hasta los extremos del canvas
+        ctx.lineTo(0, CalcularYIntercept(0, x1, y1, x2, y2));
+        ctx.lineTo(canvas.width, CalcularYIntercept(canvas.width, x1, y1, x2, y2));
     }
-
-    ctx.strokeStyle = 'orange'; // Color del rayo (puedes ajustar el color)
-    ctx.lineWidth = 2; // Grosor de la línea (puedes ajustar el grosor)
     ctx.stroke();
     ctx.closePath();
 }
+
+function DibujarRayoEnCanvas(canvasId, punto1X, punto1Y, punto2X, punto2Y) {
+    var canvas = document.getElementById(canvasId);
+    var ctx = canvas.getContext("2d");
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+
+    // Calcular la dirección del rayo
+    var dx = punto2X - punto1X;
+    var dy = punto2Y - punto1Y;
+
+    // Dibujar el rayo
+    ctx.beginPath();
+    ctx.moveTo(punto1X, punto1Y);
+
+    // Determinar el punto final del rayo
+    // Usar un multiplicador grande para asegurarse de que el rayo se extienda más allá del canvas
+    var multiplier = 1000;
+    var endX = punto1X + dx * multiplier;
+    var endY = punto1Y + dy * multiplier;
+
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
+
+// function DibujarRayoEnCanvas(x1, y1, x2, y2) {
+//     var canvas = document.getElementById('myCanvas');
+//     var ctx = canvas.getContext('2d');
+
+//     // Configuración del rayo
+//     ctx.beginPath();
+//     ctx.moveTo(x1, y1);
+
+//     // Verificar si el rayo es vertical (paralelo al eje Y)
+//     if (x1 === x2) {
+//         // Dibujar el rayo hasta la parte inferior o superior del canvas
+//         ctx.lineTo(x1, y1 < y2 ? canvas.height : 0);
+//     } else {
+//         // Calcular la intersección en el eje Y
+//         var intersectionY = CalcularYIntercept(x1, y1, x2, y2, canvas.width);
+        
+//         // Dibujar el rayo hasta la intersección
+//         ctx.lineTo(canvas.width, intersectionY);
+//     }
+
+//     ctx.strokeStyle = 'orange'; // Color del rayo (puedes ajustar el color)
+//     ctx.lineWidth = 2; // Grosor de la línea (puedes ajustar el grosor)
+//     ctx.stroke();
+//     ctx.closePath();
+// }
 
 function DibujarArcoEnCanvas(centroX, centroY, inicioX, inicioY, finX, finY, radio) {
     var canvas = document.getElementById('myCanvas');

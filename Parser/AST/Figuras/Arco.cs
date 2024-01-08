@@ -79,7 +79,8 @@ namespace BackEnd
             Punto ValueC = (Punto)Centro.Value; 
 
             
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas",ValueP1.X,ValueP1.Y, ValueP2.X,ValueP2.Y,ValueC.X,ValueC.Y ,radio);
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas",ValueC.X,ValueC.Y,ValueP1.X,ValueP1.Y, ValueP2.X,ValueP2.Y,radio);
+
         }
     }
 }

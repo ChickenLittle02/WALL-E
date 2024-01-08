@@ -55,7 +55,7 @@
     {
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("setupPaperJs", "myCanvas");
+            await JSRuntime.InvokeVoidAsync("resizeCanvas", "myCanvas");
         }
     }
      private  void ParsearExpression()
@@ -64,6 +64,7 @@
         
         @* BackEnd.Bib1Interop.InyectandoRuntime(JSRuntime);
         BackEnd.Drawing.DibujarEnCanvas(); *@
+        JSRuntime.InvokeVoidAsync("clearCanvas","myCanvas");
         ForDraw.SetRuntime(JSRuntime,_codigo);
         _consola  = ForDraw.Console;
     }

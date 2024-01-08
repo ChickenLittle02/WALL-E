@@ -93,6 +93,7 @@ namespace BackEnd
                         PointExpression.Add(Expression);
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS,"");
+                    HayBracket = false;
                     if (PointExpression.Count != 2) throw new Exception("La funcion punto recibe solo dos parametros");
                     result = new PointFunction(PointExpression[0], PointExpression[1], actualLine);
                 }
@@ -120,6 +121,7 @@ namespace BackEnd
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
                     Eat(TokenType.LEFT_PARENTHESIS,"");
+                    HayBracket = true;
                     List<Node> PuntosParaCrearLinea = new List<Node>();
                     Node ExpresionesParaLineas = BuildExpression(actualScope);
                     PuntosParaCrearLinea.Add(ExpresionesParaLineas);
@@ -130,6 +132,7 @@ namespace BackEnd
                         PuntosParaCrearLinea.Add(ExpresionesParaLineas);
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS,"");
+                    HayBracket = false;
                     if (PuntosParaCrearLinea.Count != 2) throw new Exception("La funcion line recibe dos puntos de parametros");
                     if (tipo is "line") result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else if (tipo is "segment") result = new SystemFunction(new Segment(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
@@ -167,6 +170,7 @@ namespace BackEnd
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
                     Eat(TokenType.LEFT_PARENTHESIS,"");
+                    HayBracket = true;
                     List<Node> PuntosParaCrearArco = new List<Node>();
                     Node ExpresionesParaArcos = BuildExpression(actualScope);
                     PuntosParaCrearArco.Add(ExpresionesParaArcos);
@@ -177,6 +181,7 @@ namespace BackEnd
                         PuntosParaCrearArco.Add(ExpresionesParaArcos);
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS,"");
+                    HayBracket = false;
                     if (PuntosParaCrearArco.Count != 4) throw new Exception("La funcion arco recibe 4 valores de parametros");
                     result = new Arco(PuntosParaCrearArco[0],PuntosParaCrearArco[1],PuntosParaCrearArco[2],PuntosParaCrearArco[3],actualLine);
                     
@@ -209,6 +214,7 @@ namespace BackEnd
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
                     Eat(TokenType.LEFT_PARENTHESIS,"");
+                    HayBracket = true;
                     List<Node> PuntosParaCrearCircle = new List<Node>();
                     Node ValuePuntosParaCrearCircles = BuildExpression(actualScope);
                     PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
@@ -219,6 +225,7 @@ namespace BackEnd
                         PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS,"");
+                    HayBracket = false;
                     if (PuntosParaCrearCircle.Count != 2) throw new Exception("La funcion circunferencia recibe 3 valores de parametros");
                     result = new Circunferencia(PuntosParaCrearCircle[0],PuntosParaCrearCircle[1],actualLine);
                 }

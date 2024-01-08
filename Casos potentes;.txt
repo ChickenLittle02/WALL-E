@@ -1,0 +1,64 @@
+point p;
+
+p = point(100,100);
+q = point(400,300);
+draw ray(p,q);
+
+draw ray(q,p);
+
+
+//COmprobar los complementos para cada figura
+//pincha
+p = point(300,400);
+q = point(400,300);
+
+//Pincha
+p = point(100,100);
+q = point(400,300);
+draw line(p,q);
+draw line(q,p);
+
+//pincha
+p = point(100,100);
+q = point(400,300);
+draw segment(p,q);
+draw segment(q,p);
+
+//No pincha
+p = point(100,100);
+q = point(400,300);
+r = point(400,300);
+draw arc(p,q,r,5);
+draw arc(p,r,q,5);
+
+//Caso para comprobar
+p = point(100,100);
+q = point(400,300);
+r = q
+draw segment(p,r);
+
+//No pincha
+p = point(100,100);
+q = point(400,300);
+r = point(400,300);
+draw arc(p,q,r,5);
+
+//Pincha
+p = point(100,100);
+q = point(200,100);
+r = point(400,300);
+draw p;
+draw q;
+draw r;
+draw ray(p,r);
+draw ray(p,q);
+draw arc(p,r,q,5);
+
+
+//Pincha
+p = point(100,100);
+q = point(200,100);
+r = point(400,300);
+segment(p,q);
+segment(q,r);
+segment(r,p);
