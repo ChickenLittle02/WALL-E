@@ -1,3 +1,5 @@
+using System.Xml.XPath;
+
 namespace BackEnd
 {
 
@@ -5,20 +7,71 @@ namespace BackEnd
     {
         public partial class Syntax
         {
-            public Node WorkWithKeywords(Scope actualScope)
+            public (Node,bool) WorkWithKeywords(Scope actualScope)
             {
                 string name = actual_token.Value.ToString();
+                int actualLine = actual_token.actualLine;
                 Node result = null;
-                if (name == "Print")    result = Print(actualScope);
-                else if (name == "point")   result = InstanciaPunto(actualScope);
-                else if(name =="line") result = InstanciaLinea(actualScope);
-                else if (name == "circle")  result = InstanciaCircunferencia(actualScope);
-                return result;
+                bool IsDeclaration = false;
+                if (name == "Print") result = Print(actualScope);
+                else if (name == "draw")
+                {
+                    Eat(TokenType.Keyword,"");
+                    result = new Draw(BuildExpression(actualScope),actualLine);
+                }
+                else if (name == "point")
+                {
+                    (Node, bool) Value = InstanciaPunto(actualScope);
+                    result = Value.Item1;
+                    IsDeclaration = Value.Item2;
+                }
+                else if (name == "line" || name == "ray" || name == "segment")
+                {
+                    (Node, bool) Value = InstanciaLinea(name, actualScope);
+                    result = Value.Item1;
+                    IsDeclaration = Value.Item2;
+                }else if(name == "intersect"){
+                    result = Intersect(actualScope);
+                }
+                else if (name == "arc"){
+                    (Node, bool) Value = InstanciaArco(actualScope);
+                    result = Value.Item1;
+                    IsDeclaration = Value.Item2;
+                }
+                
+                else if (name == "circle"){
+                    (Node, bool) Value = InstanciaCircunferencia(actualScope);
+                    result = Value.Item1;
+                    IsDeclaration = Value.Item2;
+                }
+
+                return (result,IsDeclaration);
 
             }
-            public Node InstanciaPunto(Scope actualScope)
+            public Node Intersect(Scope actualScope)
+            {
+                int actualLine = actual_token.actualLine;
+                Eat(TokenType.Keyword,"");
+                
+                    //Significa que es la funcion intersect(1,2);
+                    HayBracket = true;
+                    List<Node> PointExpression = new List<Node>();
+                    Node Expression = BuildExpression(actualScope);
+                    PointExpression.Add(Expression);
+                    while (actual_token.Type is TokenType.Comma)
+                    {
+                        Eat(TokenType.Comma, "");
+                        Expression = BuildExpression(actualScope);
+                        PointExpression.Add(Expression);
+                    }
+                    if (PointExpression.Count != 2) throw new Exception("La funcion intersect recibe solo dos parametros");
+                    Node result = new IntersectionFunction(PointExpression[0], PointExpression[1], actualLine);
+                    return result;
+            }
+            public (Node, bool) InstanciaPunto(Scope actualScope)
             {
                 Node result = null;
+                bool IsDeclaration = false;
                 int actualLine = actual_token.actualLine;
                 Eat(TokenType.Keyword, "");
                 if (IsNext(TokenType.SequenceKeyword))
@@ -47,14 +100,16 @@ namespace BackEnd
                     string name = actual_token.Value.ToString();
                     Eat(TokenType.Identifier, "Se esperaba un identificador");
                     actualScope.AddCOnstant(name, new Punto(actualLine));
+                    IsDeclaration = true;
                 }
-                return result;
+                return (result, IsDeclaration);
 
             }
-            public Node InstanciaLinea(Scope actualScope)
+            public (Node, bool) InstanciaLinea(string tipo, Scope actualScope)
             {
                 Node result = null;
-                    int actualLine = actual_token.actualLine;
+                int actualLine = actual_token.actualLine;
+                bool IsDeclaration = false;
                 Eat(TokenType.Keyword, "");
                 if (IsNext(TokenType.SequenceKeyword))
                 {//Es point sequence prueba aqui prueba es un tipo secuencia de puntos
@@ -71,37 +126,101 @@ namespace BackEnd
                         PuntosParaCrearLinea.Add(ExpresionesParaLineas);
                     }
                     if (PuntosParaCrearLinea.Count != 2) throw new Exception("La funcion line recibe dos puntos de parametros");
-                    result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
-
-                }else{
-                    //TIene que ser un identificador line p1;
-                    
-                    string name = actual_token.Value.ToString();
-                    actualLine = actual_token.actualLine;
-                    Eat(TokenType.Identifier,"Se esperaba un identificador despues de la declaracion de line");
-                    actualScope.AddCOnstant(name, new Line(actualLine));
-
-                }
-                return result;
-
-            }
-            public Node InstanciaCircunferencia(Scope actualScope)
-            {
-                Node result = null;
-                Eat(TokenType.Keyword, "");
-                if (IsNext(TokenType.SequenceKeyword))
-                {//Es point sequence prueba aqui prueba es un tipo secuencia de puntos
+                    if (tipo is "line") result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
+                    else if (tipo is "segment") result = new SystemFunction(new Segment(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
+                    else result = new SystemFunction(new Ray(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
+                    //tipo is "ray"
 
                 }
                 else
                 {
-                    //TIene que ser un identificador point p1;
+                    //TIene que ser un identificador line p1;
                     string name = actual_token.Value.ToString();
-                    int actualLine = actual_token.actualLine;
-                    Eat(TokenType.Identifier, "Se esperaba un identificador");
-                    actualScope.AddCOnstant(name, new Punto(actualLine));
+                    actualLine = actual_token.actualLine;
+                    Eat(TokenType.Identifier, "Se esperaba un identificador despues de la declaracion de line");
+                    if (tipo is "line") actualScope.AddCOnstant(name, new Line(actualLine));
+                    else if (tipo is "segment") actualScope.AddCOnstant(name, new Segment(actualLine));
+                    else //if(tipo is "line") 
+                        actualScope.AddCOnstant(name, new Ray(actualLine));
+                    IsDeclaration = true;
+
                 }
-                return result;
+                return (result, IsDeclaration);
+
+            }
+            public (Node,bool) InstanciaArco(Scope actualScope)
+            {
+                
+                Node result = null;
+                int actualLine = actual_token.actualLine;
+                bool IsDeclaration = false;
+                Eat(TokenType.Keyword, "");
+                if (IsNext(TokenType.SequenceKeyword))
+                {//Es point sequence prueba aqui prueba es un tipo secuencia de Arcos
+
+                }
+                else if (IsNext(TokenType.LEFT_PARENTHESIS))
+                {
+                    List<Node> PuntosParaCrearArco = new List<Node>();
+                    Node ExpresionesParaArcos = BuildExpression(actualScope);
+                    PuntosParaCrearArco.Add(ExpresionesParaArcos);
+                    while (actual_token.Type == TokenType.Comma)
+                    {
+                        ExpresionesParaArcos = BuildExpression(actualScope);
+                        PuntosParaCrearArco.Add(ExpresionesParaArcos);
+                    }
+                    if (PuntosParaCrearArco.Count != 4) throw new Exception("La funcion arco recibe 4 valores de parametros");
+                    result = new Arco(PuntosParaCrearArco[0],PuntosParaCrearArco[1],PuntosParaCrearArco[2],PuntosParaCrearArco[3],actualLine);
+                    
+
+                }
+                else
+                {
+                    //TIene que ser un identificador arc p1;
+                    string name = actual_token.Value.ToString();
+                    actualLine = actual_token.actualLine;
+                    Eat(TokenType.Identifier, "Se esperaba un identificador despues de la declaracion de arco");
+                    actualScope.AddCOnstant(name, new Arco(actualLine));
+                    IsDeclaration = true;
+
+                }
+                return (result, IsDeclaration);
+
+            }
+            public (Node,bool) InstanciaCircunferencia(Scope actualScope)
+            {
+                
+                Node result = null;
+                int actualLine = actual_token.actualLine;
+                bool IsDeclaration = false;
+                Eat(TokenType.Keyword, "");
+                if (IsNext(TokenType.SequenceKeyword))
+                {//Es point sequence prueba aqui prueba es un tipo secuencia de Arcos
+
+                }
+                else if (IsNext(TokenType.LEFT_PARENTHESIS))
+                {
+                    List<Node> PuntosParaCrearCircle = new List<Node>();
+                    Node ValuePuntosParaCrearCircles = BuildExpression(actualScope);
+                    PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
+                    while (actual_token.Type == TokenType.Comma)
+                    {
+                        ValuePuntosParaCrearCircles = BuildExpression(actualScope);
+                        PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
+                    }
+                    if (PuntosParaCrearCircle.Count != 2) throw new Exception("La funcion circunferencia recibe 3 valores de parametros");
+                    result = new Circunferencia(PuntosParaCrearCircle[0],PuntosParaCrearCircle[1],actualLine);
+                }
+                else
+                {
+                    //TIene que ser un identificador circle p1;
+                    string name = actual_token.Value.ToString();
+                    actualLine = actual_token.actualLine;
+                    Eat(TokenType.Identifier, "Se esperaba un identificador despues de la declaracion de circle");
+                    actualScope.AddCOnstant(name, new Circunferencia(actualLine));
+                    IsDeclaration = true;
+                }
+                return (result, IsDeclaration);
 
             }
             public Node Print(Scope actualScope)

@@ -1,3 +1,5 @@
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 namespace BackEnd
 {
     public class Segment : FigurasConDosPuntos
@@ -9,16 +11,21 @@ namespace BackEnd
         {
         }
 
-        public override void Draw()
+        public override async void Draw()
         {
-            throw new NotImplementedException();
+            Punto Point1 = (Punto)Punto1.Value;
+            Punto Point2 = (Punto)Punto2.Value;
+            Point1.CheckSemantic();
+            Point1.Evaluate();
+            
+            Point2.CheckSemantic();
+            Point2.Evaluate();
+
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvas", Point1.X, Point1.Y,Point2.X,Point2.Y);
+        // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
         }
 
-        public override void Evaluate()
-        {
-            SetValue(this);
-            //Y además coge y da la orden de dibujar un segmento
-        }
+
     }
 
     public class Ray : FigurasConDosPuntos //Semirrecta
@@ -31,19 +38,24 @@ namespace BackEnd
         {
         }
 
-        public override void Draw()
+        public override async void Draw()
         {
-            throw new NotImplementedException();
+            Punto Point1 = (Punto)Punto1.Value;
+            Punto Point2 = (Punto)Punto2.Value;
+            Point1.CheckSemantic();
+            Point1.Evaluate();
+            
+            Point2.CheckSemantic();
+            Point2.Evaluate();
+            
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", Point1.X, Point1.Y, Point2.X, Point2.Y);
+
         }
 
-        public override void Evaluate()
-        {
-            SetValue(this);
-            //Y además coge y da la orden de dibujar una semirrecta
-        }
+
     }
 
-    public class Line : FigurasConDosPuntos //Semirrecta
+    public class Line : FigurasConDosPuntos //Recta
     {
         public Line(int actualLine) : base(NodeKind.Line, actualLine)
         {
@@ -53,15 +65,19 @@ namespace BackEnd
         {
         }
 
-        public override void Draw()
+        public override async void Draw()
         {
-            throw new NotImplementedException();
+            Punto Point1 = (Punto)Punto1.Value;
+            Punto Point2 = (Punto)Punto2.Value;
+            Point1.CheckSemantic();
+            Point1.Evaluate();
+            
+            Point2.CheckSemantic();
+            Point2.Evaluate();
+
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvas", Point1.X, Point1.Y,Point2.X,Point2.Y);
+        // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
         }
 
-        public override void Evaluate()
-        {
-            SetValue(this);
-            //Y además coge y da la orden de dibujar una semirrecta
-        }
     }
 }

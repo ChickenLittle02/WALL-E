@@ -1,3 +1,5 @@
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 namespace BackEnd
 {
     public class Circunferencia : Figura
@@ -60,13 +62,16 @@ namespace BackEnd
                 Radio.Evaluate();
                 double value;
                 if (!Double.TryParse(Radio.Value.ToString(), out value)) throw new Exception("Debe ser de tipo numerico");
+                radio = value;
             }
             SetValue(this);
         }
 
-        public override void Draw()
+        public override async void Draw()
         {
-            throw new NotImplementedException();
+            Punto value;
+            if (!Punto.TryParse(Centro.Value, out value)) throw new Exception("Debe ser de tipo punto");
+            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", value.X, value.Y, radio);
         }
     }
 }

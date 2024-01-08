@@ -15,7 +15,8 @@ namespace Lexer_Analizer
 
         public string[] Keywords = { "let", "in", "if", "then", "else", 
         "point","line","segment","ray","circle","sequence","color",
-        "restore","import","draw","count","randoms","points","samples","measure","undefined"};
+        "restore","import","draw","count","randoms","points","samples",
+        "measure","undefined","arc"};
         public string actual_TokenValue { get; set; }
         public Token actual_Token { get; set; }
 

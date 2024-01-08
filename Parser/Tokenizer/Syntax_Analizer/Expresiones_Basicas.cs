@@ -105,7 +105,9 @@ namespace Syntax_Analizer
                 result = BuildSequence(actualScope);
             }else if(actual_token.Type == TokenType.Keyword)
             {
-                result = WorkWithKeywords(actualScope);
+                (Node,bool) Id = WorkWithKeywords(actualScope);
+                result = Id.Item1;
+                asignation = Id.Item2;
             }
             else if (result == null)
             {
