@@ -12,14 +12,14 @@ namespace BackEnd
         public Punto(int actualLine) : base(NodeKind.Punto, actualLine)
         {
             Random RandomCoordinate = new Random();
-            X = RandomCoordinate.Next(100);
-            Y = RandomCoordinate.Next(100);//Este numero seria el tope, el que se escoge es el limite del canvas
+            X = RandomCoordinate.Next(400);
+            Y = RandomCoordinate.Next(400);//Este numero seria el tope, el que se escoge es el limite del canvas
         }
         public Punto(string Identifier, int actualLine) : base(Identifier, NodeKind.Punto, actualLine)
         {
             Random RandomCoordinate = new Random();
-            X = RandomCoordinate.Next(100);
-            Y = RandomCoordinate.Next(100);//Este numero seria el tope, el que se escoge es el limite del canvas
+            X = RandomCoordinate.Next(400);
+            Y = RandomCoordinate.Next(400);//Este numero seria el tope, el que se escoge es el limite del canvas
         }
 
         public Punto(Node X, Node Y, int actualLine) : base(NodeKind.Punto, actualLine)
@@ -73,12 +73,14 @@ namespace BackEnd
                 X_Value.Evaluate();
                 double value;
                 if (!Double.TryParse(X_Value.Value.ToString(), out value)) throw new Exception("Debe ser de tipo numerico");
+                X = value;
             }
             if (Y_Value is not null)
             {
                 Y_Value.Evaluate();
                 double value;
                 if (!Double.TryParse(Y_Value.Value.ToString(), out value)) throw new Exception("Debe ser de tipo numerico");
+                Y = value;
             }
             SetValue(this);
         }

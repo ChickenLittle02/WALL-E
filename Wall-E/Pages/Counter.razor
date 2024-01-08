@@ -10,27 +10,16 @@
         <h4 class="title-compilator">Escriba su codigo | Error</h4>
         <div class="editor bg-gray">
             <textarea id="areaNumeracion" cols="1" rows="25" readonly class="enumerador"></textarea>
-            <textarea @bind="Codigo" type="text" class="textarea-compilator" id="txCodigo" onkeyup="numeracion(event);"
-                rows="25" cols="70" style="white-space: nowrap; overflow-y: scroll;"
-                onscroll='{document.getElementById("areaNumeracion").scrollTop = document.getElementById("txCodigo").scrollTop;}'></textarea>
-            <script>
-                function numeracion(e) {
-                    let eArea = document.getElementById('areaNumeracion');
-                    let eArea2 = document.getElementById('txCodigo');
-                    let numeros = eArea2.value.split("\n").length;
-                    let msj = "";
-                    for (let i = 0; i < numeros; i++) {
-                        msj += (i + 1) + "◈\n";
-                    }
-                    eArea.value = msj;
-                }
-            </script>
+            <textarea @bind="Codigo" type="text" class="textarea-compilator" id="txCodigo"
+            @onkeyup="@(async (e) => await Numeracion(e))" rows="25" cols="70"
+                style="white-space: nowrap; overflow-y: scroll;"
+            @onscroll='@(async () => await ScrollSync())'></textarea>
         </div>
         <textarea @bind="Consola" @onclick="ClearDefaultText" class="error-compilator bg-gray" readonly></textarea>
         <div>
             <button class="btn-compilator-compilar btn-compilator bg-gray"
                 @onclick="ParsearExpression"><strong>Compilar</strong></button>
-            <button class="btn-compilator-compilar btn-compilator bg-gray" @onclick="DibujarArco"><strong>Restaurar</strong></button>
+            <button class="btn-compilator-compilar btn-compilator bg-gray"><strong>Restaurar</strong></button>
             <button class="btn-compilator-compilar btn-compilator bg-gray"><strong>Importar</strong></button>
         </div>
     </div>
@@ -47,6 +36,7 @@
         get { return _codigo; }
         set { _codigo = value; }
     }
+    private string _consola = "";
 
     private void ClearDefaultText()
     {
@@ -56,11 +46,17 @@
             Codigo = ""; // Esto eliminará la frase por defecto
         }
     }
-    private string _consola = "";
     public string Consola
     {
         get { return _consola; }
         set { _consola = value; }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("setupPaperJs", "myCanvas");
+        }
     }
      private  void ParsearExpression()
     {
@@ -71,25 +67,23 @@
         ForDraw.SetRuntime(JSRuntime,_codigo);
         _consola  = ForDraw.Console;
     }
-
-
-
-    #region Dibujar conceptos geometricos
-    private async Task DibujarArco()
+    private async Task Numeracion(KeyboardEventArgs args)
     {
-        Random Prueba = new Random();
-        // Llamada a la función JavaScript para dibujar un arco en el canvas
-        await JSRuntime.InvokeVoidAsync("DibujarArcoEnCanvas",30,30,40, 30,30,40,Prueba.Next(300));
+        // Método de numeración aquí
+        await JSRuntime.InvokeVoidAsync("Numeracion");
+
     }
 
-    private async Task DibujarCircunferencia()
+    private async Task ScrollSync()
     {
-        Random Prueba = new Random();
-        // Llamada a la función JavaScript para dibujar una circunferencia en el canvas
-        await JSRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", Prueba.Next(500),Prueba.Next(500),
-        Prueba.Next(300));
+        await JSRuntime.InvokeVoidAsync("scrollSync", "areaNumeracion", "txCodigo");
     }
-    #endregion
 
+     private async Task Dibujar()
+    {   
+        // Método de numeración aquí
+        await JSRuntime.InvokeVoidAsync("DibujarPuntoEnCanvas", 20, 20);
+
+    }
 
 }

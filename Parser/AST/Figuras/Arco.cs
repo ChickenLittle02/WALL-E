@@ -45,7 +45,7 @@ namespace BackEnd
             if (Radio is not null)
             {
                 Radio.CheckSemantic();
-                if (Centro.Kind is not NodeKind.Number) throw new Exception("El ultimo argumento debe ser measure");//Hay que cambiar esto
+                if (Radio.Kind is not NodeKind.Number) throw new Exception("El ultimo argumento debe ser measure");//Hay que cambiar esto
             }
 
         }

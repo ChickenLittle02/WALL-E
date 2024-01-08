@@ -11,14 +11,14 @@ namespace BackEnd
         {
             Random RandomCoordinates = new Random();
             Centro = new Punto(actualLine);
-            radio = RandomCoordinates.Next(100);
+            radio = RandomCoordinates.Next(30);
 
         }
         public Circunferencia(string Identifier, int actualLine) : base(Identifier, NodeKind.Circunferencia, actualLine)
         {
             Random RandomCoordinates = new Random();
             Centro = new Punto(actualLine);
-            radio = RandomCoordinates.Next(100);
+            radio = RandomCoordinates.Next(30);
 
         }
 

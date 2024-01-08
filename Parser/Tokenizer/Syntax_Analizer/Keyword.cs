@@ -81,6 +81,7 @@ namespace BackEnd
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
                     //Significa que es la funcion punto point(1,2);
+                    Eat(TokenType.LEFT_PARENTHESIS,"");
                     HayBracket = true;
                     List<Node> PointExpression = new List<Node>();
                     Node Expression = BuildExpression(actualScope);
@@ -91,6 +92,7 @@ namespace BackEnd
                         Expression = BuildExpression(actualScope);
                         PointExpression.Add(Expression);
                     }
+                    Eat(TokenType.RIGHT_PARENTHESIS,"");
                     if (PointExpression.Count != 2) throw new Exception("La funcion punto recibe solo dos parametros");
                     result = new PointFunction(PointExpression[0], PointExpression[1], actualLine);
                 }
@@ -117,14 +119,17 @@ namespace BackEnd
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
+                    Eat(TokenType.LEFT_PARENTHESIS,"");
                     List<Node> PuntosParaCrearLinea = new List<Node>();
                     Node ExpresionesParaLineas = BuildExpression(actualScope);
                     PuntosParaCrearLinea.Add(ExpresionesParaLineas);
                     while (actual_token.Type == TokenType.Comma)
                     {
+                        Eat(TokenType.Comma,"");
                         ExpresionesParaLineas = BuildExpression(actualScope);
                         PuntosParaCrearLinea.Add(ExpresionesParaLineas);
                     }
+                    Eat(TokenType.RIGHT_PARENTHESIS,"");
                     if (PuntosParaCrearLinea.Count != 2) throw new Exception("La funcion line recibe dos puntos de parametros");
                     if (tipo is "line") result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else if (tipo is "segment") result = new SystemFunction(new Segment(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
@@ -161,14 +166,17 @@ namespace BackEnd
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
+                    Eat(TokenType.LEFT_PARENTHESIS,"");
                     List<Node> PuntosParaCrearArco = new List<Node>();
                     Node ExpresionesParaArcos = BuildExpression(actualScope);
                     PuntosParaCrearArco.Add(ExpresionesParaArcos);
                     while (actual_token.Type == TokenType.Comma)
                     {
+                        Eat(TokenType.Comma,"");
                         ExpresionesParaArcos = BuildExpression(actualScope);
                         PuntosParaCrearArco.Add(ExpresionesParaArcos);
                     }
+                    Eat(TokenType.RIGHT_PARENTHESIS,"");
                     if (PuntosParaCrearArco.Count != 4) throw new Exception("La funcion arco recibe 4 valores de parametros");
                     result = new Arco(PuntosParaCrearArco[0],PuntosParaCrearArco[1],PuntosParaCrearArco[2],PuntosParaCrearArco[3],actualLine);
                     
@@ -200,14 +208,17 @@ namespace BackEnd
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
+                    Eat(TokenType.LEFT_PARENTHESIS,"");
                     List<Node> PuntosParaCrearCircle = new List<Node>();
                     Node ValuePuntosParaCrearCircles = BuildExpression(actualScope);
                     PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
                     while (actual_token.Type == TokenType.Comma)
                     {
+                        Eat(TokenType.Comma,"");
                         ValuePuntosParaCrearCircles = BuildExpression(actualScope);
                         PuntosParaCrearCircle.Add(ValuePuntosParaCrearCircles);
                     }
+                    Eat(TokenType.RIGHT_PARENTHESIS,"");
                     if (PuntosParaCrearCircle.Count != 2) throw new Exception("La funcion circunferencia recibe 3 valores de parametros");
                     result = new Circunferencia(PuntosParaCrearCircle[0],PuntosParaCrearCircle[1],actualLine);
                 }

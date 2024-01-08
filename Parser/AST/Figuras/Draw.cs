@@ -6,8 +6,15 @@ namespace BackEnd
     public class ForDraw
     {
         public static IJSRuntime _jsRuntime ;
+        public static int canvasWidth;
+        public static int canvasHeight;
         public static string Code { get; private set; }
         public static string Console { get; private set; }
+        public static void SetCanvasProperties(int width, int height)
+        {
+            canvasWidth = width;
+            canvasHeight = height;
+        }
         public static void SetRuntime(IJSRuntime jsRuntime, string code)
         {
             _jsRuntime = jsRuntime;

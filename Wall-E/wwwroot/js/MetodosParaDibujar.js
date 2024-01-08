@@ -3,13 +3,13 @@ function DibujarPuntoEnCanvas(x, y) {
     var ctx = canvas.getContext('2d');
 
     // Configuración del punto (usamos las coordenadas x e y)
-    var radio = 5;
+    var radio = 1;
 
     // Dibujo del punto
     ctx.beginPath();
     ctx.arc(x, y, radio, 0, 2 * Math.PI);
     ctx.fillStyle = 'red'; // Color del punto (puedes ajustar el color)
-    ctx.fill();
+    ctx.fill();  
     ctx.closePath();
 }
 
