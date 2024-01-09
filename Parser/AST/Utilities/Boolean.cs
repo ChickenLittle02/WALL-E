@@ -24,4 +24,16 @@ public static class ForBoolean{
 
 }
 
+public static class ForFigura
+{
+    public static bool IsFigura(NodeKind Kind)
+    {
+            if ((Kind is NodeKind.Arco || Kind is NodeKind.Circunferencia)
+            || (Kind is NodeKind.Line || Kind is NodeKind.Ray)
+            || (Kind is NodeKind.Segment || Kind is NodeKind.Punto)) return true;
+            else return false;
+        
+    }
+}
+
 }

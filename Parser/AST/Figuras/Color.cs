@@ -37,9 +37,25 @@ public class Color : Node
         }
     }
 
-    public override void Evaluate()
+    public override async void Evaluate()
     {
-        //Lo que hace es cambiar el pincel del canvas a ese codigo
-        //Y agregar el color a la lista
+        ForDraw.Colors.Push(IsColor);
     }
-}}
+}
+public class Restore : Node
+{
+    public Restore(int actualLine) : base(NodeKind.Color, actualLine)
+    {
+    }
+
+    public override void CheckSemantic()
+    {
+    }
+
+    public override async void Evaluate()
+    {
+        if(ForDraw.Colors.Count != 0) ForDraw.Colors.Pop();
+        
+    }
+}
+}

@@ -219,7 +219,6 @@ namespace Lexer_Analizer
                     else if (actual_TokenValue == "in") Add_To_TokenSet(TokenType.In_Keyword, actual_TokenValue);
                     else if (actual_TokenValue == "undefined") Add_To_TokenSet(TokenType.Undefined, actual_TokenValue);
                     else if(actual_TokenValue == "sequence") Add_To_TokenSet(TokenType.SequenceKeyword, actual_TokenValue);
-                    else if(actual_TokenValue == "color") Add_To_TokenSet(TokenType.ColorKeyword, actual_TokenValue);
                     else Add_To_TokenSet(TokenType.Keyword, actual_TokenValue);
 
                 }

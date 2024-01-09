@@ -92,13 +92,6 @@ namespace Syntax_Analizer
                 result = Id.Item1;
                 asignation = Id.Item2;
 
-            }else if(actual_token.Type == TokenType.ColorKeyword)
-            {
-                int actualLine = actual_token.actualLine;
-                Eat(TokenType.ColorKeyword,"");
-                string color = actual_token.Value.ToString();
-                Eat(TokenType.Identifier,"");
-                result = new Color(color,actualLine);
             }
             else if (actual_token.Type == TokenType.LEFT_CURLYBRACES)
             {//Es una secuencia lo que tengo que crear

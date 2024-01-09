@@ -93,7 +93,8 @@ namespace BackEnd
 
         public async override void Draw()
         {
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarPuntoEnCanvas", X, Y);
+        
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarPuntoEnCanvas",ForDraw.GetColor(), X, Y);
         }
     }
 }

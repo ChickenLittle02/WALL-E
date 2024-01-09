@@ -71,7 +71,8 @@ namespace BackEnd
         {
             Punto value;
             if (!Punto.TryParse(Centro.Value, out value)) throw new Exception("Debe ser de tipo punto");
-            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", value.X, value.Y, radio);
+            string color = ForDraw.GetColor();
+            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", color, value.X, value.Y, radio);
         }
     }
 }

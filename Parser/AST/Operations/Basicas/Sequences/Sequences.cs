@@ -5,7 +5,7 @@ public abstract class Sequence : Node
     public bool IsUndefined { get; private set; }
     public List<Node> SequenceValues { get; private set; }
     public List<Node> GetELements => SequenceValues;
-    protected NodeKind SequenceDataKind { get; set; }
+    public NodeKind SequenceDataKind { get; protected set; }
     public Sequence(List<Node> values, int actualLine) : base(NodeKind.Sequence, actualLine)
     {
         SetValue(values);

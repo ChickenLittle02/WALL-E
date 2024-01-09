@@ -21,7 +21,7 @@ namespace BackEnd
             Point2.CheckSemantic();
             Point2.Evaluate();
 
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvas", Point1.X, Point1.Y,Point2.X,Point2.Y);
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvas", ForDraw.GetColor(),Point1.X, Point1.Y,Point2.X,Point2.Y);
         // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
         }
 
@@ -48,7 +48,7 @@ namespace BackEnd
             Point2.CheckSemantic();
             Point2.Evaluate();
             
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", "myCanvas", Point1.X, Point1.Y, Point2.X, Point2.Y);
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", "myCanvas", ForDraw.GetColor(),Point1.X, Point1.Y, Point2.X, Point2.Y);
         
 
         }
@@ -75,8 +75,8 @@ namespace BackEnd
             
             Point2.CheckSemantic();
             Point2.Evaluate();
-
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvas", Point1.X, Point1.Y,Point2.X,Point2.Y);
+        string color = ForDraw.GetColor();
+        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvas",color, Point1.X, Point1.Y,Point2.X,Point2.Y);
         // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
         }
 

@@ -8,7 +8,8 @@ namespace BackEnd
         public static IJSRuntime _jsRuntime ;
         public static int canvasWidth;
         public static int canvasHeight;
-        public static string Code { get; private set; }
+        public static Stack<string> Colors;
+                public static string Code { get; private set; }
         public static string Console { get; private set; }
         public static void SetCanvasProperties(int width, int height)
         {
@@ -19,11 +20,18 @@ namespace BackEnd
         {
             _jsRuntime = jsRuntime;
             Code = code;
+            Colors = new Stack<string>();
             Start();
+        }
+        public static string GetColor()
+        {
+            if(Colors.Count != 0) return Colors.Peek();
+            else return "black";
         }
 
         public static void Start()
         {
+            // try {
             BackEnd.Lexer_Analizer.Tokenizer Prueba = new BackEnd.Lexer_Analizer.Tokenizer(Code);
             Prueba.Start();
             var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Prueba.TokenSet);
@@ -33,12 +41,15 @@ namespace BackEnd
             foreach (var item in Syntaxis.NodesLines)
             {
                 item.Evaluate();
-                if (item is not Draw)
+                if (item.Value is not null) 
                 {
                     resultado += item.Value.ToString() + "\n";
                 }
             }
-            Console = resultado;
+            // Console = resultado;}
+            // catch(Exception message){
+            //     Console = message.Message;
+            // }
         }
 
     }

@@ -3,7 +3,6 @@ public enum TokenType
 {
     Number, //todos los valores numericos
     SequenceKeyword,
-    ColorKeyword,
     Color,//Para definir los colores
     TresPuntos,//...
     SUM_Operator,//+

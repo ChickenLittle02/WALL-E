@@ -6,6 +6,35 @@ draw ray(p,q);
 
 draw ray(q,p);
 
+point p1;
+point p2;
+draw p1;
+color "blue";
+draw p2;
+
+point p;
+point r;
+point s;
+draw segment(p,r);
+draw segment(r,s);
+draw segment(s,p);
+color green;
+draw circle(p.5);
+
+
+point p1;
+point p2;
+point p3;
+d = line(p1,p2);
+e = line(p2,p3);
+f = line(p3,p1);
+a= {d,e,f};
+draw a;
+
+point p1;
+point p2;
+point p3;
+draw {p1,p2,p3};
 
 //COmprobar los complementos para cada figura
 //pincha
