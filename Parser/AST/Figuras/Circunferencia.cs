@@ -66,7 +66,13 @@ namespace BackEnd
             }
             SetValue(this);
         }
+        public override string ToString()
+        {
+            Punto Center;
+            Punto.TryParse(Centro.Value, out Center);
 
+            return $"Centro({Center.X},{Center.Y});{radio}";
+        }
         public override async void Draw()
         {
             Punto value;

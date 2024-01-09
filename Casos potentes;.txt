@@ -1,3 +1,113 @@
+//Dio bateo
+line p;
+circle q;
+draw p;
+draw q;
+print p;
+print q;
+color red;
+a= intersect(p,q);
+draw a;
+print a;
+
+Para este caso
+ (338,293);(225,244)
+Centro(211,251);25
+{}
+
+
+
+//No pincha
+ p = point(6,306);
+q = point(204,180);
+ r = point(49,10);
+s = point(354,278);
+rayo = line(p,q);
+segmento = segment(r,s);
+draw intersect(rayo, segmento);
+
+//No pincha
+line p;
+arc q;
+draw p;
+draw q;
+print p;
+print q;
+color red;
+draw intersect(p,q);
+ (93,122);(314,390)
+Centro(61,69),(77,310);(338,373)
+
+
+
+
+
+con circle
+p = point(121,141);
+q = point(16,211);
+r = point(360,1);
+l = circle(q,10);
+print p;
+print q;
+print r;
+draw l;
+color red;
+draw q;
+draw r;
+color blue;
+draw p;
+color green;
+draw intersect(p,l);
+
+point p;
+print p;
+ray r;
+print r;
+draw p;
+color red;
+draw r;
+color green;
+draw intersect(p,r);
+
+//Este caso me da true y no es true
+
+(121,141);
+ (16,211);(360,1)
+ //Ejecucion
+p = point(121,141);
+q = point(16,211);
+r = point(360,1);
+l = ray(q,r);//Con segmento tambien se parte
+print p;
+print q;
+print r;
+draw l;
+color red;
+draw q;
+draw r;
+color blue;
+draw p;
+color green;
+draw intersect(p,l);
+
+
+p = point(121,141);
+q = point(16,211);
+r = point(360,1);
+l = line(q,r);
+print p;
+print q;
+print r;
+draw l;
+color red;
+draw q;
+draw r;
+color blue;
+draw p;
+color green;
+draw intersect(p,l);
+
+
 point p;
 
 p = point(100,100);

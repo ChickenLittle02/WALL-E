@@ -22,11 +22,15 @@ public static partial class Intersection
 
         if (x1 == x2 && y1 == y2 && r1 == r2)
         {
-            return new UndefinedSequence(actualLine);
+            UndefinedSequence resultado = new UndefinedSequence(actualLine);
+            resultado.Start();
+            return resultado;
         }
         else if (distancia > r1 + r2 || distancia < Math.Abs(r1 - r2) || distancia == 0)
         {
-            return new FiniteSequence(new List<Node>(), false, actualLine); // las circunferencias no se intersectan en ningun punto
+            var resultado = new FiniteSequence(new List<Node>(), false, actualLine); // las circunferencias no se intersectan en ningun punto
+            resultado.Start();
+            return resultado;
         }
 
         else if (distancia == r1 + r2 || distancia == Math.Abs(r1 - r2))
@@ -54,7 +58,9 @@ public static partial class Intersection
             intersections.Add(new Punto(intersectX1, intersectY1, actualLine));
             intersections.Add(new Punto(intersectX2, intersectY2, actualLine));
         }
-        return new FiniteSequence(intersections, false, actualLine);
+        var result = new FiniteSequence(intersections, false, actualLine);
+        result.Start();
+        return result;
     }
     public static Sequence Intersect(Circunferencia circle, Arco arc, int actualLine)
     {
@@ -81,10 +87,14 @@ public static partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var resultado = new FiniteSequence(validintersections, false, actualLine);
+            resultado.Start();
+            return resultado;
         }
         // Circle and arc overlap
-        else return new UndefinedSequence(actualLine);
+        var result = new UndefinedSequence(actualLine);
+        result.Start();
+        return result;
     }
 
 

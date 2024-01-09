@@ -12,11 +12,13 @@ public abstract class Sequence : Node
         SequenceValues = values;
         Count = values.Count;
     }
+
     public void SetIsUndefined(){ IsUndefined = true; }
     public void ActualizaCount() { Count = SequenceValues.Count; }
     public List<Node> BuildList(int StartPosition)
-    {
-        if(StartPosition>=Count) throw new Exception("No es posible crear una secuencia");
+    {   
+        if(StartPosition == Count && Count == 0) return new List<Node>();
+        if(StartPosition>=Count) throw new Exception($"No es posible crear una secuencia en {StartPosition} si tiene un tamaño de {Count}");
         
         List<Node> NuevaLista = new List<Node>(Count - StartPosition);
         for(int i = StartPosition; i<Count;i++) NuevaLista.Add(SequenceValues[i]);

@@ -30,6 +30,7 @@ public class IntersectionFunction : Node
     {
         Figura1.Evaluate();
         Figura2.Evaluate();
-        Sequence Resultado = Intersection.IntersectionFigure(Figura1,Figura2, ActualLine);        
+        Sequence Resultado = Intersection.IntersectionFigure(Figura1,Figura2, ActualLine);
+        SetValue(Resultado);        
     }
 }

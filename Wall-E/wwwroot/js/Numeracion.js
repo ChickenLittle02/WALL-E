@@ -11,3 +11,11 @@ function Numeracion() {
     eArea.value = msj;
 }
 
+function scrollSync(id1, id2) {
+    let textArea1 = document.getElementById(id1);
+    let textArea2 = document.getElementById(id2);
+
+    if (textArea1 != null && textArea2 != null) {
+        textArea2.scrollTop = textArea1.scrollTop;
+    }
+}

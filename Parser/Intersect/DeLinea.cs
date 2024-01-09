@@ -12,61 +12,63 @@ public partial class Intersection
         if (m1 == m2)
         {
             //las rectas son paralelas si las pendientes son iguales 
-            //aqui tiene que retornar una secuencia vacia 
-            return new FiniteSequence(Puntos, false, actualLine);
+            //aqui tiene que retornar una secuencia vacia
+            var resultado = new FiniteSequence(Puntos, false, actualLine);
+            resultado.Start();
+            return resultado;
 
         }
         else if (m1 == m2 && n1 == n2)
         {
             //si las pendientes son iguales y los intercectos con el eje y tambien entonces las rectas son iguales 
             //aqui tiene que retornar undefined 
-            return new UndefinedSequence(actualLine);
+            var resultado = new UndefinedSequence(actualLine);
+            resultado.Start();
+            return resultado;
         }
-        else
-        {
-            //si no pasa algo de esto entonces se calculan los intersectos 
-            Punto recta1Punto1, recta1Punto2, recta2Punto1, recta2Punto2;
-            Punto.TryParse(recta1.Punto1, out recta1Punto1);
-            Punto.TryParse(recta1.Punto2, out recta1Punto2);
-            Punto.TryParse(recta2.Punto1, out recta2Punto1);
-            Punto.TryParse(recta2.Punto2, out recta2Punto2);
+        //si no pasa algo de esto entonces se calculan los intersectos 
+        Punto recta1Punto1, recta1Punto2, recta2Punto1, recta2Punto2;
+        Punto.TryParse(recta1.Punto1.Value, out recta1Punto1); recta1Punto1.Start();
+        Punto.TryParse(recta1.Punto2.Value, out recta1Punto2); recta1Punto2.Start();
+        Punto.TryParse(recta2.Punto1.Value, out recta2Punto1); recta2Punto1.Start();
+        Punto.TryParse(recta2.Punto2.Value, out recta2Punto2); recta2Punto2.Start();
 
-            double x1 = recta1Punto1.X;
-            double y1 = recta1Punto1.Y;
-            double x2 = recta1Punto2.X;
-            double y2 = recta1Punto2.Y;
+        double x1 = recta1Punto1.X;
+        double y1 = recta1Punto1.Y;
+        double x2 = recta1Punto2.X;
+        double y2 = recta1Punto2.Y;
 
-            double x3 = recta2Punto1.X;
-            double y3 = recta2Punto1.Y;
-            double x4 = recta2Punto2.X;
-            double y4 = recta2Punto2.Y;
+        double x3 = recta2Punto1.X;
+        double y3 = recta2Punto1.Y;
+        double x4 = recta2Punto2.X;
+        double y4 = recta2Punto2.Y;
 
-            double denominador = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        double denominador = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 
-            double x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denominador;
-            double y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denominador;
+        double x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denominador;
+        double y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denominador;
 
-            //aqui deberia retornar una secuencia con los Puntos de la interseccion
-            Puntos.Add(new Punto(x, y, actualLine));
+        //aqui deberia retornar una secuencia con los Puntos de la interseccion
+        Puntos.Add(new Punto(x, y, actualLine));
+        var result = new FiniteSequence(Puntos, false, actualLine);
+        result.Start();
+        return result;
 
-            return new FiniteSequence(Puntos, false, actualLine);
-
-        }
     }
-    public static Sequence Intersect(Circunferencia circunferencia,Line recta,  int actualLine)
+    public static Sequence Intersect(Circunferencia circunferencia, Line recta, int actualLine)
     {
         return Intersect(recta, circunferencia, actualLine);
     }
-    
+
     public static Sequence Intersect(Line recta, Circunferencia circunferencia, int actualLine)
     {
         // este metodo es para intersectar una circunferencia y una recta 
         var (m, n) = LineEquation(recta);
         Punto recta1Punto1, recta1Punto2, centro;
-        Punto.TryParse(recta.Punto1, out recta1Punto1);
-        Punto.TryParse(recta.Punto2, out recta1Punto2);
+        Punto.TryParse(recta.Punto1.Value, out recta1Punto1); recta1Punto1.Start();
+        Punto.TryParse(recta.Punto2.Value, out recta1Punto2); recta1Punto2.Start();
 
-        Punto.TryParse(circunferencia.Centro, out centro);
+        Punto.TryParse(circunferencia.Centro, out centro); centro.Start();
         var radius = circunferencia.radio;
 
         double centroX = centro.X;
@@ -85,7 +87,9 @@ public partial class Intersection
         List<Node> intersections = new List<Node>();
         if (distance > radius)
         {
-            return new FiniteSequence(intersections, false, actualLine);
+            var resultado = new FiniteSequence(intersections, false, actualLine);
+            resultado.Start();
+            return resultado;
         }
 
         if (recta1Punto1.X == recta1Punto2.X) // Si la línea es vertical (pendiente indefinida)
@@ -124,12 +128,13 @@ public partial class Intersection
             intersections.Add(new Punto(x1, y1, actualLine));
             intersections.Add(new Punto(x2, y2, actualLine));
         }
-        return new FiniteSequence(intersections, false, actualLine);
-
+        var result = new FiniteSequence(intersections, false, actualLine);
+        result.Start();
+        return result;
     }
-    public static Sequence Intersect(Segment segmento, Line recta,  int actualLine)
+    public static Sequence Intersect(Segment segmento, Line recta, int actualLine)
     {
-        return Intersect( recta,  segmento,  actualLine);
+        return Intersect(recta, segmento, actualLine);
     }
 
     public static Sequence Intersect(Line recta, Segment segmento, int actualLine)
@@ -151,15 +156,19 @@ public partial class Intersection
                     intersections.Add(point);
                 }
             }
-            return new FiniteSequence(intersections, false, actualLine);
+            var resultado =  new FiniteSequence(intersections, false, actualLine);
+            resultado.Start();
+            return resultado;
         }
         // Este es el caso en que la recta y el segmento esten superpuestos
-        else return new UndefinedSequence(actualLine);
+        var result = new UndefinedSequence(actualLine);
+        result.Start();
+        return result;
     }
-    
-    public static Sequence Intersect(Ray ray, Line recta,  int actualLine)
+
+    public static Sequence Intersect(Ray ray, Line recta, int actualLine)
     {
-return Intersect( recta,  ray,  actualLine);
+        return Intersect(recta, ray, actualLine);
     }
 
     public static Sequence Intersect(Line recta, Ray ray, int actualLine)
@@ -179,15 +188,19 @@ return Intersect( recta,  ray,  actualLine);
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
         // Line and ray overlap
-        else return new UndefinedSequence(actualLine);
+        var resultado = new  UndefinedSequence(actualLine);
+        resultado.Start();
+        return resultado;
 
     }
     public static Sequence Intersect(Arco arc, Line recta, int actualLine)
     {
-        return Intersect(recta, arc,actualLine);
+        return Intersect(recta, arc, actualLine);
     }
 
     public static Sequence Intersect(Line recta, Arco arc, int actualLine)
@@ -206,9 +219,13 @@ return Intersect( recta,  ray,  actualLine);
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return new FiniteSequence(new List<Node>(), false, actualLine);
+        var resultado = new FiniteSequence(new List<Node>(), false, actualLine);
+        resultado.Start();
+        return resultado;
     }
 
 }

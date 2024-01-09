@@ -22,10 +22,14 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
         // Segments overlap
-        else return new UndefinedSequence(actualLine);
+        var resultado = new UndefinedSequence(actualLine);
+        resultado.Start();
+        return resultado;
     }
     
     public static Sequence Intersect(Ray ray, Segment segment, int actualLine)
@@ -49,9 +53,13 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return new UndefinedSequence(actualLine);
+        var resultado = new UndefinedSequence(actualLine);
+        resultado.Start();
+        return resultado;
     }
     public static Sequence Intersect(Circunferencia circunferencia, Segment segment, int actualLine)
     {
@@ -74,9 +82,12 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            var result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return possibleIntersections;
+        possibleIntersections.Start();
+        return possibleIntersections;
     }
     public static Sequence Intersect(Arco arc,Segment segment,  int actualLine)
     {
@@ -99,8 +110,12 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections,false, actualLine);
+            var result = new FiniteSequence(validintersections,false, actualLine);
+            result.Start();
+            return result;
         }
-        else return new FiniteSequence(new List<Node>(), false, actualLine);
+        var resultado = new FiniteSequence(new List<Node>(), false, actualLine);
+        resultado.Start();
+        return resultado;
     }
 }

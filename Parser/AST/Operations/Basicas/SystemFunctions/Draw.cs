@@ -29,29 +29,36 @@ namespace BackEnd
                 Sequence SequenceExpression = (Sequence)Expression.Value;
                 SequenceExpression.CheckSemantic();
                 SequenceExpression.Evaluate();
-                if (!ForFigura.IsFigura(SequenceExpression.SequenceDataKind))
+                List<Node> Figuras = SequenceExpression.BuildList(0);
+                if (Figuras.Count != 0)
                 {
 
-                    if (SequenceExpression.SequenceDataKind is not NodeKind.Sequence)
-                        throw new Exception("La secuencia recibida por la funcion draw debe ser de figuras o secuencias de figuras");
+                    if (!ForFigura.IsFigura(SequenceExpression.SequenceDataKind))
+                    {
 
-                }
-                else
-                {
-                    List<Node> Figuras = SequenceExpression.BuildList(0);
-                    if (Figuras.Count == 0)
-                        throw new Exception("La secuencia recibida por la funcion draw debe ser de figuras o secuencias de figuras");
-                    else for (int i = 0; i < Figuras.Count; i++)
-                        {
-                            Draw DIbuja = new Draw(ID, Figuras[i], ActualLine);
-                            DIbuja.CheckSemantic();
-                            DIbuja.Evaluate();
-                        }
+                        if (SequenceExpression.SequenceDataKind is not NodeKind.Sequence)
+                            throw new Exception("La secuencia recibida por la funcion draw debe ser de figuras o secuencias de figuras");
 
+                    }
+                    else
+                    {
+                        if (Figuras.Count != 0)
+                            for (int i = 0; i < Figuras.Count; i++)
+                            {
+                                Draw DIbuja = new Draw(ID, Figuras[i], ActualLine);
+                                DIbuja.CheckSemantic();
+                                DIbuja.Evaluate();
+                            }
+
+                    }
                 }
 
             }
+            else throw new Exception("Unexpected type");
         }
+
+
+
 
     }
 }

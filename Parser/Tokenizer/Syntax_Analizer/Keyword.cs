@@ -13,7 +13,7 @@ namespace BackEnd
                 int actualLine = actual_token.actualLine;
                 Node result = null;
                 bool IsDeclaration = false;
-                if (name == "Print") result = Print(actualScope);
+                if (name == "print") result = Print(actualScope);
                 else if (name == "draw")
                 {
                     Eat(TokenType.Keyword, "");
@@ -77,6 +77,8 @@ namespace BackEnd
                 //Significa que es la funcion intersect(1,2);
                 HayBracket = true;
                 List<Node> PointExpression = new List<Node>();
+                Eat(TokenType.LEFT_PARENTHESIS,"");
+                HayBracket = true;
                 Node Expression = BuildExpression(actualScope);
                 PointExpression.Add(Expression);
                 while (actual_token.Type is TokenType.Comma)
@@ -85,6 +87,8 @@ namespace BackEnd
                     Expression = BuildExpression(actualScope);
                     PointExpression.Add(Expression);
                 }
+                Eat(TokenType.RIGHT_PARENTHESIS,"");
+                HayBracket = false;
                 if (PointExpression.Count != 2) throw new Exception("La funcion intersect recibe solo dos parametros");
                 Node result = new IntersectionFunction(PointExpression[0], PointExpression[1], actualLine);
                 return result;

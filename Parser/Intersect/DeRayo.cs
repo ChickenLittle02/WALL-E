@@ -24,10 +24,13 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            FiniteSequence result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
         // Rays overlap
-        else return possibleIntersections;
+        possibleIntersections.Start(); 
+        return possibleIntersections;
     }
     public static Sequence Intersect(Circunferencia circle, Ray ray, int actualLine)
     {
@@ -50,9 +53,12 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            FiniteSequence result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return possibleIntersections;
+        possibleIntersections.Start();
+        return possibleIntersections;
     }
     public static Sequence Intersect(Arco arco, Ray rayo, int actualLine)
     {
@@ -75,8 +81,11 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            FiniteSequence result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return possibleIntersections;
+        possibleIntersections.Start();
+         return possibleIntersections;
     }
 }

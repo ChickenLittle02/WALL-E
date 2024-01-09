@@ -38,6 +38,11 @@
     }
     private string _consola = "";
 
+    public string Consola
+    {
+        get { return _consola; }
+        set { _consola = value; }
+    }
     private void ClearDefaultText()
     {
 
@@ -46,11 +51,7 @@
             Codigo = ""; // Esto eliminará la frase por defecto
         }
     }
-    public string Consola
-    {
-        get { return _consola; }
-        set { _consola = value; }
-    }
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -60,13 +61,15 @@
     }
      private  void ParsearExpression()
     {
-        _consola = "";
+        Consola = "";
         
         @* BackEnd.Bib1Interop.InyectandoRuntime(JSRuntime);
         BackEnd.Drawing.DibujarEnCanvas(); *@
         JSRuntime.InvokeVoidAsync("clearCanvas","myCanvas");
+        if(Codigo!=""){
         ForDraw.SetRuntime(JSRuntime,_codigo);
-        _consola  = ForDraw.Console;
+        Consola  = ForDraw.Console;
+        }
     }
     private async Task Numeracion(KeyboardEventArgs args)
     {

@@ -29,9 +29,12 @@ public partial class Intersection
                     validintersections.Add(point);
                 }
             }
-            return new FiniteSequence(validintersections, false, actualLine);
+            FiniteSequence result = new FiniteSequence(validintersections, false, actualLine);
+            result.Start();
+            return result;
         }
-        else return posibleInterseccion;
+        posibleInterseccion.Start();
+        return posibleInterseccion;
     }
 
 

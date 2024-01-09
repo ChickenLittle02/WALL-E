@@ -9,8 +9,9 @@ public static partial class Intersection
         {
             Puntos.Add(punto1);
         }
-
-        return new FiniteSequence(Puntos, false, actualLine);
+        FiniteSequence result = new FiniteSequence(Puntos, false, actualLine);
+        result.Start();
+        return result;
 
     }
 
@@ -22,8 +23,9 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
     public static Sequence Intersect(Punto punto1, Line recta1, int actualLine)
     {
         Punto rectaP1, rectaP2;
-        Punto.TryParse(recta1.Punto1, out rectaP1);
-        Punto.TryParse(recta1.Punto2, out rectaP2);
+        Punto.TryParse(recta1.Punto1.Value, out rectaP1);
+        Punto.TryParse(recta1.Punto2.Value, out rectaP2);
+        rectaP1.Start(); rectaP2.Start();
         List<Node> Puntos = new List<Node>();
         var (m, n) = LineEquation(recta1);
 
@@ -31,8 +33,10 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
         { // posibles casos en los que el punto pertenece a la recta.
             Puntos.Add(punto1);
         }
-
-        return new FiniteSequence(Puntos, false, actualLine);
+        
+        FiniteSequence result = new FiniteSequence(Puntos, false, actualLine);
+        result.Start();
+        return result;
 
     }
     
@@ -50,8 +54,9 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
             //aqui hay que retornar una secuencia con el punto p1 
             Puntos.Add(punto1);
         }
-
-        return new FiniteSequence(Puntos, false, actualLine);
+        FiniteSequence result = new FiniteSequence(Puntos, false, actualLine);
+        result.Start();
+        return result;
 
     }
     public static Sequence Intersect(Ray ray, Punto punto1, int actualLine)
@@ -66,7 +71,9 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
         {
             punto.Add(punto1);
         }
-        return new FiniteSequence(punto, false, actualLine);
+        var result = new FiniteSequence(punto, false, actualLine);
+        result.Start();
+        return result;
     }
     
     public static Sequence Intersect(Arco arco, Punto punto1, int actualLine)
@@ -81,7 +88,10 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
         {
             punto.Add(punto1);
         }
-        return new FiniteSequence(punto, false, actualLine);
+
+        var result = new FiniteSequence(punto, false, actualLine);
+        result.Start();
+        return result;
     }
     
     public static Sequence Intersect(Circunferencia circunferencia, Punto point, int actualLine)
@@ -92,14 +102,17 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
     {
         List<Node> Puntos = new List<Node>();
         Punto circunferenciaCentro;
-        Punto.TryParse(circunferencia.Centro, out circunferenciaCentro);
+        Punto.TryParse(circunferencia.Centro.Value, out circunferenciaCentro);
+        circunferenciaCentro.Start();
         double Equation = Math.Pow(circunferenciaCentro.X - point.X, 2) + Math.Pow(circunferenciaCentro.Y - point.Y, 2);
         if (Equation == Math.Pow(circunferencia.radio, 2))
         {
             Puntos.Add(point);
         }
 
-        return new FiniteSequence(Puntos, false, actualLine);
+        var result = new FiniteSequence(Puntos, false, actualLine);
+        result.Start();
+        return result;
     }
 
 

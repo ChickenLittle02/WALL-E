@@ -5,11 +5,11 @@ namespace BackEnd
 {
     public class ForDraw
     {
-        public static IJSRuntime _jsRuntime ;
+        public static IJSRuntime _jsRuntime;
         public static int canvasWidth;
         public static int canvasHeight;
         public static Stack<string> Colors;
-                public static string Code { get; private set; }
+        public static string Code { get; private set; }
         public static string Console { get; private set; }
         public static void SetCanvasProperties(int width, int height)
         {
@@ -25,7 +25,7 @@ namespace BackEnd
         }
         public static string GetColor()
         {
-            if(Colors.Count != 0) return Colors.Peek();
+            if (Colors.Count != 0) return Colors.Peek();
             else return "black";
         }
 
@@ -34,22 +34,22 @@ namespace BackEnd
             // try {
             BackEnd.Lexer_Analizer.Tokenizer Prueba = new BackEnd.Lexer_Analizer.Tokenizer(Code);
             Prueba.Start();
-            var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Prueba.TokenSet);
-            Syntaxis.Start();
-            foreach (var item in Syntaxis.NodesLines) item.CheckSemantic();
-            string resultado = "";
-            foreach (var item in Syntaxis.NodesLines)
+            if (Prueba.TokenSet.Count != 0)
             {
-                item.Evaluate();
-                if (item.Value is not null) 
+                var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Prueba.TokenSet);
+                Syntaxis.Start();
+                foreach (var item in Syntaxis.NodesLines) item.CheckSemantic();
+                string resultado = "";
+                foreach (var item in Syntaxis.NodesLines)
                 {
-                    resultado += item.Value.ToString() + "\n";
+                    item.Evaluate();
+                    if (item is Print)
+                    {
+                        resultado += item.Value.ToString() + "\n";
+                    }
                 }
+                Console = resultado;
             }
-            // Console = resultado;}
-            // catch(Exception message){
-            //     Console = message.Message;
-            // }
         }
 
     }

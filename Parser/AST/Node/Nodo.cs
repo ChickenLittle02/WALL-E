@@ -11,6 +11,10 @@ public abstract class Node
     public int ActualLine { get; private set; }
     public void SetValue(object value) => Value = value;
     public void SetKind(NodeKind kind) => Kind = kind;
+    public void Start(){
+        CheckSemantic();
+        Evaluate();
+    }
     public Node(NodeKind kind, int actualLine)
     {
         Kind = kind;

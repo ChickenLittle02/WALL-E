@@ -21,4 +21,19 @@ protected Figura(string identifier,  NodeKind kind, int actualLine) : base(kind,
         Identifier = identifier;
     }
     public abstract void Draw();
+    public static bool TryParse(object Object, out Figura Casteo)
+        {
+            if (Object is Figura)
+            {
+                Casteo = (Figura)Object;
+                return true;
+
+            }
+            else
+            {
+                Casteo = null;
+                return false;
+            }
+
+        }
 }}

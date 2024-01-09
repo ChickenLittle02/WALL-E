@@ -67,7 +67,7 @@ namespace BackEnd
             if (Radio is not null)
             {
                 Radio.Evaluate();
-            radio = (double)Radio.Value;
+                radio = (double)Radio.Value;
             }
             SetValue(this);
         }
@@ -76,12 +76,22 @@ namespace BackEnd
         {
             Punto ValueP1 = (Punto)Punto1.Value;
             Punto ValueP2 = (Punto)Punto2.Value;
-            Punto ValueC = (Punto)Centro.Value; 
-            
-string color = ForDraw.GetColor(); 
-            
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas",color, ValueC.X,ValueC.Y,ValueP1.X,ValueP1.Y, ValueP2.X,ValueP2.Y,radio);
+            Punto ValueC = (Punto)Centro.Value;
 
+            string color = ForDraw.GetColor();
+
+            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas", color, ValueC.X, ValueC.Y, ValueP1.X, ValueP1.Y, ValueP2.X, ValueP2.Y, radio);
+
+        }
+        public override string ToString()
+        {
+            Punto1.Start();
+            Punto2.Start();
+            Centro.Start();
+            Punto Center, Point1, Point2;
+            Punto.TryParse(Centro.Value, out Center); Punto.TryParse(Punto1.Value, out Point1); Punto.TryParse(Punto2.Value, out Point2);
+            
+            return $"Centro({Center.X},{Center.Y}),({Point1.X},{Point1.Y});({Point2.X},{Point2.Y})";
         }
     }
 }

@@ -14,7 +14,7 @@ function DibujarPuntoEnCanvas( color, x, y) {
     var ctx = canvas.getContext('2d');
 
     // Configuración del punto (usamos las coordenadas x e y)
-    var radio = 2;
+    var radio = 1;
 
     // Dibujo del punto
     ctx.beginPath();
@@ -29,7 +29,7 @@ function DibujarRectaEnCanvas(color,x1, y1, x2, y2) {
     var ctx = canvas.getContext('2d');
     
         ctx.strokeStyle = color; // Color de la recta (puedes ajustar el color)
-        ctx.lineWidth = 0.5; // Grosor de la línea (puedes ajustar el grosor)
+        ctx.lineWidth = 0.7; // Grosor de la línea (puedes ajustar el grosor)
 
     // Configuración de la recta
     ctx.beginPath();
@@ -61,7 +61,7 @@ function DibujarSegmentoEnCanvas(color, x1, y1, x2, y2) {
     // Configuración del segmento (usamos las coordenadas x e y de los puntos de inicio y fin)
     ctx.beginPath();
     ctx.strokeStyle = color; // Color del segmento (puedes ajustar el color)
-    ctx.lineWidth = 2; // Grosor de la línea (puedes ajustar el grosor)
+    ctx.lineWidth = 0.7; // Grosor de la línea (puedes ajustar el grosor)
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
@@ -98,7 +98,7 @@ function DibujarRayoEnCanvas(canvasId, color, punto1X, punto1Y, punto2X, punto2Y
     var ctx = canvas.getContext("2d");
 
     ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 0.7;
 
     // Calcular la dirección del rayo
     var dx = punto2X - punto1X;
@@ -129,7 +129,7 @@ function DibujarArcoEnCanvas(color, centroX, centroY, inicioX, inicioY, finX, fi
     ctx.beginPath();
     ctx.arc(centroX, centroY, radio, Math.atan2(inicioY - centroY, inicioX - centroX), Math.atan2(finY - centroY, finX - centroX), false);
     ctx.strokeStyle = color; // Color del arco (puedes ajustar el color)
-    ctx.lineWidth = 2; // Grosor de la línea (puedes ajustar el grosor)
+    ctx.lineWidth = 0.7; // Grosor de la línea (puedes ajustar el grosor)
     ctx.stroke();
     ctx.closePath();
 }
@@ -142,7 +142,7 @@ function DibujarCircunferenciaEnCanvas(color, centroX, centroY, radio) {
     ctx.beginPath();
     ctx.arc(centroX, centroY, radio, 0, 2 * Math.PI);
     ctx.strokeStyle = color; // Color de la circunferencia (puedes ajustar el color)
-    ctx.lineWidth = 2; // Grosor de la línea (puedes ajustar el grosor)
+    ctx.lineWidth = 0.7; // Grosor de la línea (puedes ajustar el grosor)
     ctx.stroke();
     ctx.closePath();
 }
