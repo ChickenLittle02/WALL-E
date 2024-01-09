@@ -20,7 +20,7 @@ Centro(211,251);25
 //No pincha
  p = point(6,306);
 q = point(204,180);
- r = point(49,10);
+ r = point(49,10);k
 s = point(354,278);
 rayo = line(p,q);
 segmento = segment(r,s);

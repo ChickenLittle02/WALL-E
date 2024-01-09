@@ -68,7 +68,7 @@ public partial class Intersection
         Punto.TryParse(recta.Punto1.Value, out recta1Punto1); recta1Punto1.Start();
         Punto.TryParse(recta.Punto2.Value, out recta1Punto2); recta1Punto2.Start();
 
-        Punto.TryParse(circunferencia.Centro, out centro); centro.Start();
+        Punto.TryParse(circunferencia.Centro.Value, out centro); centro.Start();
         var radius = circunferencia.radio;
 
         double centroX = centro.X;
