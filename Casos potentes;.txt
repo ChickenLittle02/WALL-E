@@ -15,12 +15,180 @@ Para este caso
 Centro(211,251);25
 {}
 
+//No pincha
+ p = point(6,306);
+q = point(300,300);
+draw p;
+draw q;
+ r = point(49,10);
+s = point(354,278);
+color red;
+draw r;
+draw s;
+rayo = circle(q,20);
+segmento = segment(p,s);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(rayo, segmento);
+print intersect(rayo, segmento);
+
+
+
+
+//Este ejemplo da palo
+m = point(347,338);
+n = point(308,241);
+draw m;
+draw n;
+q = point(300,300);
+s = point(354,278);
+color red;
+draw q;
+draw s;
+rayo = circle(s,60);
+segmento = arc(q,m,n,100);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(segmento,rayo);
+print intersect(rayo, segmento);
+
+
+
+//Este ejemplo tambien da palo
+m = point(347,338);
+n = point(308,241);
+draw m;
+draw n;
+q = point(300,300);
+s = point(354,278);
+color red;
+draw q;
+draw s;
+rayo = circle(s,60);
+segmento = arc(q,n,m,100);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(rayo , segmento);
+print intersect(rayo, segmento);
+
+//Este ejemplo tambien da palo
+m = point(347,338);
+n = point(308,241);
+draw m;
+draw n;
+q = point(300,300);
+s = point(354,278);
+color red;
+draw q;
+draw s;
+rayo = arc(s,n,m,60);
+segmento = arc(q,n,m,100);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(rayo , segmento);
+print intersect(rayo, segmento);
+
+
+
+
+
+
+
+//No pincha tampoco
+ p = point(250,500);
+q = point(300,300);
+draw p;
+draw q;
+ r = point(300,500);
+s = point(354,278);
+color red;
+draw r;
+draw s;
+rayo = segment(q,r);
+segmento = arc(q,s,p,20);
+draw rayo;
+draw segmento;
+color green;
+draw intersect( rayo, segmento);
+print intersect(rayo, segmento);
+
+
+
+
+//Se parte esto aqui
+
+(337.332700802905,314.36208378894855);,
+(316.667299197095,263.63791621105145); Da resultados pero no hay ninguno
+//Parece que esta cogiendo otras circunferencias de radio mayor, pues si cambio el radio de la circunferencia a 60 marca unos puntos como si fuera una mas grande
+
+ p = point(250,500);
+q = point(300,300);
+draw p;
+draw q;
+ r = point(300,500);
+s = point(354,278);
+color red;
+draw r;
+draw s;
+rayo = circle(s,40);
+segmento = circle(q,100);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(segmento,rayo);
+print intersect(rayo, segmento);
+
+
+
+
+
+
+//No pinchaaa
+ p = point(6,306);
+q = point(204,180);
+draw p;
+draw q;
+ r = point(49,10);
+s = point(354,278);
+color red;
+draw r;
+draw s;
+rayo = ray(q,r);
+segmento = arc(r,s,p,20);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(segmento , rayo);
+print intersect(rayo, segmento);
+(300,300)
+//No pinchaaa
+ p = point(6,306);
+q = point(204,180);
+draw p;
+draw q;
+ r = point(49,10);
+s = point(354,278);
+color red;
+draw r;
+draw s;
+rayo = line(p,q);
+segmento = segment(r,s);
+draw rayo;
+draw segmento;
+color green;
+draw intersect(rayo, segmento);
+print intersect(rayo, segmento);
+
 
 
 //No pincha
  p = point(6,306);
 q = point(204,180);
- r = point(49,10);k
+ r = point(49,10);
 s = point(354,278);
 rayo = line(p,q);
 segmento = segment(r,s);
