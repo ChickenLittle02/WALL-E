@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Resto : NumericasBinary
 {
-    public Resto(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Resto(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"%"){}
 
     public override void Evaluate()
     {
@@ -13,7 +13,7 @@ public class Resto : NumericasBinary
 
 public class Potencia : NumericasBinary
 {
-    public Potencia(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Potencia(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"^"){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();

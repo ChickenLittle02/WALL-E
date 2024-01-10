@@ -55,7 +55,7 @@ public class Constants : Node
         //Pero si el scope es el global tambien habria que comprobar en él si la variable existe,
         // en caso de que no se haya encontrado ya
 
-        if (!existe) throw new Exception("La constante " + name + " no existe");
+        if (!existe) new Error(ErrorKind.Semantic,"La constante " + name + " no existe",ActualLine);
     }
     private bool Searching(Scope Search, bool IsSemantic)
     {
@@ -102,22 +102,4 @@ public class Scope
         functions.Remove(name);
     }
 }
-
-// public class CallFunction:Node{
-//     string Name;
-//     List<Node> VariableExpression;
-//     Scope FunctionScope;
-//     Node BodyExpression;
-//     public CallFunction(string name,List<Node> variableExpression, Scope ForSerachFunction, int actualLine):base(NodeKind.Temp,actualLine)
-//     {
-//         Name = name;
-//         VariableExpression = variableExpression;
-//     }
-
-//     public override void Evaluate()
-//     {
-
-
-//     }
-// }
 }

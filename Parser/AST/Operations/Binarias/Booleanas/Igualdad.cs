@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Igual : NumericasBinary
 {
-    public Igual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Igual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"=="){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();
@@ -13,7 +13,7 @@ public class Igual : NumericasBinary
 
 public class Distinto : NumericasBinary
 {
-    public Distinto(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Distinto(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"!="){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();

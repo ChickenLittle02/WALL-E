@@ -15,9 +15,9 @@ public class IntersectionFunction : Node
     public override void CheckSemantic()
     {
         Figura1.CheckSemantic();
-        if (!IsFigura(Figura1)) throw new Exception("Se esperaba una figura");
+        if (!IsFigura(Figura1)) new Error(ErrorKind.Semantic,$"Unexpected type {Figura1.Kind}: First argument of function Intersect only can be figures",ActualLine);
         Figura2.CheckSemantic();
-        if (!IsFigura(Figura2)) throw new Exception("Se esperaba una figura");
+        if (!IsFigura(Figura2)) new Error(ErrorKind.Semantic,$"Unexpected type {Figura2.Kind}: Second argument of function Intersect only can be figures",ActualLine);
     }
     private bool IsFigura(Node Expression)
     {

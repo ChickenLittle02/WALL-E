@@ -36,12 +36,8 @@ namespace Lexer_Analizer
                 Start();
                 
             }
-            else throw new Exception("Debe introducir algun código");
         }
-        private void Error(string message)
-        {
-            throw new Exception("! Lexical Error: "+message);
-        }
+        
         public void Start()
         {
             while (position < text_size)

@@ -46,11 +46,13 @@ namespace Syntax_Analizer
                 Node decision = BuildExpression(actualScope);
                 //if (decision.Kind != NodeKind.Boolean) Error("Debe ir una expresion booleana"); Esto hay que arreglarlo
                 
-                if (!(actual_token.Value.ToString() == "then")) Error("Se esperaba un then");
+                if (!(actual_token.Value.ToString() == "then")) new Error(ErrorKind.Semantic,"Expected a then",actualLine);
+
                 Eat(TokenType.Keyword, "");//else
                 Node result1 = BuildExpression(actualScope);//Expresion despues de la condicion
 
-                if (!(actual_token.Value.ToString() == "else")) Error("Se esperaba un else");
+                if (!(actual_token.Value.ToString() == "else")) new Error(ErrorKind.Semantic,"Expected an else",actualLine);
+
                 Eat(TokenType.Keyword, "");//else
 
 
@@ -104,7 +106,7 @@ namespace Syntax_Analizer
             }
             else if (result == null)
             {
-                if (!asignation) Error("Unexpected token");
+                if (!asignation) new Error(ErrorKind.Semantic,$"Unexpected token {actual_token}",actual_token.actualLine);
             }
 
             return result;
@@ -125,14 +127,15 @@ namespace Syntax_Analizer
             List<Node> SequenceExpression = new List<Node>();
             HayBracket = true;
             Node ActualExpression = BuildExpression(actualScope);
-            if (ActualExpression is null) throw new Exception("La secuencia solo recibe como valores expresiones");
+            if (ActualExpression is null) new Error(ErrorKind.Semantic,"In sequences values you can't declare any function or variable",actualLine);
+
             SequenceExpression.Add(ActualExpression);
 
             while (actual_token.Type == TokenType.Comma)
             {
                 Eat(TokenType.Comma, "");
                 ActualExpression = BuildExpression(actualScope);
-                if (ActualExpression is null) throw new Exception("La secuencia solo recibe como valores expresiones");
+                if (ActualExpression is null) new Error(ErrorKind.Semantic,"In sequences values you can't declare any function or variable",actualLine);
                 SequenceExpression.Add(ActualExpression);
             }
             if (IsNext(TokenType.TresPuntos))
@@ -160,7 +163,7 @@ namespace Syntax_Analizer
             }
             else
             {//{1,2,3,4};
-                Eat(TokenType.RIGHT_CURLYBRACES, " ");
+                Eat(TokenType.RIGHT_CURLYBRACES);
                 HayBracket = false;
                 result = new FiniteSequence(SequenceExpression, false, actualLine);
                 //Como es finita pero no hay que generar nada pues lleva false

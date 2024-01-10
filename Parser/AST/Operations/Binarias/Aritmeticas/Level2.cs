@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Multiplicacion : NumericasBinary
 {
-    public Multiplicacion(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Multiplicacion(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"*"){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();
@@ -12,7 +12,7 @@ public class Multiplicacion : NumericasBinary
 
 public class Division : NumericasBinary
 {
-    public Division(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Division(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"/"){}
     
     public override void Evaluate()
     {

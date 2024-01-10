@@ -28,10 +28,14 @@ public partial class Intersection
         }
         //si no pasa algo de esto entonces se calculan los intersectos 
         Punto recta1Punto1, recta1Punto2, recta2Punto1, recta2Punto2;
-        Punto.TryParse(recta1.Punto1.Value, out recta1Punto1); recta1Punto1.Start();
-        Punto.TryParse(recta1.Punto2.Value, out recta1Punto2); recta1Punto2.Start();
-        Punto.TryParse(recta2.Punto1.Value, out recta2Punto1); recta2Punto1.Start();
-        Punto.TryParse(recta2.Punto2.Value, out recta2Punto2); recta2Punto2.Start();
+        if(!Punto.TryParse(recta1.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta1Punto1.Start();
+        if(!Punto.TryParse(recta1.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta1Punto2.Start();
+        if(!Punto.TryParse(recta2.Punto1.Value, out recta2Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta2Punto1.Start();
+        if(!Punto.TryParse(recta2.Punto2.Value, out recta2Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta2Punto2.Start();
 
         double x1 = recta1Punto1.X;
         double y1 = recta1Punto1.Y;
@@ -65,10 +69,13 @@ public partial class Intersection
         // este metodo es para intersectar una circunferencia y una recta 
         var (m, n) = LineEquation(recta);
         Punto recta1Punto1, recta1Punto2, centro;
-        Punto.TryParse(recta.Punto1.Value, out recta1Punto1); recta1Punto1.Start();
-        Punto.TryParse(recta.Punto2.Value, out recta1Punto2); recta1Punto2.Start();
+        if(!Punto.TryParse(recta.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta1Punto1.Start();
+        if(!Punto.TryParse(recta.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        recta1Punto2.Start();
 
-        Punto.TryParse(circunferencia.Centro.Value, out centro); centro.Start();
+        if(!Punto.TryParse(circunferencia.Centro.Value, out centro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        centro.Start();
         var radius = circunferencia.radio;
 
         double centroX = centro.X;

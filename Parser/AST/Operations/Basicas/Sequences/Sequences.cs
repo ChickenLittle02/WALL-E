@@ -18,12 +18,13 @@ public abstract class Sequence : Node
     public List<Node> BuildList(int StartPosition)
     {   
         if(StartPosition == Count && Count == 0) return new List<Node>();
-        if(StartPosition>=Count) throw new Exception($"No es posible crear una secuencia en {StartPosition} si tiene un tamaño de {Count}");
-        
+
+        if(StartPosition>=Count) new Error(ErrorKind.Semantic,$"Isn't possible make a sequence in {StartPosition} if this sequence have a size of {Count}",ActualLine);
+        else{        
         List<Node> NuevaLista = new List<Node>(Count - StartPosition);
         for(int i = StartPosition; i<Count;i++) NuevaLista.Add(SequenceValues[i]);
-
         return NuevaLista;
-        
+        }
+        return new List<Node>();   
         }
 }}

@@ -30,7 +30,7 @@ public class FunctionCall : Node
         //Pero si el scope es el global tambien habria que comprobar en él si la variable existe,
         // en caso de que no se haya encontrado ya
 
-        if (!existe) throw new Exception("La funcion " + Name + " no existe");
+        if (!existe) new Error(ErrorKind.Semantic,"Function " + Name + " doesn't exist",ActualLine);
     }
 
     public override void Evaluate()
@@ -47,7 +47,8 @@ public class FunctionCall : Node
     {
         if (Search.functions.ContainsKey(Name))
         {
-            if (Search.functions[Name].Argumentos.Count != Argumentos.Count) throw new Exception("La funcion " + Name + " debe recibir " + Argumentos.Count + " argumentos");
+            if (Search.functions[Name].Argumentos.Count != Argumentos.Count)
+            new Error(ErrorKind.Semantic,"La funcion " + Name + " debe recibir " + Argumentos.Count + " argumentos",ActualLine);
             ScopeForBody = new Scope(Search.functions[Name].ScopeForBody);
             BodyTokens = Search.functions[Name].TokensBody;
 

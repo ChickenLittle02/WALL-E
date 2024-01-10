@@ -31,7 +31,8 @@ public class Color : Node
             case "black":
                 break;
             default:
-                throw new Exception("No es un color valido");
+                new Error(ErrorKind.Syntax,"Is not a valid color",ActualLine);
+                break;
 
 
         }

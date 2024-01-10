@@ -19,7 +19,7 @@ public class AssignationSequences : Node
     {
         Expression.CheckSemantic();
         SetKind(Expression.Kind);
-        if(Expression.Kind is not NodeKind.Sequence) throw new Exception("El tipo que se le asigne a la variable debe ser de secuencia");
+        if(Expression.Kind is not NodeKind.Sequence) new Error(ErrorKind.Semantic,$"Expression associated must be a sequence not {Expression.Kind}",ActualLine);
         //Hay que revisar si la variable existia o no en algun scope, ya sea el actual o el anterior
     }
 

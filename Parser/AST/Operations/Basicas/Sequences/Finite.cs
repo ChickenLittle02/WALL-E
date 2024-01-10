@@ -41,7 +41,7 @@ public class FiniteSequence : Sequence
             for (int i = 1; i < Count; i++)
             {
                 SequenceValues[i].CheckSemantic();
-                if (SequenceDataKind != SequenceValues[i].Kind) throw new Exception("All sequence data must beequal");
+                if (SequenceDataKind != SequenceValues[i].Kind) new Error(ErrorKind.Semantic,"All sequence expressions must be equal",ActualLine);
             }
 
             if (EsGenerada)
@@ -49,12 +49,13 @@ public class FiniteSequence : Sequence
                 SequenceDataKind = NodeKind.Number;
                 SequenceValues[Count - 2].Evaluate();
                 double LowerBound = Double.Parse(SequenceValues[Count - 2].ToString());
-                if (LowerBound % 1 != 0) throw new Exception("Los valores limites deben ser enteros");
+                if (LowerBound % 1 != 0) new Error(ErrorKind.Semantic,$"Expression limits must be int not {LowerBound}",ActualLine);
+
 
                 SequenceValues[Count - 1].Evaluate();
                 double UpperBound = Double.Parse(SequenceValues[Count - 1].ToString());
-                if (UpperBound % 1 != 0) throw new Exception("Los valores limites deben ser enteros");
-                if (LowerBound > UpperBound) throw new Exception("El limite inferior debe ser menor que el superior");
+                if (UpperBound % 1 != 0) new Error(ErrorKind.Semantic,$"Expression limits must be int not {UpperBound}",ActualLine);
+                if (LowerBound > UpperBound) new Error(ErrorKind.Semantic,$"Upper bound {UpperBound} must be greater than {LowerBound}",ActualLine);
                 SequenceValues.RemoveAt(Count - 1);
                 double temp = LowerBound + 1;
 

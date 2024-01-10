@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Menor : NumericasBinary
 {
-    public Menor(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Menor(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"<"){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();
@@ -13,7 +13,7 @@ public class Menor : NumericasBinary
 
 public class MenorIgual : NumericasBinary
 {
-    public MenorIgual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public MenorIgual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"<="){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();

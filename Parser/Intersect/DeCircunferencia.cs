@@ -7,8 +7,10 @@ public static partial class Intersection
     {
         List<Node> intersections = new List<Node>();
         Punto circunferencia1Centro, circunferencia2Centro;
-        Punto.TryParse(circunferencia1.Centro.Value, out circunferencia1Centro); circunferencia1Centro.Start();
-        Punto.TryParse(circunferencia2.Centro.Value, out circunferencia2Centro); circunferencia2Centro.Start();
+        if(!Punto.TryParse(circunferencia1.Centro.Value, out circunferencia1Centro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine); 
+        circunferencia1Centro.Start();
+        if(!Punto.TryParse(circunferencia2.Centro.Value, out circunferencia2Centro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine); 
+        circunferencia2Centro.Start();
 
         double x1 = circunferencia1Centro.X;
         double y1 = circunferencia1Centro.Y;

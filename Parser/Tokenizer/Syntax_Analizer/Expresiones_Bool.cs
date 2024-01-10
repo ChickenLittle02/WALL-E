@@ -14,14 +14,14 @@ namespace Syntax_Analizer
                         int actualLine = actual_token.actualLine;
                         Eat(TokenType.And_Operator,"");
                         Node result1 = Bool_Op(actualScope);
-                        result = new AndExpression(result,result1,NodeKind.Number,actualLine);
+                        result = new AndExpression(result,result1,actualLine);
                     }
                     else if (actual_token.Type == TokenType.Or_Operator)
                     {
                         int actualLine = actual_token.actualLine;
                         Eat(TokenType.Or_Operator,"");
                         Node result1 = Bool_Op(actualScope);
-                        result = new OrExpression(result,result1,NodeKind.Number,actualLine);
+                        result = new OrExpression(result,result1,actualLine);
                     }
             }
             return result;

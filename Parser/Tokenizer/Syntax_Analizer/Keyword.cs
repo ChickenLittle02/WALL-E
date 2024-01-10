@@ -16,7 +16,7 @@ namespace BackEnd
                 if (name == "print") result = Print(actualScope);
                 else if (name == "draw")
                 {
-                    Eat(TokenType.Keyword, "");
+                    Eat(TokenType.Keyword);
                     string FiguraId = "";
                     if (IsNext(TokenType.Quotes_Text))
                     {
@@ -55,14 +55,14 @@ namespace BackEnd
                 }
                 else if (name == "color")
                 {
-                    Eat(TokenType.Keyword, "");
+                    Eat(TokenType.Keyword);
                     string color = actual_token.Value.ToString();
                     Eat(TokenType.Identifier, "Se esperaba un identificador de color");
                     result = new Color(color, actualLine);
                 }
                 else if (name == "restore")
                 {
-                    Eat(TokenType.Keyword, "");
+                    Eat(TokenType.Keyword);
                     result = new Restore(actualLine);
                 }
 
@@ -72,24 +72,24 @@ namespace BackEnd
             public Node Intersect(Scope actualScope)
             {
                 int actualLine = actual_token.actualLine;
-                Eat(TokenType.Keyword, "");
+                Eat(TokenType.Keyword);
 
                 //Significa que es la funcion intersect(1,2);
                 HayBracket = true;
                 List<Node> PointExpression = new List<Node>();
-                Eat(TokenType.LEFT_PARENTHESIS,"");
+                Eat(TokenType.LEFT_PARENTHESIS);
                 HayBracket = true;
                 Node Expression = BuildExpression(actualScope);
                 PointExpression.Add(Expression);
                 while (actual_token.Type is TokenType.Comma)
                 {
-                    Eat(TokenType.Comma, "");
+                    Eat(TokenType.Comma);
                     Expression = BuildExpression(actualScope);
                     PointExpression.Add(Expression);
                 }
-                Eat(TokenType.RIGHT_PARENTHESIS,"");
+                Eat(TokenType.RIGHT_PARENTHESIS);
                 HayBracket = false;
-                if (PointExpression.Count != 2) throw new Exception("La funcion intersect recibe solo dos parametros");
+                if (PointExpression.Count != 2) new Error(ErrorKind.Semantic,"La funcion intersect recibe solo dos parametros",actualLine);
                 Node result = new IntersectionFunction(PointExpression[0], PointExpression[1], actualLine);
                 return result;
             }
@@ -119,14 +119,14 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PointExpression.Count != 2) throw new Exception("La funcion punto recibe solo dos parametros");
+                    if (PointExpression.Count != 2) new Error(ErrorKind.Semantic,"point function only recieve two parameters",actualLine);
                     result = new PointFunction(PointExpression[0], PointExpression[1], actualLine);
                 }
                 else
                 {
                     //Tiene que ser un identificador point p1;
                     string name = actual_token.Value.ToString();
-                    Eat(TokenType.Identifier, "Se esperaba un identificador");
+                    Eat(TokenType.Identifier, " Expected an ID after point");
                     actualScope.AddCOnstant(name, new Punto(actualLine));
                     IsDeclaration = true;
                 }
@@ -158,7 +158,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PuntosParaCrearLinea.Count != 2) throw new Exception("La funcion line recibe dos puntos de parametros");
+                    if (PuntosParaCrearLinea.Count != 2) new Error(ErrorKind.Semantic,"line function only recieve two parameters",actualLine);
                     if (tipo is "line") result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else if (tipo is "segment") result = new SystemFunction(new Segment(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else result = new SystemFunction(new Ray(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
@@ -170,7 +170,7 @@ namespace BackEnd
                     //TIene que ser un identificador line p1;
                     string name = actual_token.Value.ToString();
                     actualLine = actual_token.actualLine;
-                    Eat(TokenType.Identifier, "Se esperaba un identificador despues de la declaracion de line");
+                    Eat(TokenType.Identifier, " Expected an ID after line");
                     if (tipo is "line") actualScope.AddCOnstant(name, new Line(actualLine));
                     else if (tipo is "segment") actualScope.AddCOnstant(name, new Segment(actualLine));
                     else //if(tipo is "line") 
@@ -194,20 +194,20 @@ namespace BackEnd
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
                 {
-                    Eat(TokenType.LEFT_PARENTHESIS, "");
+                    Eat(TokenType.LEFT_PARENTHESIS);
                     HayBracket = true;
                     List<Node> PuntosParaCrearArco = new List<Node>();
                     Node ExpresionesParaArcos = BuildExpression(actualScope);
                     PuntosParaCrearArco.Add(ExpresionesParaArcos);
                     while (actual_token.Type == TokenType.Comma)
                     {
-                        Eat(TokenType.Comma, "");
+                        Eat(TokenType.Comma);
                         ExpresionesParaArcos = BuildExpression(actualScope);
                         PuntosParaCrearArco.Add(ExpresionesParaArcos);
                     }
-                    Eat(TokenType.RIGHT_PARENTHESIS, "");
+                    Eat(TokenType.RIGHT_PARENTHESIS);
                     HayBracket = false;
-                    if (PuntosParaCrearArco.Count != 4) throw new Exception("La funcion arco recibe 4 valores de parametros");
+                    if (PuntosParaCrearArco.Count != 4) new Error(ErrorKind.Semantic,"arc function must recieve 4 parameters",actualLine);
                     result = new Arco(PuntosParaCrearArco[0], PuntosParaCrearArco[1], PuntosParaCrearArco[2], PuntosParaCrearArco[3], actualLine);
 
 
@@ -251,7 +251,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PuntosParaCrearCircle.Count != 2) throw new Exception("La funcion circunferencia recibe 3 valores de parametros");
+                    if (PuntosParaCrearCircle.Count != 2) new Error(ErrorKind.Semantic,"circle function must recieve two parameters",actualLine);
                     result = new Circunferencia(PuntosParaCrearCircle[0], PuntosParaCrearCircle[1], actualLine);
                 }
                 else

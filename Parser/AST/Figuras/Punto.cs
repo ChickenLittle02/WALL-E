@@ -42,12 +42,12 @@ namespace BackEnd
             if (X_Value is not null)
             {
                 X_Value.CheckSemantic();
-                if (X_Value.Kind is not NodeKind.Number) throw new Exception("Debe ser de tipo numerico");
+                if (X_Value.Kind is not NodeKind.Number) new Error(ErrorKind.Semantic,"First argument must be a number",ActualLine);
             }
             if (Y_Value is not null)
             {
                 Y_Value.CheckSemantic();
-                if (Y_Value.Kind is not NodeKind.Number) throw new Exception("Debe ser de tipo numerico");
+                if (Y_Value.Kind is not NodeKind.Number) new Error(ErrorKind.Semantic,"Second argument must be a number",ActualLine);
             }
         }
         public static bool TryParse(object Object, out Punto Casteo)

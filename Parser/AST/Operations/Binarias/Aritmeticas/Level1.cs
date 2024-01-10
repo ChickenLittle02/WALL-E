@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Suma : NumericasBinary
 {
-    public Suma(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine)
+    public Suma(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"+")
     {
         
     }
@@ -52,18 +52,20 @@ public class Suma : NumericasBinary
         LeftNode.CheckSemantic();
         RightNode.CheckSemantic();
         if(LeftNode.Kind is NodeKind.Number){
-            if(RightNode.Kind is not NodeKind.Number&&RightNode.Kind is not NodeKind.Temp ) throw new Exception("No se puede usar el operador + con un tipo "+LeftNode.Kind+" "+RightNode.Kind);
+            if(RightNode.Kind is not NodeKind.Number&&RightNode.Kind is not NodeKind.Temp ) 
+            new Error(ErrorKind.Semantic,"You can't use + operator with "+LeftNode.Kind+" "+RightNode.Kind,ActualLine);
             SetKind(NodeKind.Number);
         }
         else if(LeftNode.Kind is NodeKind.Sequence){
-            if(RightNode.Kind is not NodeKind.Sequence&&RightNode.Kind is not NodeKind.Temp) throw new Exception("No se puede usar el operador + con un tipo "+LeftNode.Kind+" "+RightNode.Kind);
+            if(RightNode.Kind is not NodeKind.Sequence&&RightNode.Kind is not NodeKind.Temp) 
+            new Error(ErrorKind.Semantic,"You can't use + operator with "+LeftNode.Kind+" "+RightNode.Kind,ActualLine);
             SetKind(NodeKind.Sequence);
         }else if(LeftNode.Kind is NodeKind.Temp)
         {
         if(RightNode.Kind is NodeKind.Number) SetKind(NodeKind.Number);
         else if(RightNode.Kind is NodeKind.Sequence) SetKind(NodeKind.Sequence);
         else SetKind(NodeKind.Temp);    
-        }else throw new Exception("No se puede usar el operador + con un tipo "+LeftNode.Kind+" "+RightNode.Kind);
+        }else new Error(ErrorKind.Semantic,"You can't use + operator with "+LeftNode.Kind+" "+RightNode.Kind,ActualLine);
         
 
     }//Recordar que en la suma tambien pueden haber secuencias
@@ -71,7 +73,7 @@ public class Suma : NumericasBinary
 
 public class Resta : NumericasBinary
 {
-    public Resta(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Resta(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,"-"){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();

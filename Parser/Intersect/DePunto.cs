@@ -102,7 +102,7 @@ public static Sequence Intersect(Line recta1, Punto punto1,  int actualLine)
     {
         List<Node> Puntos = new List<Node>();
         Punto circunferenciaCentro;
-        Punto.TryParse(circunferencia.Centro.Value, out circunferenciaCentro);
+        if(!Punto.TryParse(circunferencia.Centro.Value, out circunferenciaCentro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
         circunferenciaCentro.Start();
         double Equation = Math.Pow(circunferenciaCentro.X - point.X, 2) + Math.Pow(circunferenciaCentro.Y - point.Y, 2);
         if (Equation == Math.Pow(circunferencia.radio, 2))

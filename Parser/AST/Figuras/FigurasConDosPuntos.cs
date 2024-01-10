@@ -19,11 +19,12 @@ namespace BackEnd
         public override void CheckSemantic()
         {
                 Punto1.CheckSemantic();
-                if (Punto1.Kind is not NodeKind.Punto) throw new Exception("Ambos argumentos deben ser puntos");
+                if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"First argument must be a point",Punto1.ActualLine);
+                
 
 
                 Punto2.CheckSemantic();
-                if (Punto2.Kind is not NodeKind.Punto) throw new Exception("Ambos argumentos deben ser puntos");
+                if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Second argument must be a point",Punto2.ActualLine);
             
         }
 

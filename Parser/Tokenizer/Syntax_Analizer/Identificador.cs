@@ -8,8 +8,8 @@ namespace Syntax_Analizer
             Node result = null;
             bool asignation = false;
             int actualLine = actual_token.actualLine;
+                string name = actual_token.Value.ToString();
                 Eat(TokenType.Identifier, "");
-                string name = actual_token_value.ToString();
                 //Hay varios casos, o es una constante, o una declaracion de funcion o es una instancia de funcion
                 //O es una declaracion de constante
                 if (IsNext(TokenType.LEFT_PARENTHESIS))
@@ -29,14 +29,14 @@ namespace Syntax_Analizer
 
                         Node FunctionExpressions = BuildExpression(actualScope);//Expresiones recibidas
 
-                        if (FunctionExpressions is null) Error("No se pueden hacer declaraciones en los argumentos");
+                        if (FunctionExpressions is null) new Error(ErrorKind.Semantic,"In function arguments you can't declare any function or variable",actualLine);
                         else RecieveExpression.Add(FunctionExpressions);
 
                         while (actual_token.Type is TokenType.Comma)
                         {
                             Eat(TokenType.Comma, "");
                             FunctionExpressions = BuildExpression(actualScope);
-                            if (FunctionExpressions is null) Error("No se pueden hacer declaraciones en los argumentos");
+                            if (FunctionExpressions is null) new Error(ErrorKind.Semantic,"In function arguments you can't declare any function or variable",actualLine);
                             else RecieveExpression.Add(FunctionExpressions);
                         }
                         Eat(TokenType.RIGHT_PARENTHESIS, "");
@@ -61,11 +61,11 @@ namespace Syntax_Analizer
                         List<Token> TokensBody = new List<Token>();
 
                         for (int i = inicio; i < final; i++) TokensBody.Add(Token_Set[i]);
-                        if(!IsNext(TokenType.Semicolon)) throw new Exception("Toda expresion debe terminar con punto y coma");
+                        if(!IsNext(TokenType.Semicolon)) new Error(ErrorKind.Semantic,"All expression must end with ';' ",actualLine);
                         TokensBody.Add(actual_token);
 
                         actualScope.RemoveFUnction(name);
-                        function = new Function(name,RecieveExpression, TokensBody, TokenType.nul,actualScope);
+                        function = new Function(name,RecieveExpression, TokensBody, TokenType.nul,actualScope,actualLine);
                         actualScope.AddFunction(name,function);
                     }
                     else
@@ -101,8 +101,8 @@ namespace Syntax_Analizer
                         Eat(TokenType.Identifier, "");
                         Constants.Add((name, actualLine));
                     }
-                    Eat(TokenType.RIGHT_PARENTHESIS,"Se esperaba un )");
-                    Eat(TokenType.Asignation_Operator, "Se esperaba un operador de asignacion");
+                    Eat(TokenType.RIGHT_PARENTHESIS);
+                    Eat(TokenType.Asignation_Operator);
                     Node ConstantsExpression = BuildExpression(actualScope);
                     for (int i = 0; i < Constants.Count; i++)
                     {

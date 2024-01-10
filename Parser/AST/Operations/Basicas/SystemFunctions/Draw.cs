@@ -10,7 +10,9 @@ namespace BackEnd
         public override void CheckSemantic()
         {
             Expression.CheckSemantic();
-            if (!ForFigura.IsFigura(Expression.Kind) && Expression.Kind is not NodeKind.Sequence) throw new Exception("La funcion Draw solo recibe figuras o secuencias de figuras");
+            if (!ForFigura.IsFigura(Expression.Kind) && Expression.Kind is not NodeKind.Sequence) 
+            new Error(ErrorKind.Semantic,$"Function Draw only recieve figures or sequences",ActualLine);
+        
         }
 
         public override void Evaluate()
@@ -37,7 +39,8 @@ namespace BackEnd
                     {
 
                         if (SequenceExpression.SequenceDataKind is not NodeKind.Sequence)
-                            throw new Exception("La secuencia recibida por la funcion draw debe ser de figuras o secuencias de figuras");
+                        new Error(ErrorKind.Semantic,$"Unexpected type {SequenceExpression.SequenceDataKind}: Recieved sequence for the Function Draw must be only recieve figures or figures sequences",ActualLine);
+        
 
                     }
                     else
@@ -54,7 +57,8 @@ namespace BackEnd
                 }
 
             }
-            else throw new Exception("Unexpected type");
+            else new Error(ErrorKind.Semantic,$"Unexpected type {Expression.Kind}: Recieved sequence for the Function Draw must be only recieve figures or figures sequences",ActualLine);
+ 
         }
 
 

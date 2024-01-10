@@ -1,7 +1,7 @@
 namespace BackEnd{
 public class Mayor : NumericasBinary
 {
-    public Mayor(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public Mayor(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,">"){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();
@@ -13,7 +13,7 @@ public class Mayor : NumericasBinary
 
 public class MayorIgual : NumericasBinary
 {
-    public MayorIgual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine){}
+    public MayorIgual(Node leftNode, Node rightNode,int actualLine) : base(leftNode, rightNode,actualLine,">="){}
     public override void Evaluate()
     {
         LeftNode.Evaluate();

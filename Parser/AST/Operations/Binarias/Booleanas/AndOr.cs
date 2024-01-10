@@ -1,7 +1,7 @@
 namespace BackEnd{
-public class AndExpression : BinaryOperations
+public class AndExpression : NumericasBinary
 {
-    public AndExpression(Node leftNode, Node rightNode, NodeKind kind, int actualLine) : base(leftNode, rightNode, kind, actualLine)
+    public AndExpression(Node leftNode, Node rightNode, int actualLine) : base(leftNode, rightNode, actualLine,"&")
     {
     }
 
@@ -23,9 +23,9 @@ public class AndExpression : BinaryOperations
     }
 }
 
-public class OrExpression : BinaryOperations
+public class OrExpression : NumericasBinary
 {
-    public OrExpression(Node leftNode, Node rightNode, NodeKind kind, int actualLine) : base(leftNode, rightNode, kind, actualLine)
+    public OrExpression(Node leftNode, Node rightNode, int actualLine) : base(leftNode, rightNode, actualLine,"|")
     {
     }
 

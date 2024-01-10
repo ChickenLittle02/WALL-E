@@ -30,22 +30,24 @@ namespace BackEnd
             if (Punto1 is not null)
             {
                 Punto1.CheckSemantic();
-                if (Punto1.Kind is not NodeKind.Punto) throw new Exception("Ambos argumentos deben ser puntos");
+                if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Second argument of arc declaration must be a point",ActualLine);
+
             }
             if (Punto2 is not null)
             {
                 Punto2.CheckSemantic();
-                if (Punto2.Kind is not NodeKind.Punto) throw new Exception("Ambos argumentos deben ser puntos");
+                if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Third argument of arc declaration must be a point",ActualLine);
+
             }
             if (Centro is not null)
             {
                 Centro.CheckSemantic();
-                if (Centro.Kind is not NodeKind.Punto) throw new Exception("Ambos argumentos deben ser puntos");
+                if (Centro.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"First argument of arc declaration must be a point",ActualLine);
             }
             if (Radio is not null)
             {
                 Radio.CheckSemantic();
-                if (Radio.Kind is not NodeKind.Number) throw new Exception("El ultimo argumento debe ser measure");//Hay que cambiar esto
+                if (Radio.Kind is not NodeKind.Number)  new Error(ErrorKind.Semantic,"Fourth argument of circle declaration must be a measure",ActualLine);
             }
 
         }

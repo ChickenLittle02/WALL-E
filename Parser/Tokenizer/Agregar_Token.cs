@@ -22,8 +22,8 @@ namespace Lexer_Analizer
                     GetNextChar();
                     for (int i = 0; i < 2; i++)
                     {
+                        if (!(actual_char is '.')) new Error(ErrorKind.Lexycal,$"Unexpected token {actual_char}, expected '.'",ActualLine);
                         TresPuntos += actual_char;
-                        if (!(actual_char is '.')) Error("Invalid Token");
                         GetNextChar();
                     }
                     Add_To_TokenSet(TokenType.TresPuntos, TresPuntos);
@@ -163,7 +163,8 @@ namespace Lexer_Analizer
                     GetNextChar();
                 }
 
-                if (Char.IsLetter(actual_char)) Error("Después de un número no puede haber ninguna letra " + actual_TokenValue);
+                if (Char.IsLetter(actual_char)) 
+                new Error(ErrorKind.Lexycal,$"Unexpected token {actual_char}, after a number can't be any letter",ActualLine);
 
                 Add_To_TokenSet(actual_Tokentype, Double.Parse(actual_TokenValue));
             }
@@ -178,8 +179,8 @@ namespace Lexer_Analizer
                     GetNextChar();
                 }
 
-                if (actual_char != '"') Error(actual_TokenValue + "  Toda cadena de texto debe concluir con " + '"');
-
+                if (actual_char != '"') 
+                new Error(ErrorKind.Lexycal,$"Unexpected token {actual_char}, expected "+'"',ActualLine);
 
                 Add_To_TokenSet(actual_Tokentype, actual_TokenValue);
                 GetNextChar();
@@ -309,7 +310,7 @@ namespace Lexer_Analizer
                     GetNextChar();
                 }
             }
-            else Error(actual_char + " No es un token válido");
+            else new Error(ErrorKind.Lexycal,$"Invalid token {actual_char}",ActualLine);
 
 
         }

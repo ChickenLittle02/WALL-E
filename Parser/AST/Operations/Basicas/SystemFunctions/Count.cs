@@ -8,7 +8,7 @@ public class Count : SystemFunction
     public override void CheckSemantic()
     {
         Expression.CheckSemantic();
-        if(Expression is not Sequence) throw new Exception("La funcion Count solo recibe una secuencia");
+        if(Expression is not Sequence) new Error(ErrorKind.Semantic,$"Function Count recieve a sequence",ActualLine);
     }
     public override void Evaluate()
     {

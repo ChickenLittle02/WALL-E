@@ -29,7 +29,8 @@ public class IfElse : TernaryOperator
         LeftNode.CheckSemantic();
         RightNode.CheckSemantic();
         if (LeftNode.Kind != RightNode.Kind&&LeftNode.Kind is not NodeKind.Temp&&RightNode.Kind is not NodeKind.Temp) 
-        throw new Exception("Ambos retornos deben ser del mismo tipo");
+        new Error(ErrorKind.Semantic,$"If else expression can't return diferents kinds:{RightNode.Kind} and {LeftNode.Kind}",ActualLine);
+         
     }
 
 

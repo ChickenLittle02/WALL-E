@@ -38,17 +38,39 @@ namespace BackEnd
             {
                 var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Prueba.TokenSet);
                 Syntaxis.Start();
-                foreach (var item in Syntaxis.NodesLines) item.CheckSemantic();
-                string resultado = "";
-                foreach (var item in Syntaxis.NodesLines)
+                if (Error.diagnostics.Count == 0)
                 {
-                    item.Evaluate();
-                    if (item is Print)
+                    foreach (var item in Syntaxis.NodesLines) item.CheckSemantic();
+                    if (Error.diagnostics.Count == 0)
                     {
-                        resultado += item.Value.ToString() + "\n";
+                        string resultado = "";
+                        foreach (var item in Syntaxis.NodesLines)
+                        {
+                            if (Error.diagnostics.Count == 0)
+                            {
+                                item.Evaluate();
+                                if (item is Print)
+                                {
+                                    resultado += item.Value.ToString() + "\n";
+                                }
+                            }
+                            else break;
+                        }
+                        if (Error.diagnostics.Count == 0)
+                        {
+                            Console = resultado;
+                        }
+                        else Console = Error.GetErrors();
+                    }
+                    else
+                    {
+                        Console = Error.GetErrors();
                     }
                 }
-                Console = resultado;
+                else
+                {
+                    Console = Error.GetErrors();
+                }
             }
         }
 
