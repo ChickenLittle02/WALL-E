@@ -69,7 +69,7 @@ public static partial class Intersection
         double x1 = rectaPunto1.X;
         double y1 = rectaPunto1.Y;
         double x2 = rectaPunto2.X;
-        double y2 = rectaPunto2.X;
+        double y2 = rectaPunto2.Y;
         double x0 = punto.X;
         double y0 = punto.Y;
 

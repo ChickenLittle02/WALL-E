@@ -10,7 +10,7 @@ namespace BackEnd
             Punto1 = new Punto(actualLine);
             Punto2 = new Punto(actualLine);
         }
-        public FigurasConDosPuntos(Node punto1, Node punto2,NodeKind kind, int actualLine) : base(kind, actualLine)
+        public FigurasConDosPuntos(Node punto1, Node punto2, NodeKind kind, int actualLine) : base(kind, actualLine)
         {
             Punto1 = punto1;
             Punto2 = punto2;
@@ -18,14 +18,14 @@ namespace BackEnd
 
         public override void CheckSemantic()
         {
-                Punto1.CheckSemantic();
-                if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"First argument must be a point",Punto1.ActualLine);
-                
+            Punto1.CheckSemantic();
+            if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"First argument must be a point",Punto1.ActualLine);
 
 
-                Punto2.CheckSemantic();
-                if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Second argument must be a point",Punto2.ActualLine);
-            
+
+            Punto2.CheckSemantic();
+            if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Second argument must be a point",Punto2.ActualLine);
+
         }
 
         public override void Evaluate()
@@ -37,9 +37,9 @@ namespace BackEnd
         }
         public override string ToString()
         {
-            Punto Point1 = (Punto)Punto1;
-            
-            Punto Point2 = (Punto)Punto2;
+            Punto Point1 = (Punto)this.Punto1.Value;
+
+            Punto Point2 = (Punto)this.Punto2.Value;
             return $"{Identifier} ({Point1.X},{Point1.Y});({Point2.X},{Point2.Y})";
         }
 

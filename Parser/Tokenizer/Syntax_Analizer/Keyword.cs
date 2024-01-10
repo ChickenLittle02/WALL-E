@@ -64,6 +64,11 @@ namespace BackEnd
                 {
                     Eat(TokenType.Keyword);
                     result = new Restore(actualLine);
+                }else if(name == "measure")
+                {
+                    Eat(TokenType.Keyword);
+                    Node Expression = BuildExpression(actualScope);
+
                 }
 
                 return (result, IsDeclaration);
@@ -101,6 +106,7 @@ namespace BackEnd
                 Eat(TokenType.Keyword, "");
                 if (IsNext(TokenType.SequenceKeyword))
                 {//Es point sequence prueba aqui prueba es un tipo secuencia de puntos
+                
 
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))

@@ -40,7 +40,7 @@ namespace BackEnd
             {
                 Centro.CheckSemantic();
                 if (Centro.Kind is not NodeKind.Punto)  new Error(ErrorKind.Semantic,"First argument of circle declaration must be a point",ActualLine);
-                throw new Exception("Debe ser de tipo centro");
+throw new Exception("Debe ser de tipo centro");
             }
             if (Radio is not null)
             {
@@ -61,7 +61,7 @@ namespace BackEnd
             {
                 Radio.Evaluate();
                 double value;
-                if (!Double.TryParse(Radio.Value.ToString(), out value)) new Error(ErrorKind.Semantic,"Unexpected error: this must be a measure",ActualLine);
+                if (!Double.TryParse(Radio.Value.ToString(), out value)) new Error(ErrorKind.Semantic, "Unexpected error: this must be a measure", ActualLine);
                 radio = value;
             }
             SetValue(this);
@@ -76,7 +76,7 @@ namespace BackEnd
         public override async void Draw()
         {
             Punto value;
-            if (!Punto.TryParse(Centro.Value, out value)) new Error(ErrorKind.Semantic,"Unexpected error: this must be a point",ActualLine);
+            if (!Punto.TryParse(Centro.Value, out value)) new Error(ErrorKind.Semantic, "Unexpected error: this must be a point", ActualLine);
             string color = ForDraw.GetColor();
             await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", color, value.X, value.Y, radio);
         }

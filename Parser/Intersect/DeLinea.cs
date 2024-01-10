@@ -28,13 +28,13 @@ public partial class Intersection
         }
         //si no pasa algo de esto entonces se calculan los intersectos 
         Punto recta1Punto1, recta1Punto2, recta2Punto1, recta2Punto2;
-        if(!Punto.TryParse(recta1.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta1.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta1Punto1.Start();
-        if(!Punto.TryParse(recta1.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta1.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta1Punto2.Start();
-        if(!Punto.TryParse(recta2.Punto1.Value, out recta2Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta2.Punto1.Value, out recta2Punto1)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta2Punto1.Start();
-        if(!Punto.TryParse(recta2.Punto2.Value, out recta2Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta2.Punto2.Value, out recta2Punto2)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta2Punto2.Start();
 
         double x1 = recta1Punto1.X;
@@ -69,75 +69,72 @@ public partial class Intersection
         // este metodo es para intersectar una circunferencia y una recta 
         var (m, n) = LineEquation(recta);
         Punto recta1Punto1, recta1Punto2, centro;
-        if(!Punto.TryParse(recta.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta.Punto1.Value, out recta1Punto1)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta1Punto1.Start();
-        if(!Punto.TryParse(recta.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(recta.Punto2.Value, out recta1Punto2)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         recta1Punto2.Start();
 
-        if(!Punto.TryParse(circunferencia.Centro.Value, out centro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine);
+        if (!Punto.TryParse(circunferencia.Centro.Value, out centro)) new Error(ErrorKind.RunTime, "Unexpected error: There will be a Point in Intersect function", actualLine);
         centro.Start();
         var radius = circunferencia.radio;
 
-        double centroX = centro.X;
-        double centroY = centro.Y;
+        var distance = PointLineDistance(centro, recta);
+        List<Node> intersection = new List<Node>();
+        if (distance > radius) return new FiniteSequence(new List<Node>(), false, actualLine);
 
-        //Ecuacion de Discriminante : b^2 -4*a*c.
-        double A = 1 + Math.Pow(m, 2);
-        double B = 2 * (m * n - m * centroY - centroX);
-        double C = Math.Pow(centroY, 2) - Math.Pow(radius, 2) + Math.Pow(centroX, 2) - 2 * n * centroY + Math.Pow(n, 2);
+        double discriminant;
 
-        double discriminant = Math.Pow(B, 2) - 4 * A * C;//calculo del discriminante 
-
-        // Distancia del centro a la recta
-        double distance = PointLineDistance(centro, recta);
-
-        List<Node> intersections = new List<Node>();
-        if (distance > radius)
+        if (recta1Punto1.X == recta1Punto2.X)
         {
-            var resultado = new FiniteSequence(intersections, false, actualLine);
-            resultado.Start();
-            return resultado;
-        }
-
-        if (recta1Punto1.X == recta1Punto2.X) // Si la línea es vertical (pendiente indefinida)
-        {
-            double lineX = recta1Punto1.X; // Obtenemos el valor de x de la línea (x = c)
-            discriminant = Math.Pow(radius, 2) - Math.Pow((lineX - centroX), 2);
-
-            if (discriminant == 0) // Un solo punto de intersección
+            double lineX = recta1Punto1.X;   // in case of undefined slope
+            discriminant = Math.Pow(radius, 2) - Math.Pow(lineX - centro.X, 2);
+            if (discriminant == 0)
             {
-                double y = centroY + Math.Sqrt(discriminant);
-                intersections.Add(new Punto(lineX, y, actualLine));
+                double y = centro.Y + Math.Sqrt(discriminant);
+                intersection.Add(new Punto(lineX, y, actualLine));
             }
-            else if (discriminant > 0) // Dos puntos de intersección
+            else if (discriminant > 0)
             {
-                double y1 = centroY + Math.Sqrt(discriminant);
-                double y2 = centroY - Math.Sqrt(discriminant);
-
-                intersections.Add(new Punto(lineX, y1, actualLine));
-                intersections.Add(new Punto(lineX, y2, actualLine));
+                double y1 = centro.Y + Math.Sqrt(discriminant);
+                double y2 = centro.Y - Math.Sqrt(discriminant);
+                intersection.Add(new Punto(lineX, y1, actualLine));
+                intersection.Add(new Punto(lineX, y2, actualLine));
             }
+
+            return new FiniteSequence(intersection, false, actualLine);
         }
-        else if (distance == radius)
+        else
         {
-            double x = (-B) / (2 * A);
-            double y = m * x + n;
-            intersections.Add(new Punto(x, y, actualLine));
-        }
-        else if (discriminant >= 0)
-        {
+                       
+            double centerX = centro.X;
+            double centerY = centro.Y;
+
+            // Discriminant equation: b^2 -4*a*c.
+            double A = 1 + Math.Pow(m, 2);
+            double B = 2 * (m * n - m * centerY - centerX);
+            double C = Math.Pow(centerY, 2) - Math.Pow(radius, 2) + Math.Pow(centerX, 2) - 2 * n * centerY + Math.Pow(n, 2);
+
+            discriminant = Math.Pow(B, 2) - 4 * A * C;
+
+
+            if (distance == radius)
+            {
+                double x = (-B) / (2 * A);
+                double y = m * x + n;
+                intersection.Add(new Punto(x, y, actualLine));
+                return new FiniteSequence(intersection,false, actualLine);
+            }
+
             double x1 = (-B + Math.Sqrt(discriminant)) / (2 * A);
             double x2 = (-B - Math.Sqrt(discriminant)) / (2 * A);
 
             double y1 = m * x1 + n;
             double y2 = m * x2 + n;
 
-            intersections.Add(new Punto(x1, y1, actualLine));
-            intersections.Add(new Punto(x2, y2, actualLine));
+            intersection.Add(new Punto(x1, y1, actualLine));
+            intersection.Add(new Punto(x2, y2, actualLine));
+            return new FiniteSequence(intersection, false, actualLine);
         }
-        var result = new FiniteSequence(intersections, false, actualLine);
-        result.Start();
-        return result;
     }
     public static Sequence Intersect(Segment segmento, Line recta, int actualLine)
     {
@@ -156,14 +153,14 @@ public partial class Intersection
 
             List<Node> intersections = new List<Node>();
 
-            foreach (var point in intersections)
+            foreach (var point in seq.GetELements)
             {
                 if (IsInSegment((Punto)point, segmento))
                 {
                     intersections.Add(point);
                 }
             }
-            var resultado =  new FiniteSequence(intersections, false, actualLine);
+            var resultado = new FiniteSequence(intersections, false, actualLine);
             resultado.Start();
             return resultado;
         }
@@ -200,7 +197,7 @@ public partial class Intersection
             return result;
         }
         // Line and ray overlap
-        var resultado = new  UndefinedSequence(actualLine);
+        var resultado = new UndefinedSequence(actualLine);
         resultado.Start();
         return resultado;
 

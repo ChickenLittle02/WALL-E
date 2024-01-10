@@ -101,7 +101,6 @@ namespace Syntax_Analizer
                         Eat(TokenType.Identifier, "");
                         Constants.Add((name, actualLine));
                     }
-                    Eat(TokenType.RIGHT_PARENTHESIS);
                     Eat(TokenType.Asignation_Operator);
                     Node ConstantsExpression = BuildExpression(actualScope);
                     for (int i = 0; i < Constants.Count; i++)
