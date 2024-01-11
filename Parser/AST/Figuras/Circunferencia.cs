@@ -39,12 +39,12 @@ namespace BackEnd
             if (Centro is not null)
             {
                 Centro.CheckSemantic();
-                if (Centro.Kind is not NodeKind.Punto && Centro.Kind is not NodeKind.Temp)  new Error(ErrorKind.Semantic,"First argument of circle declaration must be a point",ActualLine);
+                if (Centro.Kind is not NodeKind.Punto && Centro.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic, "First argument of circle declaration must be a point", ActualLine);
             }
             if (Radio is not null)
             {
                 Radio.CheckSemantic();
-                if (Radio.Kind is not NodeKind.Number  && Centro.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic,"First argument of circle declaration must be a measure",ActualLine);
+                if (Radio.Kind is not NodeKind.Number && Centro.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic, "First argument of circle declaration must be a measure", ActualLine);
             }
 
         }
@@ -72,12 +72,19 @@ namespace BackEnd
 
             return $"Centro({Center.X},{Center.Y});{radio}";
         }
-        public override async void Draw()
+        public override async void Draw(string ID)
         {
             Punto value;
             if (!Punto.TryParse(Centro.Value, out value)) new Error(ErrorKind.Semantic, "Unexpected error: this must be a point", ActualLine);
             string color = ForDraw.GetColor();
-            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", color, value.X, value.Y, radio);
+            if (ID is null)
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", color, value.X, value.Y, radio);
+            }
+            else
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvasConID", color, value.X, value.Y, radio,ID);
+            }
         }
     }
 }

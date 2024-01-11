@@ -24,7 +24,7 @@ namespace BackEnd
                 Figura ToDraw = (Figura)Expression.Value;
                 ToDraw.CheckSemantic();
                 ToDraw.Evaluate();
-                ToDraw.Draw();
+                ToDraw.Draw(ID);
             }
             else if (Expression.Value is Sequence)
             {

@@ -30,24 +30,24 @@ namespace BackEnd
             if (Punto1 is not null)
             {
                 Punto1.CheckSemantic();
-                if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Second argument of arc declaration must be a point",ActualLine);
+                if (Punto1.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic, "Second argument of arc declaration must be a point", ActualLine);
 
             }
             if (Punto2 is not null)
             {
                 Punto2.CheckSemantic();
-                if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"Third argument of arc declaration must be a point",ActualLine);
+                if (Punto2.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic, "Third argument of arc declaration must be a point", ActualLine);
 
             }
             if (Centro is not null)
             {
                 Centro.CheckSemantic();
-                if (Centro.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic,"First argument of arc declaration must be a point",ActualLine);
+                if (Centro.Kind is not NodeKind.Punto) new Error(ErrorKind.Semantic, "First argument of arc declaration must be a point", ActualLine);
             }
             if (Radio is not null)
             {
                 Radio.CheckSemantic();
-                if (Radio.Kind is not NodeKind.Number)  new Error(ErrorKind.Semantic,"Fourth argument of circle declaration must be a measure",ActualLine);
+                if (Radio.Kind is not NodeKind.Number) new Error(ErrorKind.Semantic, "Fourth argument of circle declaration must be a measure", ActualLine);
             }
 
         }
@@ -74,7 +74,7 @@ namespace BackEnd
             SetValue(this);
         }
 
-        public override async void Draw()
+        public override async void Draw(string ID)
         {
             Punto ValueP1 = (Punto)Punto1.Value;
             Punto ValueP2 = (Punto)Punto2.Value;
@@ -82,8 +82,15 @@ namespace BackEnd
 
             string color = ForDraw.GetColor();
 
-            await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas", color, ValueC.X, ValueC.Y, ValueP1.X, ValueP1.Y, ValueP2.X, ValueP2.Y, radio);
+            if (ID is null)
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvas", color, ValueC.X, ValueC.Y, ValueP1.X, ValueP1.Y, ValueP2.X, ValueP2.Y, radio);
+            }
+            else
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarArcoEnCanvasConID", color, ValueC.X, ValueC.Y, ValueP1.X, ValueP1.Y, ValueP2.X, ValueP2.Y, radio,ID);
 
+            }
         }
         public override string ToString()
         {
@@ -92,7 +99,7 @@ namespace BackEnd
             Centro.Start();
             Punto Center, Point1, Point2;
             Punto.TryParse(Centro.Value, out Center); Punto.TryParse(Punto1.Value, out Point1); Punto.TryParse(Punto2.Value, out Point2);
-            
+
             return $"Centro({Center.X},{Center.Y}),({Point1.X},{Point1.Y});({Point2.X},{Point2.Y})";
         }
     }

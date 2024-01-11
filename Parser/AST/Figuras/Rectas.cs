@@ -11,18 +11,26 @@ namespace BackEnd
         {
         }
 
-        public override async void Draw()
+        public override async void Draw(string ID)
         {
             Punto Point1 = (Punto)Punto1.Value;
             Punto Point2 = (Punto)Punto2.Value;
             Point1.CheckSemantic();
             Point1.Evaluate();
-            
+
             Point2.CheckSemantic();
             Point2.Evaluate();
+            if (ID is null)
+            {
 
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvas", ForDraw.GetColor(),Point1.X, Point1.Y,Point2.X,Point2.Y);
-        // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvas", ForDraw.GetColor(), Point1.X, Point1.Y, Point2.X, Point2.Y);
+                // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
+
+            }
+            else
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarSegmentoEnCanvasConID", ForDraw.GetColor(), Point1.X, Point1.Y, Point2.X, Point2.Y, ID);
+            }
         }
 
 
@@ -38,18 +46,24 @@ namespace BackEnd
         {
         }
 
-        public override async void Draw()
+        public override async void Draw(string ID)
         {
             Punto Point1 = (Punto)Punto1.Value;
             Punto Point2 = (Punto)Punto2.Value;
             Point1.CheckSemantic();
             Point1.Evaluate();
-            
+
             Point2.CheckSemantic();
             Point2.Evaluate();
-            
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", "myCanvas", ForDraw.GetColor(),Point1.X, Point1.Y, Point2.X, Point2.Y);
-        
+
+            if (ID is null)
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvas", "myCanvas", ForDraw.GetColor(), Point1.X, Point1.Y, Point2.X, Point2.Y);
+            }
+            else
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRayoEnCanvasConID", "myCanvas", ForDraw.GetColor(), Point1.X, Point1.Y, Point2.X, Point2.Y, ID);
+            }
 
         }
 
@@ -66,18 +80,27 @@ namespace BackEnd
         {
         }
 
-        public override async void Draw()
+        public override async void Draw(string ID)
         {
             Punto Point1 = (Punto)Punto1.Value;
             Punto Point2 = (Punto)Punto2.Value;
             Point1.CheckSemantic();
             Point1.Evaluate();
-            
+
             Point2.CheckSemantic();
             Point2.Evaluate();
-        string color = ForDraw.GetColor();
-        await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvas",color, Point1.X, Point1.Y,Point2.X,Point2.Y);
-        // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
+            string color = ForDraw.GetColor();
+            if (ID is null)
+            {
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvas", color, Point1.X, Point1.Y, Point2.X, Point2.Y);
+                // Parámetros: canvasId, puntoInicialX, puntoInicialY, puntoFinalX, puntoFinalY, color, grosor
+
+            }
+            else
+            {
+
+                await ForDraw._jsRuntime.InvokeVoidAsync("DibujarRectaEnCanvasConID", color, Point1.X, Point1.Y, Point2.X, Point2.Y, ID);
+            }
         }
 
     }

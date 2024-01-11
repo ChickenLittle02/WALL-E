@@ -18,11 +18,13 @@ namespace BackEnd
                 {
                     Eat(TokenType.Keyword);
                     string FiguraId = "";
+                    Node ExpressionForDraw = BuildExpression(actualScope);
                     if (IsNext(TokenType.Quotes_Text))
                     {
                         FiguraId = actual_token.Value.ToString();
+                        Eat(TokenType.Quotes_Text);
                     }
-                    result = new Draw(FiguraId, BuildExpression(actualScope), actualLine);
+                    result = new Draw(FiguraId, ExpressionForDraw, actualLine);
                 }
                 else if (name == "point")
                 {

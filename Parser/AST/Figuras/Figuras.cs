@@ -20,7 +20,7 @@ protected Figura(string identifier,  NodeKind kind, int actualLine) : base(kind,
     {
         Identifier = identifier;
     }
-    public abstract void Draw();
+    public abstract void Draw(string ID);
     public static bool TryParse(object Object, out Figura Casteo)
         {
             if (Object is Figura)
