@@ -1,0 +1,14 @@
+color blue;
+circle c;
+draw c;
+point p;
+color red;
+draw p;
+point q;
+restore;
+a = line(p,q);
+draw a;
+color green;
+inter = intersect(a,c);
+draw inter;
+print inter;

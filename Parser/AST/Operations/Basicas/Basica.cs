@@ -63,14 +63,17 @@ public class Constants : Node
         {
             if (IsSemantic)
             {
+                if(Search.constants[name] is null) SetKind(NodeKind.Temp);
+                else{
                 Search.constants[name].CheckSemantic();
-                SetKind(Search.constants[name].Kind);
+                SetKind(Search.constants[name].Kind);}
                 return true;
             }
             else
             {
                 Search.constants[name].Evaluate();
                 SetValue(Search.constants[name].Value);
+                SetKind(Search.constants[name].Kind);
                 return true;
 
             }

@@ -7,6 +7,7 @@ public class Suma : NumericasBinary
     }
     public override void Evaluate()
     {//Duda que pasa en el caso en que se recibe 4; por ejemplo
+        if(Value is not null) return;
         LeftNode.Evaluate();
         RightNode.Evaluate();
 

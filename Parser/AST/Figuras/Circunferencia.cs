@@ -39,13 +39,12 @@ namespace BackEnd
             if (Centro is not null)
             {
                 Centro.CheckSemantic();
-                if (Centro.Kind is not NodeKind.Punto)  new Error(ErrorKind.Semantic,"First argument of circle declaration must be a point",ActualLine);
-throw new Exception("Debe ser de tipo centro");
+                if (Centro.Kind is not NodeKind.Punto && Centro.Kind is not NodeKind.Temp)  new Error(ErrorKind.Semantic,"First argument of circle declaration must be a point",ActualLine);
             }
             if (Radio is not null)
             {
                 Radio.CheckSemantic();
-                if (Radio.Kind is not NodeKind.Number) new Error(ErrorKind.Semantic,"First argument of circle declaration must be a measure",ActualLine);
+                if (Radio.Kind is not NodeKind.Number  && Centro.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic,"First argument of circle declaration must be a measure",ActualLine);
             }
 
         }

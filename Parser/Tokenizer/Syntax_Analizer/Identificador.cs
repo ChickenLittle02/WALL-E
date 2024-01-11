@@ -56,7 +56,23 @@ namespace Syntax_Analizer
                         
                         Function function = new Function(name);
                         actualScope.AddFunction(name,function);
-                        Node BuilBody = BuildExpression(actualScope);
+                        Scope Parent = actualScope;
+                        if(RecieveExpression.Count!=0)
+                        {
+                            Parent = new Scope(actualScope);
+                            foreach(var item in RecieveExpression)
+                            {
+                                if(item is Constants)
+                                {
+                                    Constants Constant = (Constants)item;
+                                    Parent.AddCOnstant(Constant.name,null);
+                                }else{
+                                    new Error(ErrorKind.Semantic,$"Functions declaration can't have {item.Kind} as arguments",actualLine);
+                                }
+
+                            }
+                        }
+                        Node BuilBody = BuildExpression(Parent);
                         int final = position;
                         List<Token> TokensBody = new List<Token>();
 

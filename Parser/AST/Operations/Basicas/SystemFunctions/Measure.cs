@@ -22,12 +22,12 @@ namespace BackEnd
             if (Point1 is not null)
             {
                 Point1.CheckSemantic();
-                if (Point1.Value is not Punto) new Error(ErrorKind.Semantic, $"Measure function only recieve point", ActualLine);
+                if (Point1.Kind is not NodeKind.Punto  && Point1.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic, $"Measure function only recieve point", ActualLine);
             }
             if (Point2 is not null)
             {
                 Point2.CheckSemantic();
-                if (Point2.Value is not Punto) new Error(ErrorKind.Semantic, $"Measure function only recieve point", ActualLine);
+                if (Point2.Kind is not NodeKind.Punto && Point2.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic, $"Measure function only recieve point", ActualLine);
             }
         }
 

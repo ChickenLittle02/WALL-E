@@ -20,7 +20,6 @@ namespace BackEnd
         {
             _jsRuntime = jsRuntime;
             Code = code;
-            Colors = new Stack<string>();
             Start();
         }
         public static string GetColor()
@@ -32,6 +31,8 @@ namespace BackEnd
         public static void Start()
         {
             // try {
+                
+            Colors = new Stack<string>();
             BackEnd.Lexer_Analizer.Tokenizer Prueba = new BackEnd.Lexer_Analizer.Tokenizer(Code);
             Prueba.Start();
             if (Prueba.TokenSet.Count != 0)

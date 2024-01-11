@@ -13,8 +13,8 @@ public class Error
 
     public Error(ErrorKind _errorKind, string _argument, int _location)
     {
-        throw new Exception();
         System.Console.WriteLine($"Hubo un error en {_location}"+_argument);
+        throw new Exception();
         errorKind = _errorKind;
         // errorCode = _errorCode;
         argument = _argument;

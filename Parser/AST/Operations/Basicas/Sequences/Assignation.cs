@@ -19,8 +19,8 @@ CheckSemantic();
         public override void CheckSemantic()
         {
             Expression.CheckSemantic();
-            SetKind(Expression.Kind);
-            if(Expression.Kind is not NodeKind.Sequence) new Error(ErrorKind.Semantic,$"Expression associated must be a sequence not {Expression.Kind}",ActualLine);
+            SetKind(NodeKind.Temp);
+            if(Expression.Kind is not NodeKind.Sequence && Expression.Kind is not NodeKind.Temp) new Error(ErrorKind.Semantic,$"Expression associated must be a sequence not {Expression.Kind}",ActualLine);
             //Hay que revisar si la variable existia o no en algun scope, ya sea el actual o el anterior
         }
 
@@ -33,7 +33,10 @@ CheckSemantic();
                 if (ConstantPosition < Secuencia.Count)
                 {
                     if (EsUltimo) SetValue(new FiniteSequence(Secuencia.BuildList(ConstantPosition), false, ActualLine));
-                    else SetValue(Secuencia.SequenceValues[ConstantPosition]);
+                    else {
+                        SetValue(Secuencia.SequenceValues[ConstantPosition].Value);
+                        SetKind(NodeKind.Number);
+                        }
                 }
                 else if (ConstantPosition > Secuencia.Count)
                 {
@@ -56,7 +59,9 @@ CheckSemantic();
                 if (ConstantPosition < Secuencia.Count)
                 {
                     if (EsUltimo) SetValue(new InfiniteNumericSequence(Secuencia.BuildList(ConstantPosition), ActualLine));
-                    else SetValue(Secuencia.SequenceValues[ConstantPosition]);
+                    else 
+                    {SetValue(Secuencia.SequenceValues[ConstantPosition].Value);
+                    SetKind(NodeKind.Number);}
                 }
                 else
                 {
@@ -73,6 +78,7 @@ CheckSemantic();
                     else
                     {
                         SetValue(FirstValue);
+                        SetKind(NodeKind.Number);
                     }
                 }
             }

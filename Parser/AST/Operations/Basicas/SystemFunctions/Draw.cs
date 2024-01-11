@@ -10,7 +10,7 @@ namespace BackEnd
         public override void CheckSemantic()
         {
             Expression.CheckSemantic();
-            if (!ForFigura.IsFigura(Expression.Kind) && Expression.Kind is not NodeKind.Sequence) 
+            if (!ForFigura.IsFigura(Expression.Kind) && Expression.Kind is not NodeKind.Sequence && Expression.Kind is not NodeKind.Temp) 
             new Error(ErrorKind.Semantic,$"Function Draw only recieve figures or sequences",ActualLine);
         
         }

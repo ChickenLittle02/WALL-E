@@ -126,6 +126,11 @@ namespace BackEnd
                 Node result = null;
                 int actualLine = actual_token.actualLine;
                 Eat(TokenType.LEFT_CURLYBRACES, " ");
+                if(IsNext(TokenType.RIGHT_CURLYBRACES))
+                {
+                    Eat(TokenType.RIGHT_CURLYBRACES);
+                    return new FiniteSequence(new List<Node>(),false,actualLine);
+                }
                 List<Node> SequenceExpression = new List<Node>();
                 HayBracket = true;
                 Node ActualExpression = BuildExpression(actualScope);

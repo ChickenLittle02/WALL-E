@@ -12,8 +12,25 @@ using BackEnd.Syntax_Analizer;
 
 
 
-string prueba = "let a = 5; in a+2;";
+string prueba = @"
 
+
+{1,2,3,5,6};
+{1,2,3 ...};
+{1,4,6,8,9 ... 12};
+
+
+a={};
+b,c,_=a;
+print b;
+if a then 1 else 2;
+
+d,e,f={1,6,7,34};
+print d+e;
+g,h,_=f;
+print g+h;";
+
+BackEnd.ForDraw.Colors = new Stack<string>();
 Tokenizer Syntax = new Tokenizer(prueba);
 Syntax.Start();
 var Syntaxis = new BackEnd.Syntax_Analizer.Syntax(Syntax.TokenSet);

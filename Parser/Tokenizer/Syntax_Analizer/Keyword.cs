@@ -64,12 +64,43 @@ namespace BackEnd
                 {
                     Eat(TokenType.Keyword);
                     result = new Restore(actualLine);
-                }else if(name == "measure")
+                }
+                else if (name == "measure")
                 {
+                    actualLine = actual_token.actualLine;
                     Eat(TokenType.Keyword);
+                    Eat(TokenType.LEFT_PARENTHESIS, "After measure declaration must be a '('");
+                    HayBracket = true;
                     Node Expression = BuildExpression(actualScope);
+                    List<Node> ExpressionsForMeasure = new List<Node>();
+                    if (Expression is null) new Error(ErrorKind.Semantic, "In measure function call, can't be declarations of variables or functions", actualLine);
+                    else ExpressionsForMeasure.Add(Expression);
+                    while (actual_token.Type == TokenType.Comma)
+                    {
+                        Eat(TokenType.Comma, "");
+                        Expression = BuildExpression(actualScope);
+                        if (Expression is null) new Error(ErrorKind.Semantic, "In measure function call, can't be declarations of variables or functions", actualLine);
+                        else ExpressionsForMeasure.Add(Expression);
+                    }
+                    Eat(TokenType.RIGHT_PARENTHESIS, "After measure variables declaration must be a ')'");
+                    HayBracket = false;
+                    if (ExpressionsForMeasure.Count != 2) new Error(ErrorKind.Semantic, "Measure function must have two arguments", actualLine);
+                    else result = new Measure(ExpressionsForMeasure[0], ExpressionsForMeasure[0], actualLine);
 
                 }
+                else if (name == "count")
+                {
+                    Eat(TokenType.Keyword);
+                    Eat(TokenType.LEFT_PARENTHESIS, "count function must follow '('");
+                    HayBracket = true;
+                    Node Expression = BuildExpression(actualScope);
+                    HayBracket = false;
+                    Eat(TokenType.RIGHT_PARENTHESIS, "count function must follow ')'");
+                    result = new Count(Expression, actualLine);
+
+                }
+                else
+                    new Error(ErrorKind.RunTime, $"Unexpected Keyword Type {actual_token}", actualLine);
 
                 return (result, IsDeclaration);
 
@@ -94,7 +125,7 @@ namespace BackEnd
                 }
                 Eat(TokenType.RIGHT_PARENTHESIS);
                 HayBracket = false;
-                if (PointExpression.Count != 2) new Error(ErrorKind.Semantic,"La funcion intersect recibe solo dos parametros",actualLine);
+                if (PointExpression.Count != 2) new Error(ErrorKind.Semantic, "La funcion intersect recibe solo dos parametros", actualLine);
                 Node result = new IntersectionFunction(PointExpression[0], PointExpression[1], actualLine);
                 return result;
             }
@@ -106,7 +137,7 @@ namespace BackEnd
                 Eat(TokenType.Keyword, "");
                 if (IsNext(TokenType.SequenceKeyword))
                 {//Es point sequence prueba aqui prueba es un tipo secuencia de puntos
-                
+
 
                 }
                 else if (IsNext(TokenType.LEFT_PARENTHESIS))
@@ -125,7 +156,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PointExpression.Count != 2) new Error(ErrorKind.Semantic,"point function only recieve two parameters",actualLine);
+                    if (PointExpression.Count != 2) new Error(ErrorKind.Semantic, "point function only recieve two parameters", actualLine);
                     result = new PointFunction(PointExpression[0], PointExpression[1], actualLine);
                 }
                 else
@@ -164,7 +195,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PuntosParaCrearLinea.Count != 2) new Error(ErrorKind.Semantic,"line function only recieve two parameters",actualLine);
+                    if (PuntosParaCrearLinea.Count != 2) new Error(ErrorKind.Semantic, "line function only recieve two parameters", actualLine);
                     if (tipo is "line") result = new SystemFunction(new Line(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else if (tipo is "segment") result = new SystemFunction(new Segment(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
                     else result = new SystemFunction(new Ray(PuntosParaCrearLinea[0], PuntosParaCrearLinea[1], actualLine), actualLine);
@@ -213,7 +244,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS);
                     HayBracket = false;
-                    if (PuntosParaCrearArco.Count != 4) new Error(ErrorKind.Semantic,"arc function must recieve 4 parameters",actualLine);
+                    if (PuntosParaCrearArco.Count != 4) new Error(ErrorKind.Semantic, "arc function must recieve 4 parameters", actualLine);
                     result = new Arco(PuntosParaCrearArco[0], PuntosParaCrearArco[1], PuntosParaCrearArco[2], PuntosParaCrearArco[3], actualLine);
 
 
@@ -257,7 +288,7 @@ namespace BackEnd
                     }
                     Eat(TokenType.RIGHT_PARENTHESIS, "");
                     HayBracket = false;
-                    if (PuntosParaCrearCircle.Count != 2) new Error(ErrorKind.Semantic,"circle function must recieve two parameters",actualLine);
+                    if (PuntosParaCrearCircle.Count != 2) new Error(ErrorKind.Semantic, "circle function must recieve two parameters", actualLine);
                     result = new Circunferencia(PuntosParaCrearCircle[0], PuntosParaCrearCircle[1], actualLine);
                 }
                 else
