@@ -80,7 +80,10 @@ public partial class Intersection
 
         var distance = PointLineDistance(centro, recta);
         List<Node> intersection = new List<Node>();
-        if (distance > radius) return new FiniteSequence(new List<Node>(), false, actualLine);
+        if (distance > radius) {
+            var result = new FiniteSequence(new List<Node>(), false, actualLine);
+            result.Start();
+            return result;}
 
         double discriminant;
 
@@ -100,8 +103,9 @@ public partial class Intersection
                 intersection.Add(new Punto(lineX, y1, actualLine));
                 intersection.Add(new Punto(lineX, y2, actualLine));
             }
-
-            return new FiniteSequence(intersection, false, actualLine);
+            var result = new FiniteSequence(intersection, false, actualLine);
+            result.Start();
+            return result;
         }
         else
         {
@@ -122,7 +126,9 @@ public partial class Intersection
                 double x = (-B) / (2 * A);
                 double y = m * x + n;
                 intersection.Add(new Punto(x, y, actualLine));
-                return new FiniteSequence(intersection,false, actualLine);
+                var result = new FiniteSequence(intersection,false, actualLine); result.Start();
+                result.Start();
+                return result;
             }
 
             double x1 = (-B + Math.Sqrt(discriminant)) / (2 * A);
@@ -133,7 +139,9 @@ public partial class Intersection
 
             intersection.Add(new Punto(x1, y1, actualLine));
             intersection.Add(new Punto(x2, y2, actualLine));
-            return new FiniteSequence(intersection, false, actualLine);
+            var resultado = new FiniteSequence(intersection, false, actualLine);
+            resultado.Start();
+            return resultado;
         }
     }
     public static Sequence Intersect(Segment segmento, Line recta, int actualLine)

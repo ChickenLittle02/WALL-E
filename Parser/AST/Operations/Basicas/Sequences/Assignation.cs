@@ -28,6 +28,7 @@ CheckSemantic();
         {
             Expression.Evaluate();
             Secuencia = (Sequence)Expression.Value;
+            Secuencia.Start();
             if (Secuencia is FiniteSequence)
             {
                 if (ConstantPosition < Secuencia.Count)

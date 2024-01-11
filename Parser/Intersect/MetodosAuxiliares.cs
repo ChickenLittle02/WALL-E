@@ -267,6 +267,7 @@ public static partial class Intersection
                 Resultado = Intersection.Intersect((Circunferencia)Figura1Value, (Punto)Figura2Value, ActualLine);
 
         }
+        if(Resultado is not null) Resultado.Evaluate();
         return Resultado;
     }
 }

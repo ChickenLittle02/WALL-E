@@ -5,6 +5,8 @@ public static partial class Intersection
 
     public static Sequence Intersect(Circunferencia circunferencia1, Circunferencia circunferencia2, int actualLine)
     {
+        circunferencia1.Centro.Start();
+        circunferencia2.Centro.Start();
         List<Node> intersections = new List<Node>();
         Punto circunferencia1Centro, circunferencia2Centro;
         if(!Punto.TryParse(circunferencia1.Centro.Value, out circunferencia1Centro)) new Error(ErrorKind.RunTime,"Unexpected error: There will be a Point in Intersect function",actualLine); 
@@ -18,7 +20,7 @@ public static partial class Intersection
 
         double x2 = circunferencia2Centro.X;
         double y2 = circunferencia2Centro.Y;
-        double r2 = circunferencia1.radio;
+        double r2 = circunferencia2.radio;
 
         double distancia = Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
 

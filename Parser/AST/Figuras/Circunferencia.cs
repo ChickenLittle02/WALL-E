@@ -74,10 +74,11 @@ namespace BackEnd
         }
         public override async void Draw(string ID)
         {
+            Centro.Start();
             Punto value;
             if (!Punto.TryParse(Centro.Value, out value)) new Error(ErrorKind.Semantic, "Unexpected error: this must be a point", ActualLine);
             string color = ForDraw.GetColor();
-            if (ID is null)
+            if (ID is "")
             {
                 await ForDraw._jsRuntime.InvokeVoidAsync("DibujarCircunferenciaEnCanvas", color, value.X, value.Y, radio);
             }

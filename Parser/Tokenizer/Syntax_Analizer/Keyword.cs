@@ -87,7 +87,7 @@ namespace BackEnd
                     Eat(TokenType.RIGHT_PARENTHESIS, "After measure variables declaration must be a ')'");
                     HayBracket = false;
                     if (ExpressionsForMeasure.Count != 2) new Error(ErrorKind.Semantic, "Measure function must have two arguments", actualLine);
-                    else result = new Measure(ExpressionsForMeasure[0], ExpressionsForMeasure[0], actualLine);
+                    else result = new Measure(ExpressionsForMeasure[0], ExpressionsForMeasure[1], actualLine);
 
                 }
                 else if (name == "count")

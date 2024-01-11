@@ -27,6 +27,7 @@ public class Constants : Node
 
     public override void Evaluate()
     {//Habria que buscar si la constante existe en algun scope
+    // if(Value is not null) return;
         Scope Search = Scope;
         bool existe = false;
         while (!(Search.father is null))

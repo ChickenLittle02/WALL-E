@@ -38,8 +38,16 @@ namespace BackEnd
                     if (!ForFigura.IsFigura(SequenceExpression.SequenceDataKind))
                     {
 
-                        if (SequenceExpression.SequenceDataKind is not NodeKind.Sequence)
+                        if (SequenceExpression.Kind is not NodeKind.Sequence)
                         new Error(ErrorKind.Semantic,$"Unexpected type {SequenceExpression.SequenceDataKind}: Recieved sequence for the Function Draw must be only recieve figures or figures sequences",ActualLine);
+                        
+                        else{
+                            foreach(var item in SequenceExpression.GetELements)
+                            {
+                                Draw Expression = new Draw("",item,ActualLine);
+                                Expression.Start();
+                            }
+                        }
         
 
                     }

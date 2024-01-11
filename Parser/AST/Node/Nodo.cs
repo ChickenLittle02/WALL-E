@@ -13,7 +13,7 @@ public abstract class Node
     public void SetKind(NodeKind kind) => Kind = kind;
     public void Start(){
         CheckSemantic();
-        Evaluate();
+        if(Value is null)   Evaluate();
     }
     public Node(NodeKind kind, int actualLine)
     {
