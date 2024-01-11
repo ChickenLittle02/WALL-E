@@ -14,18 +14,16 @@ regularHexagon(p,m) =
         i5,i6,_ = intersect(c3,c1);
     in {i1,i3,i5,i2,i6,i4};
 color red;
-draw regularHexagon(point(123,100),70);
 
-print "Regular passed";
-
-
-
-color red;
 m = regularHexagon(point(123,100),70);
 a,b,c,d,e,f = m;
+g,_ = f;
 color blue;
-draw segment(a,b);
-draw segment(b,c);
-draw segment(c,d);
-draw segment(e,f);
-draw segment(f,a);
+draw a "a";
+draw b "b";
+draw c "c";
+draw d "d";
+draw e "e";
+draw g "g";
+draw {segment(a,b), segment(b,e), segment(e,d), segment(d,c), segment(c,g), segment(g,a)};
+print "Regular passed";

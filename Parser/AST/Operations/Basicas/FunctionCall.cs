@@ -35,6 +35,7 @@ public class FunctionCall : Node
 
     public override void Evaluate()
     {
+        if(Value is not null) return;
         var ANalizeExpressionFunction = new Syntax_Analizer.Syntax(BodyTokens, ScopeForBody);
         ANalizeExpressionFunction.Start();
         FunctionExpression = ANalizeExpressionFunction.NodesLines[0];
